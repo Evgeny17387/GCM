@@ -12,7 +12,7 @@ public class Connect {
 	static private final String USER = "DwZ0BCkIBH";
 	static private final String PASS = "3O6ZV2SgU4";
 
-	public void printUsers() {
+	public boolean printUsers(String name, String password) {
 	
 		String sql;
 	
@@ -38,6 +38,11 @@ public class Connect {
 				String Name = rs.getString("Name");
 				String Password = rs.getString("Password");
 				System.out.format("%d - %s - %s\n", Id, Name, Password);
+
+				if (Name.compareTo(name) == 0 && Password.compareTo(password) == 0) {
+					return true;
+				}
+
 			}
 			System.out.println("============");
 	
@@ -74,6 +79,8 @@ public class Connect {
 			}
 	
 		}
+		
+		return false;
 	
 	}
 
