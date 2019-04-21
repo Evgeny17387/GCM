@@ -95,7 +95,10 @@ public class EchoServer extends AbstractServer
       }
       System.out.println("Message received: " + msg + " from \"" + 
         client.getInfo("loginID") + "\" " + client);
-      this.sendToAllClients(client.getInfo("loginID") + "> " + msg);
+
+		Connect connect = new Connect();
+      
+      this.sendToAllClients(client.getInfo("loginID") + "> " + String.valueOf(connect.printUsers(msg.toString(), msg.toString())));
     }
   }
 
@@ -114,6 +117,7 @@ public class EchoServer extends AbstractServer
     {
       // send message to clients
       serverUI.display(message);
+
       this.sendToAllClients("SERVER MSG> " + message);
     }
   }
