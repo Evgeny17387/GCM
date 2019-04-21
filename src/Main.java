@@ -7,51 +7,48 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.*;
 
 public class Main extends Application {
 
 	public static void main(String[] args) {
-
 		launch(args);
 	}
 
     @Override
     public void start(Stage primaryStage) {
 
-    	Connect connect;
+        TextField helloTF = new TextField("");
 
-    	ClientConsole chat;
+    	ClientConsole chat = new ClientConsole("Evgeny", "127.0.0.1", ClientConsole.DEFAULT_PORT, helloTF);
 
-        TextField helloTF = new TextField("Press 'Check' to check name and password of user");
+        primaryStage.setTitle("GCM");
 
-		connect = new Connect();
-	    chat = new ClientConsole("Evgeny", "127.0.0.1", ClientConsole.DEFAULT_PORT, helloTF);
-
-        primaryStage.setTitle("Hello World!");
-
-        TextField name = new TextField("Enter name here");
-        TextField password = new TextField("Enter password here");
+        TextField name = new TextField("Evgeny");
+        TextField password = new TextField("Evgeny");
+        TextField command = new TextField("2");
 
         Button btn = new Button();
-        btn.setText("Check");
+        btn.setText("Run Command");
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	chat.SendToServer(name.getText() + " " + password.getText());
+            	chat.SendToServer(command.getText() + " " + name.getText() + " " + password.getText());
             }
         });
 
         StackPane root = new StackPane();
 
         root.getChildren().add(helloTF);
-        helloTF.setTranslateY(-50);
+        helloTF.setTranslateY(-100);
 
         root.getChildren().add(name);
-        name.setTranslateY(0);
+        name.setTranslateY(-50);
 
         root.getChildren().add(password);
-        password.setTranslateY(50);
+        password.setTranslateY(0);
+
+        root.getChildren().add(command);
+        command.setTranslateY(50);
 
         root.getChildren().add(btn);
         btn.setTranslateY(100);

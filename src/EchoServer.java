@@ -93,13 +93,59 @@ public class EchoServer extends AbstractServer
         catch (IOException e) {}
         return;
       }
+
       	System.out.println("Message received: " + msg + " from \"" + client.getInfo("loginID") + "\" " + client);
 
-		Connect connect = new Connect();
+      	Connect connect = new Connect();
 
 		String[] arguments = msg.toString().split(" ");
+
+		String response = "";
 		
-      this.sendToAllClients(client.getInfo("loginID") + "> " + String.valueOf(connect.printUsers(arguments[0], arguments[1])));
+		switch (arguments[0]) {
+
+			case "0":
+			
+				connect.PrintUsers();
+				
+				break;
+
+			case "1":
+				
+				if (connect.isValidUser(arguments[1], arguments[2])) {
+
+					response = "Purcheses - " + String.valueOf(connect.GetPurchases(arguments[1]));
+
+				} else {
+
+					response = "Invalid username or password";
+
+				}
+				
+				break;
+				
+			case "2":
+				
+				if (connect.isValidUser(arguments[1], arguments[2])) {
+
+					connect.IncreasePurchases(arguments[1]);
+
+				} else {
+
+					response = "Invalid username or password";
+
+				}
+				
+				break;
+
+			default:
+					
+					response = "Invalid Command";
+		
+		}
+		
+		this.sendToAllClients(client.getInfo("loginID") + "> " + response);
+		
     }
   }
 
