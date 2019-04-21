@@ -93,12 +93,13 @@ public class EchoServer extends AbstractServer
         catch (IOException e) {}
         return;
       }
-      System.out.println("Message received: " + msg + " from \"" + 
-        client.getInfo("loginID") + "\" " + client);
+      	System.out.println("Message received: " + msg + " from \"" + client.getInfo("loginID") + "\" " + client);
 
 		Connect connect = new Connect();
-      
-      this.sendToAllClients(client.getInfo("loginID") + "> " + String.valueOf(connect.printUsers(msg.toString(), msg.toString())));
+
+		String[] arguments = msg.toString().split(" ");
+		
+      this.sendToAllClients(client.getInfo("loginID") + "> " + String.valueOf(connect.printUsers(arguments[0], arguments[1])));
     }
   }
 

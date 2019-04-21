@@ -4,6 +4,8 @@
 
 import java.io.*;
 
+import javafx.scene.control.TextField;
+
 /**
  * This class constructs the UI for a chat client.  It implements the
  * chat interface in order to activate the display() method.
@@ -30,7 +32,8 @@ public class ClientConsole implements ChatIF
    */
   ChatClient client;
 
-  
+  TextField mHelloTF;
+
   //Constructors ****************************************************
 
   /**
@@ -40,8 +43,11 @@ public class ClientConsole implements ChatIF
    * @param port The port to connect on.
    * @param loginID The user's ID.
    */
-  public ClientConsole(String loginID, String host, int port) 
+  public ClientConsole(String loginID, String host, int port, TextField helloTF)
   {
+	  
+	  mHelloTF = helloTF;
+	  
     try 
     {
       client= new ChatClient(loginID, host, port, this);
@@ -61,7 +67,7 @@ public class ClientConsole implements ChatIF
    * This method waits for input from the console.  Once it is 
    * received, it sends it to the client's message handler.
    */
-  public void accept() 
+  public void accept()
   {
     try
     {
@@ -88,6 +94,15 @@ public class ClientConsole implements ChatIF
   }
 
   /**
+   * This method recieves input from the GUI.  Once it is
+   * received, it sends it to the client's message handler.
+   */
+  public void SendToServer(String message)
+  {
+      client.handleMessageFromClientUI(message);
+  }
+
+  /**
    * This method overrides the method in the ChatIF interface.  It
    * displays a message onto the screen.
    *
@@ -96,8 +111,10 @@ public class ClientConsole implements ChatIF
   public void display(String message) 
   {
     System.out.println(message);
-  }
 
+    mHelloTF.setText(message);
+  
+  }
   
   //Class methods ***************************************************
   
@@ -110,9 +127,11 @@ public class ClientConsole implements ChatIF
    */
   public static void main(String[] args) 
   {
-    String host = "";
+
+	String host = "";
     int port = 0;  //The port number
     String loginID = "";
+
     try
     {
       loginID = args[0];
@@ -122,6 +141,7 @@ public class ClientConsole implements ChatIF
       System.out.println("usage: java ClientConsole loginID [host [port]]");
       System.exit(1);
     }
+
     try
     {
       host = args[1];
@@ -130,13 +150,19 @@ public class ClientConsole implements ChatIF
     {
       host = "localhost";
     }
-    try {
+
+    try
+    {
       port = Integer.parseInt(args[2]);
-    } catch (ArrayIndexOutOfBoundsException e){
+    }
+    catch (ArrayIndexOutOfBoundsException e)
+    {
       port = DEFAULT_PORT;
     }
-    ClientConsole chat= new ClientConsole(loginID, host, port);
+
+    ClientConsole chat = new ClientConsole(loginID, host, port,  null);
     chat.accept();  //Wait for console data
+
   }
 }
 //End of ConsoleChat class

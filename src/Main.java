@@ -11,20 +11,24 @@ import javafx.geometry.*;
 
 public class Main extends Application {
 
-	Connect connect;
-
 	public static void main(String[] args) {
-        launch(args);
+
+		launch(args);
 	}
 
     @Override
     public void start(Stage primaryStage) {
 
-		connect = new Connect();
+    	Connect connect;
 
-        primaryStage.setTitle("Hello World!");
+    	ClientConsole chat;
 
         TextField helloTF = new TextField("Press 'Check' to check name and password of user");
+
+		connect = new Connect();
+	    chat = new ClientConsole("Evgeny", "127.0.0.1", ClientConsole.DEFAULT_PORT, helloTF);
+
+        primaryStage.setTitle("Hello World!");
 
         TextField name = new TextField("Enter name here");
         TextField password = new TextField("Enter password here");
@@ -34,7 +38,7 @@ public class Main extends Application {
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	helloTF.setText(String.valueOf(connect.printUsers(name.getText(), password.getText())));
+            	chat.SendToServer(name.getText() + " " + password.getText());
             }
         });
 
