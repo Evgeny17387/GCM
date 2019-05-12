@@ -4,6 +4,8 @@
 
 import java.io.*;
 
+import com.google.gson.Gson;
+
 /**
  * This class overrides some of the methods in the abstract 
  * superclass in order to give more functionality to the server.
@@ -97,12 +99,14 @@ public class EchoServer extends AbstractServer
       	System.out.println("Message received: " + msg + " from \"" + client.getInfo("loginID") + "\" " + client);
 
       	Connect connect = new Connect();
+      	
+    	Gson gson = new Gson();
 
-		String[] arguments = msg.toString().split(" ");
+    	Message message = gson.fromJson(msg.toString(), Message.class);
 
 		String response = "";
 		
-		switch (arguments[0]) {
+		switch (message.command) {
 
 			case "0":
 			
@@ -112,9 +116,9 @@ public class EchoServer extends AbstractServer
 
 			case "1":
 				
-				if (connect.isValidUser(arguments[1], arguments[2])) {
+				if (connect.isValidUser(message.name, message.password)) {
 
-					response = "Purcheses - " + String.valueOf(connect.GetPurchases(arguments[1]));
+					response = "Purcheses - " + String.valueOf(connect.GetPurchases(message.name));
 
 				} else {
 
@@ -126,9 +130,9 @@ public class EchoServer extends AbstractServer
 				
 			case "2":
 				
-				if (connect.isValidUser(arguments[1], arguments[2])) {
+				if (connect.isValidUser(message.name, message.password)) {
 
-					connect.IncreasePurchases(arguments[1]);
+					connect.IncreasePurchases(message.name);
 
 				} else {
 

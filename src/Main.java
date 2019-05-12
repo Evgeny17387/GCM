@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+import com.google.gson.Gson;
+
 public class Main extends Application {
 
 	public static void main(String[] args) {
@@ -32,7 +34,15 @@ public class Main extends Application {
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	chat.SendToServer(command.getText() + " " + name.getText() + " " + password.getText());
+
+            	Gson gson = new Gson();
+
+            	Message message = new Message(name.getText(), password.getText(), command.getText());
+
+            	String jsonString = gson.toJson(message);
+            	
+            	chat.SendToServer(jsonString);
+           	
             }
         });
 
