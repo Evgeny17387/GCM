@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.google.gson.Gson;
+
 public class Connect {
 
 	static private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -33,13 +35,21 @@ public class Connect {
 	
 			rs = stmt.executeQuery(sql);
 	
+			
+        	Gson gson = new Gson();
+
+
+			
+			
 			System.out.println("============");
 			while (rs.next()) {
 				int Id = rs.getInt("Id");
 				String Name = rs.getString("Name");
 				String Password = rs.getString("Password");
 				String Purchases = rs.getString("Purchases");
-
+				Data data=new Data(Id,Name,Password,Purchases);
+	        	String jsonString = gson.toJson(data);
+	        	
 				System.out.format("%d - %s - %s - %s\n", Id, Name, Password, Purchases);
 
 			}
