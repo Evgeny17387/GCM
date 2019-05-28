@@ -6,6 +6,11 @@ import java.io.*;
 
 import com.google.gson.Gson;
 
+import Requests.Message;
+import Requests.Register;
+import Requests.Request;
+import db.Operations;
+
 /**
  * This class overrides some of the methods in the abstract 
  * superclass in order to give more functionality to the server.
@@ -97,16 +102,22 @@ public class EchoServer extends AbstractServer
       }
 
       	System.out.println("Message received: " + msg + " from \"" + client.getInfo("loginID") + "\" " + client);
-
-      	Connect connect = new Connect();
       	
     	Gson gson = new Gson();
 
-    	Message message = gson.fromJson(msg.toString(), Message.class);
+    	Request request = gson.fromJson(msg.toString(), Request.class);
 
 		String response = "";
-		
-		switch (message.command) {
+
+      	Operations connect = new Operations();
+
+		switch (request.type) {
+
+		case 1:
+
+			Message message = gson.fromJson(gson.toJson(request.object), Message.class);
+
+			switch (message.command) {
 
 			case "0":
 			
@@ -146,6 +157,18 @@ public class EchoServer extends AbstractServer
 					
 					response = "Invalid Command";
 		
+			}
+
+			break;
+
+		case 2:
+
+			Register register = gson.fromJson(gson.toJson(request.object), Register.class);
+			
+			connect.AddUser(register.name, register.password);
+
+			break;
+
 		}
 		
 		this.sendToAllClients(client.getInfo("loginID") + "> " + response);

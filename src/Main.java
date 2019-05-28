@@ -17,6 +17,10 @@ import javafx.event.EventHandler;
 
 import com.google.gson.Gson;
 
+import Requests.Message;
+import Requests.Register;
+import Requests.Request;
+
 public class Main extends Application {
 	Stage window;
 	Scene signIn;
@@ -91,7 +95,8 @@ public class Main extends Application {
         	window.setScene(verifyScene);
         	Gson gson = new Gson();
         	Register register = new Register(nameR.getText(), passwordR.getText(), email.getText(),creditCard.getText());
-        	String jsonString = gson.toJson(register);
+        	Request request = new Request(2, register);
+        	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
         	
         });
@@ -111,16 +116,17 @@ public class Main extends Application {
 
             	Gson gson = new Gson();
             	Message message = new Message(name.getText(), password.getText(), command.getText());
-            	String jsonString = gson.toJson(message);
+            	Request request = new Request(1, message);
+            	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
-           	
+
             }
-                 
+
         });
 
         
         
-        BackgroundImage myBI= new BackgroundImage(new Image("Background.png"),
+        BackgroundImage myBI= new BackgroundImage(new Image("Images\\Background.png"),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         
         /****Scene declare****/

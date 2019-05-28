@@ -1,3 +1,5 @@
+package db;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -5,15 +7,70 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.google.gson.Gson;
-
-public class Connect {
+public class Operations {
 
 	static private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static private final String DB = "DwZ0BCkIBH";
 	static private final String DB_URL = "jdbc:mysql://remotemysql.com/"+ DB + "?useSSL=false";
 	static private final String USER = "DwZ0BCkIBH";
 	static private final String PASS = "3O6ZV2SgU4";
+
+	public void AddUser(String name, String password) {
+		
+		String sql;
+		
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			sql = "INSERT INTO `Users`(`Id`, `Name`, `Password`, `Purchases`) VALUES (0, ?, ?, 0)";
+
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.setString(1, name);
+			prep_stmt.setString(2, password);
+
+			prep_stmt.executeUpdate();
+	
+			if (conn != null)
+				conn.close();
+			if (prep_stmt != null)
+				prep_stmt.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+	
+	}
 
 	public void PrintUsers() {
 		
@@ -34,12 +91,6 @@ public class Connect {
 			sql = "SELECT * FROM Users";
 	
 			rs = stmt.executeQuery(sql);
-	
-			
-        	Gson gson = new Gson();
-
-
-			
 			
 			System.out.println("============");
 			while (rs.next()) {
@@ -47,9 +98,6 @@ public class Connect {
 				String Name = rs.getString("Name");
 				String Password = rs.getString("Password");
 				String Purchases = rs.getString("Purchases");
-				Data data=new Data(Id,Name,Password,Purchases);
-	        	String jsonString = gson.toJson(data);
-	        	
 				System.out.format("%d - %s - %s - %s\n", Id, Name, Password, Purchases);
 
 			}
