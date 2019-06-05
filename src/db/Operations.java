@@ -15,7 +15,7 @@ public class Operations {
 	static private final String USER = "DwZ0BCkIBH";
 	static private final String PASS = "3O6ZV2SgU4";
 
-	public void AddUser(String name, String password) {
+	public void AddUser(String aName, String aPassword, String aEmail) {
 		
 		String sql;
 		
@@ -28,12 +28,13 @@ public class Operations {
 	
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	
-			sql = "INSERT INTO `Users`(`Id`, `Name`, `Password`, `Purchases`) VALUES (0, ?, ?, 0)";
+			sql = "INSERT INTO `Users`(`Id`, `Name`, `Password`, `Email`) VALUES (0, ?, ?, ?)";
 
 			prep_stmt = conn.prepareStatement(sql);
 
-			prep_stmt.setString(1, name);
-			prep_stmt.setString(2, password);
+			prep_stmt.setString(1, aName);
+			prep_stmt.setString(2, aPassword);
+			prep_stmt.setString(3, aEmail);
 
 			prep_stmt.executeUpdate();
 	
@@ -98,8 +99,8 @@ public class Operations {
 				String Name = rs.getString("Name");
 				String Password = rs.getString("Password");
 				String Purchases = rs.getString("Purchases");
-				System.out.format("%d - %s - %s - %s\n", Id, Name, Password, Purchases);
-
+				String Email = rs.getString("Email");
+				System.out.format("%d - %s - %s - %s - %s\n", Id, Name, Password, Purchases, Email);
 			}
 			System.out.println("============");
 	

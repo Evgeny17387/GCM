@@ -165,7 +165,7 @@ public class EchoServer extends AbstractServer
 
 			Register register = gson.fromJson(gson.toJson(request.object), Register.class);
 			
-			connect.AddUser(register.name, register.password);
+			connect.AddUser(register.name, register.password, register.email);
 
 			break;
 
