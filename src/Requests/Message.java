@@ -6,6 +6,7 @@ public class Message {
 	public String password;
 	public String command;
 	
+	
 	public Message(String name, String password, String command) {
 		this.name = name;
 		this.password = password;

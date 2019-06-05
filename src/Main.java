@@ -8,6 +8,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -28,7 +30,8 @@ public class Main extends Application {
 	Scene menu;
 	Scene guestScene;
 	Scene verifyScene;
-
+	Scene welcome;
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -45,7 +48,10 @@ public class Main extends Application {
         /****Textfields declare****/
         TextField searchTF=new TextField("Type map to search");
         TextField name = new TextField("Please enter username");
+        name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+
         TextField password = new TextField("Please enter password");
+        password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         TextField command = new TextField("Please enter command");
         TextField nameR =new TextField("Please enter username");
         TextField passwordR = new TextField("Please enter password");
@@ -83,7 +89,7 @@ public class Main extends Application {
         search.setText("Search");
         memBtn.setText("I am a member");
         guestBtn.setText("I am not a member");
-        btn.setText("Run Command");
+        btn.setText("Next");
         
         
         
@@ -124,6 +130,8 @@ public class Main extends Application {
         
         
         BackgroundImage myBI= new BackgroundImage(new Image("Images\\Background.png"),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        BackgroundImage myBIW= new BackgroundImage(new Image("Images\\signInIm.png"),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         
         /****Scene declare****/
@@ -183,20 +191,22 @@ public class Main extends Application {
         
         
         StackPane memberZone = new StackPane();
-        memberZone.getChildren().add(helloTF);
-        helloTF.setTranslateY(-100);
+        memberZone.setBackground(new Background(myBIW));
+      //  memberZone.getChildren().add(helloTF);
+     //   helloTF.setTranslateY(-100);
         memberZone.getChildren().add(name);
         name.setTranslateY(-50);
+        name.setTranslateX(440);
         memberZone.getChildren().add(password);
         password.setTranslateY(0);
-        memberZone.getChildren().add(command);
-        command.setTranslateY(50);
+        password.setTranslateX(440);
+
         memberZone.getChildren().add(getBack);
         getBack.setTranslateY(100);
         getBack.setTranslateX(-100);
         memberZone.getChildren().add(btn);
         btn.setTranslateY(100);
-        signIn=new Scene(memberZone,300,300);
+        signIn=new Scene(memberZone,1280,720);
 
         
         
