@@ -15,7 +15,7 @@ public class Operations {
 	static private final String USER = "DwZ0BCkIBH";
 	static private final String PASS = "3O6ZV2SgU4";
 
-	public void AddUser(String aName, String aPassword, String aEmail) {
+	public void AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
 		
 		String sql;
 		
@@ -28,13 +28,14 @@ public class Operations {
 	
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	
-			sql = "INSERT INTO `Users`(`Id`, `Name`, `Password`, `Email`) VALUES (0, ?, ?, ?)";
+			sql = "INSERT INTO `Users`(`Name`, `Password`, `Email`, `CreditCard`) VALUES (?, ?, ?, ?)";
 
 			prep_stmt = conn.prepareStatement(sql);
 
 			prep_stmt.setString(1, aName);
 			prep_stmt.setString(2, aPassword);
 			prep_stmt.setString(3, aEmail);
+			prep_stmt.setString(4, aCreditCard);
 
 			prep_stmt.executeUpdate();
 	
@@ -86,7 +87,7 @@ public class Operations {
 			Class.forName(JDBC_DRIVER);
 	
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	
+
 			stmt = conn.createStatement();
 	
 			sql = "SELECT * FROM Users";
@@ -95,12 +96,12 @@ public class Operations {
 			
 			System.out.println("============");
 			while (rs.next()) {
-				int Id = rs.getInt("Id");
 				String Name = rs.getString("Name");
 				String Password = rs.getString("Password");
 				String Purchases = rs.getString("Purchases");
 				String Email = rs.getString("Email");
-				System.out.format("%d - %s - %s - %s - %s\n", Id, Name, Password, Purchases, Email);
+				String CreditCard = rs.getString("CreditCard");
+				System.out.format("%s - %s - %s - %s - %s\n", Name, Password, Purchases, Email, CreditCard);
 			}
 			System.out.println("============");
 	
