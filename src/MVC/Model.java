@@ -1,4 +1,4 @@
-package db;
+package MVC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Operations {
+public class Model {
 
 	static private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	static private final String DB = "DwZ0BCkIBH";
@@ -359,6 +359,73 @@ public class Operations {
 			}
 	
 		}
+	
+	}
+
+	public boolean isMapExists(String aName) {
+		
+		String sql;
+	
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			stmt = conn.createStatement();
+	
+			sql = "SELECT * FROM Maps";
+	
+			rs = stmt.executeQuery(sql);
+	
+			while (rs.next()) {
+				String Name = rs.getString("Name");
+
+				if (Name.compareTo(aName) == 0) {
+					return true;
+				}
+
+			}
+	
+			rs.close();
+			stmt.close();
+			conn.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return false;
 	
 	}
 
