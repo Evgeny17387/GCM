@@ -1,6 +1,3 @@
-// This file contains material supporting section 3.7 of the textbook:
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
 
 import java.io.*;
 
@@ -9,7 +6,10 @@ import com.google.gson.Gson;
 import Requests.Message;
 import Requests.Register;
 import Requests.Request;
-import db.Operations;
+import Requests.SearchMap;
+
+import MVC.Model;
+import MVC.Controller;
 
 /**
  * This class overrides some of the methods in the abstract 
@@ -103,73 +103,9 @@ public class EchoServer extends AbstractServer
 
       	System.out.println("Message received: " + msg + " from \"" + client.getInfo("loginID") + "\" " + client);
       	
-    	Gson gson = new Gson();
-
-    	Request request = gson.fromJson(msg.toString(), Request.class);
-
-		String response = "";
-
-      	Operations connect = new Operations();
-
-		switch (request.type) {
-
-		case 1:
-
-			Message message = gson.fromJson(gson.toJson(request.object), Message.class);
-
-			switch (message.command) {
-
-			case "0":
-			
-				connect.PrintUsers();
-				
-				break;
-
-			case "1":
-				
-				if (connect.isValidUser(message.name, message.password)) {
-
-					response = "Purcheses - " + String.valueOf(connect.GetPurchases(message.name));
-
-				} else {
-
-					response = "Invalid username or password";
-
-				}
-				
-				break;
-				
-			case "2":
-				
-				if (connect.isValidUser(message.name, message.password)) {
-
-					connect.IncreasePurchases(message.name);
-
-				} else {
-
-					response = "Invalid username or password";
-
-				}
-				
-				break;
-
-			default:
-					
-					response = "Invalid Command";
-		
-			}
-
-			break;
-
-		case 2:
-
-			Register register = gson.fromJson(gson.toJson(request.object), Register.class);
-			
-			connect.AddUser(register.name, register.password, register.email, register.creditCard);
-
-			break;
-
-		}
+      	Controller controller = new Controller();
+      	
+		String response = controller.control(msg.toString());
 		
 		this.sendToAllClients(client.getInfo("loginID") + "> " + response);
 		
