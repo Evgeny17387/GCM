@@ -44,6 +44,9 @@ public class View {
 		    	    for (int i = 0; i < mapList.size(); i++) {
 		    	    	Map map = mapList.get(i);
 						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
+						for (String place : map.mPlaces) {
+							System.out.format("%s\n", place);
+						}
 		    	    }
 	
 		    	    UI_server_communicate.mResposeFromserver = true;

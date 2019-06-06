@@ -20,6 +20,8 @@ public class Model {
 	static private final String USER = "DwZ0BCkIBH";
 	static private final String PASS = "3O6ZV2SgU4";
 
+	// Users
+	
 	public boolean AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
 		
 		String sql;
@@ -218,6 +220,8 @@ public class Model {
 	
 	}
 
+	// Purchases
+
 	public int GetPurchases(String name) {
 		
 		String sql;
@@ -371,6 +375,78 @@ public class Model {
 
 	}
 
+	// Maps
+
+	public List<String> PlacesByMap(String aName) {
+
+		List<String> placesList = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM PlacesMaps WHERE Map='" + aName + "'";
+
+			rs = stmt.executeQuery(sql);
+
+			placesList = new ArrayList<String>();
+
+		    while (rs.next()) {
+
+		    	String Place = rs.getString("Place");
+
+				placesList.add(Place);
+
+			}
+
+		    rs.close();
+			stmt.close();
+			conn.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return placesList;
+	
+	}
+
 	public List<Map> MapsByCity(String aName) {
 
 		List<Map> mapsList = null;
@@ -380,17 +456,17 @@ public class Model {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-	
+
 		try {
-	
+
 			Class.forName(JDBC_DRIVER);
-	
+
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	
+
 			stmt = conn.createStatement();
-	
+
 			sql = "SELECT * FROM Maps WHERE City='" + aName + "'";
-	
+
 			rs = stmt.executeQuery(sql);
 
 		    mapsList = new ArrayList<Map>();
@@ -401,10 +477,16 @@ public class Model {
 				String City = rs.getString("City");
 				int Version = rs.getInt("Version");
 				String Description = rs.getString("Description");
-
+				
 				System.out.format("%s - %s - %d - %s\n", Name, City, Version, Description);
 
-				mapsList.add(new Map(Name, Version, City, Description));
+				List<String> Places = PlacesByMap(Name);
+
+				for (String place : Places) {
+					System.out.format("%s\n", place);
+				}
+				
+				mapsList.add(new Map(Name, Version, City, Description, Places));
 
 			}
 
