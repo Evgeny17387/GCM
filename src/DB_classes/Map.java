@@ -1,13 +1,17 @@
 package DB_classes;
 
 public class Map {
-	public String name;
-	public String version;
-	public String city;
+
+	public String mName;
+	public int mVersion;
+	public String mCity;
+	public String mDescription;
 	
-	public Map(String _name,String _version, String _city){
-    	this.name = _name;
-    	this.version = _version;
-    	this.city=_city;
-    }
+	public Map(String aName, int aVersion, String aCity, String aDescription){
+    	this.mName = aName;
+    	this.mVersion = aVersion;
+    	this.mCity = aCity;
+    	this.mDescription = aDescription;
+	}
+
 }

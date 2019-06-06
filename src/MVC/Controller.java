@@ -1,7 +1,10 @@
 package MVC;
 
+import java.util.List;
+
 import com.google.gson.Gson;
 
+import DB_classes.Map;
 import Requests.Register;
 import Requests.Request;
 import Requests.GeneralRequest;
@@ -38,14 +41,14 @@ public class Controller {
 
 			break;
 
-		case "MapSearch":
+		case "MapSearch_city_key":
 
 			GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.object), GeneralRequest.class);
-			
-			boolean isMapExists = operations.MapsByCity(generalRequest.name);
 
-			GeneralResponse generalResponseMapSearch = new GeneralResponse(isMapExists);
-	    	Response responseMapSearch = new Response("MapSearch", generalResponseMapSearch);
+			List<Map> mapsList = operations.MapsByCity(generalRequest.name);
+
+	    	Response responseMapSearch = new Response("MapSearch_city_key", mapsList);
+
 	    	jsonString = gson.toJson(responseMapSearch);
 
 			break;
@@ -71,5 +74,5 @@ public class Controller {
 		return jsonString;
 
 	}
-	
+
 }

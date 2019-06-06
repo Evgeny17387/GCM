@@ -6,6 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.ArrayList;
+
+import DB_classes.Map;
 
 public class Model {
 
@@ -331,22 +335,22 @@ public class Model {
 				conn.close();
 			if (prep_stmt != null)
 				prep_stmt.close();
-	
+
 		} catch (SQLException se) {
-	
+
 			se.printStackTrace();
 			System.out.println("SQLException: " + se.getMessage());
 	        System.out.println("SQLState: " + se.getSQLState());
 	        System.out.println("VendorError: " + se.getErrorCode());
-	
+
 		} catch (Exception e) {
-	
+
 			e.printStackTrace();
-	
+
 		} finally {
-	
+
 			try {
-	
+
 				if (rs != null)
 					rs.close();
 				if (stmt != null)
@@ -355,21 +359,23 @@ public class Model {
 					conn.close();
 				if (prep_stmt != null)
 					prep_stmt.close();
-	
+
 			} catch (SQLException se) {
-	
+
 				se.printStackTrace();
-	
+
 			}
-	
+
 		}
-	
+
 	}
 
-	public boolean MapsByCity(String aName) {
-		
+	public List<Map> MapsByCity(String aName) {
+
+		List<Map> mapsList = null;
+
 		String sql;
-	
+
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -386,7 +392,9 @@ public class Model {
 	
 			rs = stmt.executeQuery(sql);
 
-			while (rs.next()) {
+		    mapsList = new ArrayList<Map>();
+
+		    while (rs.next()) {
 				String Name = rs.getString("Name");
 				String City = rs.getString("City");
 				int Version = rs.getInt("Version");
@@ -394,9 +402,11 @@ public class Model {
 
 				System.out.format("%s - %s - %d - %s\n", Name, City, Version, Description);
 
+				mapsList.add(new Map(Name, Version, City, Description));
+
 			}
 
-			rs.close();
+		    rs.close();
 			stmt.close();
 			conn.close();
 	
@@ -430,7 +440,7 @@ public class Model {
 	
 		}
 		
-		return false;
+		return mapsList;
 	
 	}
 

@@ -1,9 +1,17 @@
 package MVC;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.lang.reflect.Type;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import DB_classes.Map;
 
 import Responses.GeneralResponse;
 import Responses.Response;
+
 import GUI.UI_server_communicate;
 
 public class View {
@@ -20,26 +28,35 @@ public class View {
 
 	    	case "Register":
 
-	    		GeneralResponse generalResponseRegister = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
 	    	    System.out.println("Register");
-	    	    System.out.println(generalResponseRegister.isValid);
+
+	    		GeneralResponse generalResponseRegister = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
+
+	    		System.out.println(generalResponseRegister.isValid);
 	    		
 	    		break;
 
-	    	case "MapSearch":
+	    	case "MapSearch_city_key":
 
-	    		GeneralResponse generalResponseMapSearch = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
+	    	    System.out.println("MapSearch_city_key");
 
-	    	    System.out.println("MapSearch");
-	    	    System.out.println(generalResponseMapSearch.isValid);
-	    		
+	    	    Type type = new TypeToken<List<Map>>(){}.getType();
+	    	    List<Map> inpList = new Gson().fromJson(gson.toJson(response.object), type);
+	    	    for (int i = 0; i < inpList.size(); i++) {
+	    	    	Map map = inpList.get(i);
+					System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
+	    	    }
+
+	    	    UI_server_communicate.mResposeFromserver = true;
+
 	    		break;
 
 	    	case "AccountCheck":
 
+	    	    System.out.println("AccountCheck");
+
 	    		GeneralResponse generalResponseAccountCheck = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
 
-	    	    System.out.println("AccountCheck");
 	    	    System.out.println(generalResponseAccountCheck.isValid);
 
 	    	    UI_server_communicate.mResposeFromserver = true;
