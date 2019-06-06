@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import DB_classes.Map;
+import DB_classes.Place;
 
 public class Model {
 
@@ -377,9 +378,77 @@ public class Model {
 
 	// Maps
 
-	public List<String> PlacesByMap(String aName) {
+	public Place GetPlace(String aName) {
 
-		List<String> placesList = null;
+		Place place = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM Places WHERE Name='" + aName + "'";
+
+			rs = stmt.executeQuery(sql);
+
+		    while (rs.next()) {
+
+		    	place = new Place(rs.getString("Name"), rs.getString("Classification"));
+
+				System.out.format("%s - %s\n", rs.getString("Name"), rs.getString("Classification"));
+
+		    }
+
+		    rs.close();
+			stmt.close();
+			conn.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return place;
+	
+	}
+
+	public List<Place> PlacesByMap(String aName) {
+
+		List<Place> placesList = null;
 
 		String sql;
 
@@ -399,13 +468,17 @@ public class Model {
 
 			rs = stmt.executeQuery(sql);
 
-			placesList = new ArrayList<String>();
+			placesList = new ArrayList<Place>();
 
 		    while (rs.next()) {
 
-		    	String Place = rs.getString("Place");
+		    	String PlaceName = rs.getString("Place");
 
-				placesList.add(Place);
+				System.out.format("%s\n", PlaceName);
+
+		    	Place place = GetPlace(PlaceName);
+		    	
+				placesList.add(place);
 
 			}
 
@@ -480,11 +553,7 @@ public class Model {
 				
 				System.out.format("%s - %s - %d - %s\n", Name, City, Version, Description);
 
-				List<String> Places = PlacesByMap(Name);
-
-				for (String place : Places) {
-					System.out.format("%s\n", place);
-				}
+				List<Place> Places = PlacesByMap(Name);
 				
 				mapsList.add(new Map(Name, Version, City, Description, Places));
 
