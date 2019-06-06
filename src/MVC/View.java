@@ -1,7 +1,7 @@
 package MVC;
 
 import java.util.List;
-import java.util.ArrayList;
+
 import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken;
 
 import DB_classes.Map;
 
-import Responses.GeneralResponse;
 import Responses.Response;
 
 import GUI.UI_server_communicate;
@@ -30,9 +29,9 @@ public class View {
 
 	    	    System.out.println("Register");
 
-	    		GeneralResponse generalResponseRegister = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
+	    		boolean isRegistered = gson.fromJson(gson.toJson(response.object), boolean.class);
 
-	    		System.out.println(generalResponseRegister.isValid);
+	    		System.out.println(isRegistered);
 	    		
 	    		break;
 
@@ -55,9 +54,9 @@ public class View {
 
 	    	    System.out.println("AccountCheck");
 
-	    		GeneralResponse generalResponseAccountCheck = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
+	    	    boolean isValid = gson.fromJson(gson.toJson(response.object), boolean.class);
 
-	    	    System.out.println(generalResponseAccountCheck.isValid);
+	    	    System.out.println(isValid);
 
 	    	    UI_server_communicate.mResposeFromserver = true;
 

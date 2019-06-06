@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -395,7 +396,8 @@ public class Model {
 		    mapsList = new ArrayList<Map>();
 
 		    while (rs.next()) {
-				String Name = rs.getString("Name");
+
+		    	String Name = rs.getString("Name");
 				String City = rs.getString("City");
 				int Version = rs.getInt("Version");
 				String Description = rs.getString("Description");

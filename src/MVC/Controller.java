@@ -5,15 +5,14 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import DB_classes.Map;
-import Requests.Register;
-import Requests.Request;
-import Requests.GeneralRequest;
-import Requests.AccountCheck;
 
 import MVC.Model;
 
+import Requests.Register;
+import Requests.Request;
+import Requests.AccountCheck;
+
 import Responses.Response;
-import Responses.GeneralResponse;
 
 public class Controller {
 
@@ -35,17 +34,17 @@ public class Controller {
 			
 			boolean isUserAdded = operations.AddUser(register.name, register.password, register.email, register.creditCard);
 
-			GeneralResponse generalResponseRegister = new GeneralResponse(isUserAdded);
-	    	Response responseRegister = new Response("Register", generalResponseRegister);
-	    	jsonString = gson.toJson(responseRegister);
+			Response responseRegister = new Response("Register", isUserAdded);
+
+			jsonString = gson.toJson(responseRegister);
 
 			break;
 
 		case "MapSearch_city_key":
 
-			GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.object), GeneralRequest.class);
+			String cityName = gson.fromJson(gson.toJson(request.object), String.class);
 
-			List<Map> mapsList = operations.MapsByCity(generalRequest.name);
+			List<Map> mapsList = operations.MapsByCity(cityName);
 
 	    	Response responseMapSearch = new Response("MapSearch_city_key", mapsList);
 
@@ -59,8 +58,8 @@ public class Controller {
 
 			boolean isUsersExists = operations.isValidUser(accountCheck.username, accountCheck.password);
 
-			GeneralResponse generalResponseAccountCheck = new GeneralResponse(isUsersExists);
-	    	Response responseAccountCheck = new Response("AccountCheck", generalResponseAccountCheck);
+	    	Response responseAccountCheck = new Response("AccountCheck", isUsersExists);
+
 	    	jsonString = gson.toJson(responseAccountCheck);
 
 			break;

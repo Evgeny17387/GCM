@@ -15,12 +15,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import com.google.gson.Gson;
+
 import GUI.UI_server_communicate;
+
 import Requests.Request;
-import Requests.GeneralRequest;
 import Requests.Register;
 import Requests.AccountCheck;
 
@@ -81,7 +81,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-    	    	
+
+    	Gson gson = new Gson();
+
     	window = primaryStage;
     	UI_server_communicate communicate= new UI_server_communicate();
         View view = new View();
@@ -152,28 +154,32 @@ public class Main extends Application {
         
         
         /****Buttons actions****/
-        
+
         search_btn.setOnAction(e->{
+
         	if((Search_by_city.isSelected()&&Search_by_inplace.isSelected())||(Search_by_city.isSelected()&&Search_by_general_description.isSelected())||Search_by_inplace.isSelected()&&Search_by_general_description.isSelected())
         		return;
-        	
-        	Gson gson = new Gson();
-        	GeneralRequest generalRequest = new GeneralRequest(searchTF.getText());
-        	if(Search_by_city.isSelected())request_string="MapSearch_city_key";
-        	if(Search_by_inplace.isSelected())request_string="MapSearch_place_key";
-        	if(Search_by_general_description.isSelected())request_string="MapSearch_desc_key";
-        	Request request = new Request(request_string, generalRequest);
+
+        	String searchKey = searchTF.getText();
+
+        	if(Search_by_city.isSelected())
+        		request_string = "MapSearch_city_key";
+        	else if(Search_by_inplace.isSelected())
+        		request_string = "MapSearch_place_key";
+        	else if(Search_by_general_description.isSelected())
+        		request_string = "MapSearch_desc_key";
+
+        	Request request = new Request(request_string, searchKey);
         	String jsonString = gson.toJson(request);
-        	communicate.ask_server();
-        	
-        	
+
         	chat.SendToServer(jsonString);
-        	
+
+        	communicate.ask_server();
+
         });
-        
-        
+
+
         signUp2.setOnAction(e->{
-        	Gson gson = new Gson();
         	Register register = new Register(nameR.getText(), passwordR.getText(), email.getText(), creditCard.getText());
         	Request request = new Request("Register", register);
         	String jsonString = gson.toJson(request);
@@ -199,7 +205,6 @@ public class Main extends Application {
        
         
         btn.setOnAction(e->{
-            	Gson gson = new Gson();
             	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
             	Request request = new Request("AccountCheck", accountCheck);
             	String jsonString = gson.toJson(request);
@@ -212,7 +217,6 @@ public class Main extends Application {
 
         nextW.setOnAction(e->{
            
-            	Gson gson = new Gson();
             	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
             	Request request = new Request("AccountCheck", accountCheck);
             	String jsonString = gson.toJson(request);
