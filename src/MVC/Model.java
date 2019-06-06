@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import Objects.Map;
-
 public class Model {
 
 	static private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -395,8 +393,6 @@ public class Model {
 				String Description = rs.getString("Description");
 
 				System.out.format("%s - %s - %d - %s\n", Name, City, Version, Description);
-
-				Map map = new Map(Name, City, Version, Description);
 
 			}
 
