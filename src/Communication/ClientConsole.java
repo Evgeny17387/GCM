@@ -1,17 +1,11 @@
+package Communication;
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
 import java.io.*;
-import java.sql.SQLException;
 
-import com.google.gson.Gson;
-
-import Requests.AccountCheck;
-import javafx.scene.control.TextField;
-
-import Responses.Response;
-import Responses.GeneralResponse;
+import MVC.View;
 
 /**
  * This class constructs the UI for a chat client.  It implements the
@@ -39,7 +33,7 @@ public class ClientConsole implements ChatIF
    */
   ChatClient client;
 
-  TextField mHelloTF;
+  View mView;
 
   //Constructors ****************************************************
 
@@ -50,10 +44,10 @@ public class ClientConsole implements ChatIF
    * @param port The port to connect on.
    * @param loginID The user's ID.
    */
-  public ClientConsole(String loginID, String host, int port, TextField helloTF)
+  public ClientConsole(String loginID, String host, int port, View aView)
   {
 	  
-	  mHelloTF = helloTF;
+	  mView = aView;
 	  
     try 
     {
@@ -116,56 +110,7 @@ public class ClientConsole implements ChatIF
   public void display(String message) 
   {
     System.out.println(message);
-
-    try {
-
-    	Gson gson = new Gson();
-
-    	Response response = gson.fromJson(message, Response.class);
-
-      	switch (response.type) {
-
-    	case "Register":
-
-    		GeneralResponse generalResponseRegister = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
-
-    	    System.out.println("Register");
-    	    System.out.println(generalResponseRegister.isValid);
-    		
-    		break;
-
-    	case "MapSearch":
-
-    		GeneralResponse generalResponseMapSearch = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
-
-    	    System.out.println("MapSearch");
-    	    System.out.println(generalResponseMapSearch.isValid);
-    		
-    		break;
-
-    	case "AccountCheck":
-
-    		GeneralResponse generalResponseAccountCheck = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
-
-    	    System.out.println("AccountCheck");
-    	    System.out.println(generalResponseAccountCheck.isValid);
-    		
-    		break;
-
-		default:
-			
-    	    System.out.println("Invalid Response");
-
-      	}
-
-	} catch (Exception e) {
-		
-	    System.out.println(message + " - Not a JSON");
-		
-	}
-
-  	mHelloTF.setText(message);
-
+    mView.Run(message);
   }
 
   //Class methods ***************************************************

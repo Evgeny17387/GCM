@@ -1,3 +1,4 @@
+package GUI;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -7,7 +8,6 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 
 import com.google.gson.Gson;
 
@@ -26,8 +25,13 @@ import Requests.GeneralRequest;
 import Requests.Register;
 import Requests.AccountCheck;
 
+import MVC.View;
+
+import Communication.ClientConsole;
+
 public class Main extends Application {
-    /****Scenes declare****/
+	
+	/****Scenes declare****/
 
 	Stage window;
 	Scene welcomeR;
@@ -54,6 +58,8 @@ public class Main extends Application {
     TextField email= new TextField("Please enter your email addres");
     TextField verifySerial=new TextField("Please enter the serial we sent to you.");
     
+	/**** ****/
+    public static boolean mResposeFromserver = false;
     
     /***Clean all  textfields function***/
     
@@ -76,13 +82,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
     	    	
-    	window=primaryStage;
-    	
-        TextField helloTF = new TextField("");
-    	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, helloTF);
+    	window = primaryStage;
+
+        View view = new View();
+    	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
         primaryStage.setTitle("GCM");
-        
-       
+
+
         /****Textfields edit****/
         searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -186,6 +192,19 @@ public class Main extends Application {
             	Request request = new Request("AccountCheck", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
+
+            	while (mResposeFromserver != true) {
+            		
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+            		
+            	}
+            	
+            	mResposeFromserver = false;
+
             }
         });
 
