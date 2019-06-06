@@ -40,10 +40,10 @@ public class View {
 	
 		    	    System.out.println("MapSearch_city_key");
 	
-		    	    Type typeMap = new TypeToken<List<Map>>(){}.getType();
-		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(response.object), typeMap);
-		    	    for (int i = 0; i < mapList.size(); i++) {
-		    	    	Map map = mapList.get(i);
+		    	    Type typeMap1 = new TypeToken<List<Map>>(){}.getType();
+		    	    List<Map> mapList1 = new Gson().fromJson(gson.toJson(response.object), typeMap1);
+		    	    for (int i = 0; i < mapList1.size(); i++) {
+		    	    	Map map = mapList1.get(i);
 						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
 						for (Place place : map.mPlaces) {
 							System.out.format("%s - %s\n", place.mName, place.mClassification);
@@ -56,13 +56,16 @@ public class View {
 	
 		    	case "MapSearch_place_key":
 	
-		    	    System.out.println("MapSearch_city_key");
+		    	    System.out.println("MapSearch_place_key");
 	
-		    	    Type typeString = new TypeToken<List<String>>(){}.getType();
-		    	    List<String> mapsNameList = new Gson().fromJson(gson.toJson(response.object), typeString);
-		    	    for (int i = 0; i < mapsNameList.size(); i++) {
-		    	    	String map = mapsNameList.get(i);
-						System.out.format("%s\n", map);
+		    	    Type typeMap2 = new TypeToken<List<Map>>(){}.getType();
+		    	    List<Map> mapList2 = new Gson().fromJson(gson.toJson(response.object), typeMap2);
+		    	    for (int i = 0; i < mapList2.size(); i++) {
+		    	    	Map map = mapList2.get(i);
+						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
+						for (Place place : map.mPlaces) {
+							System.out.format("%s - %s\n", place.mName, place.mClassification);
+						}
 		    	    }
 	
 		    	    UI_server_communicate.mResposeFromserver = true;

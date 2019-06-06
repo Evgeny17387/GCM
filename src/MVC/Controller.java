@@ -56,7 +56,7 @@ public class Controller {
 
 			String placeName = gson.fromJson(gson.toJson(request.object), String.class);
 
-			List<String> mapsListPlaceName = operations.MapsByPlace(placeName);
+			List<Map> mapsListPlaceName = operations.MapsByPlace(placeName);
 
 	    	Response responseMapSearchPalceName = new Response("MapSearch_place_key", mapsListPlaceName);
 

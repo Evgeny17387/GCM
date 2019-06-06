@@ -446,7 +446,7 @@ public class Model {
 	
 	}
 
-	public List<Place> PlacesByMap(String aName) {
+	public List<Place> GetPlacesByMap(String aName) {
 
 		List<Place> placesList = null;
 
@@ -520,6 +520,81 @@ public class Model {
 	
 	}
 
+	public Map GetMap(String aName) {
+
+		Map map = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM Maps WHERE Name='" + aName + "'";
+
+			rs = stmt.executeQuery(sql);
+
+		    while (rs.next()) {
+
+		    	String Name = rs.getString("Name");
+				String City = rs.getString("City");
+				int Version = rs.getInt("Version");
+				String Description = rs.getString("Description");
+				
+				System.out.format("%s - %s - %d - %s\n", Name, City, Version, Description);
+
+				List<Place> Places = GetPlacesByMap(Name);
+				
+				map = new Map(Name, Version, City, Description, Places);
+
+			}
+
+		    rs.close();
+			stmt.close();
+			conn.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return map;
+	
+	}
+
 	public List<Map> MapsByCity(String aName) {
 
 		List<Map> mapsList = null;
@@ -546,16 +621,11 @@ public class Model {
 
 		    while (rs.next()) {
 
-		    	String Name = rs.getString("Name");
-				String City = rs.getString("City");
-				int Version = rs.getInt("Version");
-				String Description = rs.getString("Description");
-				
-				System.out.format("%s - %s - %d - %s\n", Name, City, Version, Description);
+		    	String MapName = rs.getString("Name");
 
-				List<Place> Places = PlacesByMap(Name);
-				
-				mapsList.add(new Map(Name, Version, City, Description, Places));
+		    	Map map = GetMap(MapName);
+		    	
+				mapsList.add(map);
 
 			}
 
@@ -597,9 +667,9 @@ public class Model {
 	
 	}
 
-	public List<String> MapsByPlace(String aName) {
+	public List<Map> MapsByPlace(String aName) {
 
-		List<String> mapsNameList = null;
+		List<Map> mapsList = null;
 
 		String sql;
 
@@ -619,15 +689,17 @@ public class Model {
 	
 			rs = stmt.executeQuery(sql);
 
-			mapsNameList = new ArrayList<String>();
+			mapsList = new ArrayList<Map>();
 
 		    while (rs.next()) {
 
-		    	String Map = rs.getString("Map");
+		    	String MapName = rs.getString("Map");
 
-				System.out.format("%s\n", Map);
+				System.out.format("%s\n", MapName);
+				
+				Map map = GetMap(MapName);
 
-				mapsNameList.add(Map);
+				mapsList.add(map);
 
 			}
 
@@ -668,7 +740,7 @@ public class Model {
 	
 		}
 		
-		return mapsNameList;
+		return mapsList;
 	
 	}
 
