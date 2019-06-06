@@ -17,9 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import com.google.gson.Gson;
-
+import GUI.UI_server_communicate;
 import Requests.Request;
 import Requests.GeneralRequest;
 import Requests.Register;
@@ -30,6 +29,7 @@ import MVC.View;
 import Communication.ClientConsole;
 
 public class Main extends Application {
+	String request_string;
 	
 	/****Scenes declare****/
 
@@ -42,6 +42,7 @@ public class Main extends Application {
 	Scene guestScene;
 	Scene verifyScene;
 	Scene welcome;
+	Scene clientZone;
 	
     /****Textfields declare****/
 
@@ -59,7 +60,6 @@ public class Main extends Application {
     TextField verifySerial=new TextField("Please enter the serial we sent to you.");
     
 	/**** ****/
-    public static boolean mResposeFromserver = false;
     
     /***Clean all  textfields function***/
     
@@ -83,7 +83,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
     	    	
     	window = primaryStage;
-
+    	UI_server_communicate communicate= new UI_server_communicate();
         View view = new View();
     	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
         primaryStage.setTitle("GCM");
@@ -102,9 +102,13 @@ public class Main extends Application {
         verifySerial.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         /****Checkboxs declare ***/
-        CheckBox OneTimePruchase= new CheckBox("One time pruchase");
-        CheckBox HalfYearPruchase= new CheckBox("But for 6 months");
-        
+        CheckBox Search_by_city= new CheckBox("Search by city");
+        CheckBox Search_by_inplace= new CheckBox("Search by interested place");
+        CheckBox Search_by_general_description= new CheckBox("Search by interested place");
+        Search_by_city.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        Search_by_inplace.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        Search_by_general_description.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+
         
         /****Buttons declare****/
         Button next = new Button();
@@ -150,10 +154,19 @@ public class Main extends Application {
         /****Buttons actions****/
         
         search_btn.setOnAction(e->{
+        	if((Search_by_city.isSelected()&&Search_by_inplace.isSelected())||(Search_by_city.isSelected()&&Search_by_general_description.isSelected())||Search_by_inplace.isSelected()&&Search_by_general_description.isSelected())
+        		return;
+        	
         	Gson gson = new Gson();
         	GeneralRequest generalRequest = new GeneralRequest(searchTF.getText());
-        	Request request = new Request("MapSearch", generalRequest);
+        	if(Search_by_city.isSelected())request_string="MapSearch_city_key";
+        	if(Search_by_inplace.isSelected())request_string="MapSearch_place_key";
+        	if(Search_by_general_description.isSelected())request_string="MapSearch_desc_key";
+        	Request request = new Request(request_string, generalRequest);
         	String jsonString = gson.toJson(request);
+        	communicate.ask_server();
+        	
+        	
         	chat.SendToServer(jsonString);
         	
         });
@@ -165,6 +178,7 @@ public class Main extends Application {
         	Request request = new Request("Register", register);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
+        	
         	
         	window.setScene(welcomeR);
 
@@ -184,57 +198,29 @@ public class Main extends Application {
 
        
         
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        btn.setOnAction(e->{
             	Gson gson = new Gson();
             	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
             	Request request = new Request("AccountCheck", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
+            	if(communicate.ask_server())window.setScene(clientZone);
 
-            	// Wait for reply from the server
-            	
-            	int Counter = 0;
-            	
-            	while (mResposeFromserver != true && Counter < 10) {
+            });
+            
 
-    	    	    System.out.println("Awaiting server response");
 
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    Counter++;
-
-            	}
-
-            	// Check if reply has come or not
-
-            	if (Counter != 10) {
-            		System.out.println("Server replies");
-            	}else {
-            		System.out.println("Server doesn't answer");
-            	}
-            	
-            	mResposeFromserver = false;
-
-            }
-        });
-
-        nextW.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        nextW.setOnAction(e->{
+           
             	Gson gson = new Gson();
             	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
             	Request request = new Request("AccountCheck", accountCheck);
             	String jsonString = gson.toJson(request);
-            	chat.SendToServer(jsonString);
+            	chat.SendToServer(jsonString);            	
             }
-        });
+        );
 
+        
         /****background zone****/
         
         BackgroundImage myBI= new BackgroundImage(new Image("Images\\Background.png"),
@@ -247,14 +233,15 @@ public class Main extends Application {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         BackgroundImage myBIWr= new BackgroundImage(new Image("Images\\Wrong.png"),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIc= new BackgroundImage(new Image("Images\\catalog.png"),
+        BackgroundImage myBIc= new BackgroundImage(new Image("Images\\catalog_up.png"),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        BackgroundImage myBIz= new BackgroundImage(new Image("Images\\clientZone.png"),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         
         
         /****Scene declare****/
         
         StackPane root = new StackPane();
-    
         root.setBackground(new Background(myBI));
         root.getChildren().add(workers_zone);
         workers_zone.setTranslateY(-100);
@@ -267,7 +254,11 @@ public class Main extends Application {
         menu=new Scene(root,1280,720);
         primaryStage.setScene(menu);
         primaryStage.show();
-               
+        
+        StackPane client=new StackPane();
+        client.setBackground(new Background(myBIz));
+        clientZone=new Scene(client,1280,720);
+
         
         StackPane verifyS=new StackPane();
         verifyS.getChildren().add(verifySerial);
@@ -289,6 +280,13 @@ public class Main extends Application {
         guestZone.getChildren().add(searchTF);
         guestZone.getChildren().add(search_btn);
         guestZone.getChildren().add(getBack2);
+        guestZone.getChildren().add(Search_by_city);
+        guestZone.getChildren().add(Search_by_inplace);
+        guestZone.getChildren().add(Search_by_general_description);
+        Search_by_city.setTranslateY(-250);
+        Search_by_city.setTranslateX(-63);
+        Search_by_inplace.setTranslateY(-200);
+        Search_by_general_description.setTranslateY(-150);
         searchTF.setTranslateY(-100);
         getBack2.setTranslateX(-100);
         guestScene=new Scene(guestZone,1280,720);
@@ -362,5 +360,4 @@ public class Main extends Application {
         signIn = new Scene(memberZone,1280,720);
 
     }
-
-}
+    }
