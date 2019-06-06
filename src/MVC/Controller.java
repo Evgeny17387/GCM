@@ -42,7 +42,7 @@ public class Controller {
 
 			GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.object), GeneralRequest.class);
 			
-			boolean isMapExists = operations.isMapExists(generalRequest.name);
+			boolean isMapExists = operations.MapsByCity(generalRequest.name);
 
 			GeneralResponse generalResponseMapSearch = new GeneralResponse(isMapExists);
 	    	Response responseMapSearch = new Response("MapSearch", generalResponseMapSearch);

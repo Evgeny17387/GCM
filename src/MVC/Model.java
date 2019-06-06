@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Objects.Map;
+
 public class Model {
 
 	static private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -366,7 +368,7 @@ public class Model {
 	
 	}
 
-	public boolean isMapExists(String aName) {
+	public boolean MapsByCity(String aName) {
 		
 		String sql;
 	
@@ -382,19 +384,22 @@ public class Model {
 	
 			stmt = conn.createStatement();
 	
-			sql = "SELECT * FROM Maps";
+			sql = "SELECT * FROM Maps WHERE City='" + aName + "'";
 	
 			rs = stmt.executeQuery(sql);
-	
+
 			while (rs.next()) {
 				String Name = rs.getString("Name");
+				String City = rs.getString("City");
+				int Version = rs.getInt("Version");
+				String Description = rs.getString("Description");
 
-				if (Name.compareTo(aName) == 0) {
-					return true;
-				}
+				System.out.format("%s - %s - %d - %s\n", Name, City, Version, Description);
+
+				Map map = new Map(Name, City, Version, Description);
 
 			}
-	
+
 			rs.close();
 			stmt.close();
 			conn.close();
