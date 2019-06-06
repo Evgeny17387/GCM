@@ -2,15 +2,15 @@ package MVC;
 
 import com.google.gson.Gson;
 
-import Requests.Message;
 import Requests.Register;
 import Requests.Request;
-import Requests.SearchMap;
+import Requests.GeneralRequest;
+import Requests.AccountCheck;
 
 import MVC.Model;
 
 import Responses.Response;
-import Responses.UserCheck;
+import Responses.GeneralResponse;
 
 public class Controller {
 
@@ -26,76 +26,48 @@ public class Controller {
 
 	  	switch (request.type) {
 
-		case 1:
-
-			Message message = gson.fromJson(gson.toJson(request.object), Message.class);
-
-			switch (message.command) {
-
-			case "0":
-			
-				operations.PrintUsers();
-				
-				break;
-
-			case "1":
-				
-				if (operations.isValidUser(message.name, message.password)) {
-
-					jsonString = "Purcheses - " + String.valueOf(operations.GetPurchases(message.name));
-
-				} else {
-
-					jsonString = "Invalid username or password";
-
-				}
-				
-				break;
-				
-			case "2":
-				
-				if (operations.isValidUser(message.name, message.password)) {
-
-					operations.IncreasePurchases(message.name);
-
-				} else {
-
-					jsonString = "Invalid username or password";
-
-				}
-				
-				break;
-
-			default:
-					
-				jsonString = "Invalid Command";
-		
-			}
-
-			break;
-
-		case 2:
+		case "Register":
 
 			Register register = gson.fromJson(gson.toJson(request.object), Register.class);
 			
-			operations.AddUser(register.name, register.password, register.email, register.creditCard);
+			boolean isUserAdded = operations.AddUser(register.name, register.password, register.email, register.creditCard);
+
+			GeneralResponse generalResponseRegister = new GeneralResponse(isUserAdded);
+	    	Response responseRegister = new Response("Register", generalResponseRegister);
+	    	jsonString = gson.toJson(responseRegister);
 
 			break;
 
-		case 3:
+		case "MapSearch":
 
-			SearchMap searchMap = gson.fromJson(gson.toJson(request.object), SearchMap.class);
+			GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.object), GeneralRequest.class);
 			
-			boolean isUserValid = operations.isMapExists(searchMap.name);
+			boolean isMapExists = operations.isMapExists(generalRequest.name);
 
-	    	UserCheck userCheck = new UserCheck(isUserValid);
-	    	Response response = new Response("UserCheck", userCheck);
-	    	jsonString = gson.toJson(response);
+			GeneralResponse generalResponseMapSearch = new GeneralResponse(isMapExists);
+	    	Response responseMapSearch = new Response("MapSearch", generalResponseMapSearch);
+	    	jsonString = gson.toJson(responseMapSearch);
 
 			break;
+
+		case "AccountCheck":
+
+			AccountCheck accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheck.class);
+
+			boolean isUsersExists = operations.isValidUser(accountCheck.username, accountCheck.password);
+
+			GeneralResponse generalResponseAccountCheck = new GeneralResponse(isUsersExists);
+	    	Response responseAccountCheck = new Response("AccountCheck", generalResponseAccountCheck);
+	    	jsonString = gson.toJson(responseAccountCheck);
+
+			break;
+
+		default:
+
+			jsonString = "Invalid Request";
 
 		}
-		
+
 		return jsonString;
 
 	}

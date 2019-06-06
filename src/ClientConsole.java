@@ -3,8 +3,15 @@
 // license found at www.lloseng.com 
 
 import java.io.*;
+import java.sql.SQLException;
 
+import com.google.gson.Gson;
+
+import Requests.AccountCheck;
 import javafx.scene.control.TextField;
+
+import Responses.Response;
+import Responses.GeneralResponse;
 
 /**
  * This class constructs the UI for a chat client.  It implements the
@@ -110,10 +117,57 @@ public class ClientConsole implements ChatIF
   {
     System.out.println(message);
 
-    mHelloTF.setText(message);
-  
+    try {
+
+    	Gson gson = new Gson();
+
+    	Response response = gson.fromJson(message, Response.class);
+
+      	switch (response.type) {
+
+    	case "Register":
+
+    		GeneralResponse generalResponseRegister = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
+
+    	    System.out.println("Register");
+    	    System.out.println(generalResponseRegister.isValid);
+    		
+    		break;
+
+    	case "MapSearch":
+
+    		GeneralResponse generalResponseMapSearch = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
+
+    	    System.out.println("MapSearch");
+    	    System.out.println(generalResponseMapSearch.isValid);
+    		
+    		break;
+
+    	case "AccountCheck":
+
+    		GeneralResponse generalResponseAccountCheck = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
+
+    	    System.out.println("AccountCheck");
+    	    System.out.println(generalResponseAccountCheck.isValid);
+    		
+    		break;
+
+		default:
+			
+    	    System.out.println("Invalid Response");
+
+      	}
+
+	} catch (Exception e) {
+		
+	    System.out.println(message + " - Not a JSON");
+		
+	}
+
+  	mHelloTF.setText(message);
+
   }
-  
+
   //Class methods ***************************************************
   
   /**

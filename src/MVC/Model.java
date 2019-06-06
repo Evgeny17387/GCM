@@ -15,7 +15,7 @@ public class Model {
 	static private final String USER = "DwZ0BCkIBH";
 	static private final String PASS = "3O6ZV2SgU4";
 
-	public void AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
+	public boolean AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
 		
 		String sql;
 		
@@ -43,6 +43,8 @@ public class Model {
 				conn.close();
 			if (prep_stmt != null)
 				prep_stmt.close();
+			
+			return true;
 	
 		} catch (SQLException se) {
 	
@@ -71,7 +73,9 @@ public class Model {
 			}
 	
 		}
-	
+
+		return false;
+
 	}
 
 	public void PrintUsers() {

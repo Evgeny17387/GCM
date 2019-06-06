@@ -3,11 +3,6 @@ import java.io.*;
 
 import com.google.gson.Gson;
 
-import Requests.Message;
-import Requests.Register;
-import Requests.Request;
-import Requests.SearchMap;
-
 import MVC.Model;
 import MVC.Controller;
 
@@ -107,7 +102,8 @@ public class EchoServer extends AbstractServer
       	
 		String response = controller.control(msg.toString());
 		
-		this.sendToAllClients(client.getInfo("loginID") + "> " + response);
+//		this.sendToAllClients(client.getInfo("loginID") + "> " + response);
+		this.sendToAllClients(response);
 		
     }
   }

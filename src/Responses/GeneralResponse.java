@@ -1,10 +1,10 @@
 package Responses;
 
-public class UserCheck {
+public class GeneralResponse {
 
 	public boolean isValid;
 	
-	public UserCheck(boolean aIsValid) {
+	public GeneralResponse(boolean aIsValid) {
 		this.isValid = aIsValid;
 	}
 

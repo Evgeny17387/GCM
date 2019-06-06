@@ -21,10 +21,10 @@ import javafx.geometry.Pos;
 
 import com.google.gson.Gson;
 
-import Requests.Message;
-import Requests.Register;
 import Requests.Request;
-import Requests.AcountValid;
+import Requests.GeneralRequest;
+import Requests.Register;
+import Requests.AccountCheck;
 
 public class Main extends Application {
     /****Scenes declare****/
@@ -145,8 +145,9 @@ public class Main extends Application {
         
         search_btn.setOnAction(e->{
         	Gson gson = new Gson();
-        	String question=searchTF.getText();
-        	String jsonString = gson.toJson(question);
+        	GeneralRequest generalRequest = new GeneralRequest(searchTF.getText());
+        	Request request = new Request("MapSearch", generalRequest);
+        	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
         	
         });
@@ -155,7 +156,7 @@ public class Main extends Application {
         signUp2.setOnAction(e->{
         	Gson gson = new Gson();
         	Register register = new Register(nameR.getText(), passwordR.getText(), email.getText(), creditCard.getText());
-        	Request request = new Request(2, register);
+        	Request request = new Request("Register", register);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
         	
@@ -181,8 +182,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
             	Gson gson = new Gson();
-            	Message message = new Message(name.getText(), password.getText(), command.getText());
-            	Request request = new Request(1, message);
+            	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
+            	Request request = new Request("AccountCheck", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
             }
@@ -192,12 +193,13 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
             	Gson gson = new Gson();
-            	AcountValid message = new AcountValid(name.getText(), password.getText());
-            	String jsonString = gson.toJson(message);
+            	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
+            	Request request = new Request("AccountCheck", accountCheck);
+            	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
             }
         });
-        
+
         /****background zone****/
         
         BackgroundImage myBI= new BackgroundImage(new Image("Images\\Background.png"),
@@ -301,23 +303,29 @@ public class Main extends Application {
         nextW.setTranslateY(100);
         signInR=new Scene(workersZone,1280,720);
         
-        
+
+
+        // Members zone sign in
+
         StackPane memberZone = new StackPane();
-        memberZone.setBackground(new Background(myBIW));      
+        memberZone.setBackground(new Background(myBIW)); 
+
         name.setMaxWidth(400);
         name.setTranslateY(-50);
         memberZone.getChildren().add(name);
+
         password.setMaxWidth(400);
         memberZone.getChildren().add(password);
+
         memberZone.getChildren().add(getBack);
         getBack.setTranslateY(100);
         getBack.setTranslateX(-100);
+
         memberZone.getChildren().add(btn);
         btn.setTranslateY(100);
-        signIn=new Scene(memberZone,1280,720);
 
-        
-        
+        signIn = new Scene(memberZone,1280,720);
+
     }
 
 }
