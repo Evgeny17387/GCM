@@ -44,11 +44,23 @@ public class Controller {
 
 			String cityName = gson.fromJson(gson.toJson(request.object), String.class);
 
-			List<Map> mapsList = operations.MapsByCity(cityName);
+			List<Map> mapsListCityName = operations.MapsByCity(cityName);
 
-	    	Response responseMapSearch = new Response("MapSearch_city_key", mapsList);
+	    	Response responseMapSearchCityName = new Response("MapSearch_city_key", mapsListCityName);
 
-	    	jsonString = gson.toJson(responseMapSearch);
+	    	jsonString = gson.toJson(responseMapSearchCityName);
+
+			break;
+
+		case "MapSearch_place_key":
+
+			String placeName = gson.fromJson(gson.toJson(request.object), String.class);
+
+			List<String> mapsListPlaceName = operations.MapsByPlace(placeName);
+
+	    	Response responseMapSearchPalceName = new Response("MapSearch_place_key", mapsListPlaceName);
+
+	    	jsonString = gson.toJson(responseMapSearchPalceName);
 
 			break;
 

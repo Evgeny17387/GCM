@@ -446,4 +446,79 @@ public class Model {
 	
 	}
 
+	public List<String> MapsByPlace(String aName) {
+
+		List<String> mapsNameList = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			stmt = conn.createStatement();
+	
+			sql = "SELECT * FROM PlacesMaps WHERE Place='" + aName + "'";
+	
+			rs = stmt.executeQuery(sql);
+
+			mapsNameList = new ArrayList<String>();
+
+		    while (rs.next()) {
+
+		    	String Map = rs.getString("Map");
+
+				System.out.format("%s\n", Map);
+
+				mapsNameList.add(Map);
+
+			}
+
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return mapsNameList;
+	
+	}
+
 }

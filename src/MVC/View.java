@@ -25,46 +25,61 @@ public class View {
 
 	      	switch (response.type) {
 
-	    	case "Register":
-
-	    	    System.out.println("Register");
-
-	    		boolean isRegistered = gson.fromJson(gson.toJson(response.object), boolean.class);
-
-	    		System.out.println(isRegistered);
-	    		
-	    		break;
-
-	    	case "MapSearch_city_key":
-
-	    	    System.out.println("MapSearch_city_key");
-
-	    	    Type type = new TypeToken<List<Map>>(){}.getType();
-	    	    List<Map> inpList = new Gson().fromJson(gson.toJson(response.object), type);
-	    	    for (int i = 0; i < inpList.size(); i++) {
-	    	    	Map map = inpList.get(i);
-					System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
-	    	    }
-
-	    	    UI_server_communicate.mResposeFromserver = true;
-
-	    		break;
-
-	    	case "AccountCheck":
-
-	    	    System.out.println("AccountCheck");
-
-	    	    boolean isValid = gson.fromJson(gson.toJson(response.object), boolean.class);
-
-	    	    System.out.println(isValid);
-
-	    	    UI_server_communicate.mResposeFromserver = true;
-
-	    	    break;
-
-			default:
-				
-	    	    System.out.println("Invalid Response");
+		    	case "Register":
+	
+		    	    System.out.println("Register");
+	
+		    		boolean isRegistered = gson.fromJson(gson.toJson(response.object), boolean.class);
+	
+		    		System.out.println(isRegistered);
+		    		
+		    		break;
+	
+		    	case "MapSearch_city_key":
+	
+		    	    System.out.println("MapSearch_city_key");
+	
+		    	    Type typeMap = new TypeToken<List<Map>>(){}.getType();
+		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(response.object), typeMap);
+		    	    for (int i = 0; i < mapList.size(); i++) {
+		    	    	Map map = mapList.get(i);
+						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
+		    	    }
+	
+		    	    UI_server_communicate.mResposeFromserver = true;
+	
+		    		break;
+	
+		    	case "MapSearch_place_key":
+	
+		    	    System.out.println("MapSearch_city_key");
+	
+		    	    Type typeString = new TypeToken<List<String>>(){}.getType();
+		    	    List<String> mapsNameList = new Gson().fromJson(gson.toJson(response.object), typeString);
+		    	    for (int i = 0; i < mapsNameList.size(); i++) {
+		    	    	String map = mapsNameList.get(i);
+						System.out.format("%s\n", map);
+		    	    }
+	
+		    	    UI_server_communicate.mResposeFromserver = true;
+	
+		    		break;
+	
+		    	case "AccountCheck":
+	
+		    	    System.out.println("AccountCheck");
+	
+		    	    boolean isValid = gson.fromJson(gson.toJson(response.object), boolean.class);
+	
+		    	    System.out.println(isValid);
+	
+		    	    UI_server_communicate.mResposeFromserver = true;
+	
+		    	    break;
+	
+				default:
+					
+		    	    System.out.println("Invalid Response");
 
 	      	}
 

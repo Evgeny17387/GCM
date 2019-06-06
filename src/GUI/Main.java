@@ -106,7 +106,7 @@ public class Main extends Application {
         /****Checkboxs declare ***/
         CheckBox Search_by_city= new CheckBox("Search by city");
         CheckBox Search_by_inplace= new CheckBox("Search by interested place");
-        CheckBox Search_by_general_description= new CheckBox("Search by interested place");
+        CheckBox Search_by_general_description= new CheckBox("Search by general description");
         Search_by_city.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         Search_by_inplace.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         Search_by_general_description.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
