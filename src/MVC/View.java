@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 import Responses.GeneralResponse;
 import Responses.Response;
-import GUI.Main;
+import GUI.UI_server_communicate;
 
 public class View {
 
@@ -21,7 +21,6 @@ public class View {
 	    	case "Register":
 
 	    		GeneralResponse generalResponseRegister = gson.fromJson(gson.toJson(response.object), GeneralResponse.class);
-
 	    	    System.out.println("Register");
 	    	    System.out.println(generalResponseRegister.isValid);
 	    		
@@ -43,7 +42,7 @@ public class View {
 	    	    System.out.println("AccountCheck");
 	    	    System.out.println(generalResponseAccountCheck.isValid);
 
-	    	    Main.mResposeFromserver = true;
+	    	    UI_server_communicate.mResposeFromserver = true;
 
 	    	    break;
 
