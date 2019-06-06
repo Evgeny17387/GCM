@@ -193,14 +193,30 @@ public class Main extends Application {
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
 
-            	while (mResposeFromserver != true) {
-            		
+            	// Wait for reply from the server
+            	
+            	int Counter = 0;
+            	
+            	while (mResposeFromserver != true && Counter < 10) {
+
+    	    	    System.out.println("Awaiting server response");
+
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-            		
+
+                    Counter++;
+
+            	}
+
+            	// Check if reply has come or not
+
+            	if (Counter != 10) {
+            		System.out.println("Server replies");
+            	}else {
+            		System.out.println("Server doesn't answer");
             	}
             	
             	mResposeFromserver = false;
