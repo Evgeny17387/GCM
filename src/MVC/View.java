@@ -72,18 +72,38 @@ public class View {
 	
 		    		break;
 	
-		    	case "AccountCheck":
-	
-		    	    System.out.println("AccountCheck");
-	
-		    	    boolean isValid = gson.fromJson(gson.toJson(response.object), boolean.class);
-	
-		    	    System.out.println(isValid);
-	
-		    	    UI_server_communicate.mResposeFromserver = true;
-	
+		    	case "UserCheck":
+
+		    	    System.out.println("UserCheck");
+
+			    	{
+			    				    		
+			    	    boolean isValid = gson.fromJson(gson.toJson(response.object), boolean.class);
+		
+			    	    System.out.println(isValid);
+				    		
+			    	}
+
+	    	    	UI_server_communicate.mResposeFromserver = true;
+
 		    	    break;
+
+		    	case "WorkerCheck":
+
+		    	    System.out.println("WorkerCheck");
+
+			    	{
+			    		
+			    	    boolean isValid = gson.fromJson(gson.toJson(response.object), boolean.class);
+		
+			    	    System.out.println(isValid);
 	
+			    	}
+
+		    		UI_server_communicate.mResposeFromserver = true;
+
+		    	    break;
+
 				default:
 					
 		    	    System.out.println("Invalid Response");

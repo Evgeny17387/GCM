@@ -108,12 +108,13 @@ public class Model {
 			
 			System.out.println("============");
 			while (rs.next()) {
+				int Id = rs.getInt("Id");
 				String Name = rs.getString("Name");
 				String Password = rs.getString("Password");
 				String Purchases = rs.getString("Purchases");
 				String Email = rs.getString("Email");
 				String CreditCard = rs.getString("CreditCard");
-				System.out.format("%s - %s - %s - %s - %s\n", Name, Password, Purchases, Email, CreditCard);
+				System.out.format("%d - %s - %s - %s - %s - %s\n", Id, Name, Password, Purchases, Email, CreditCard);
 			}
 			System.out.println("============");
 	
@@ -153,7 +154,7 @@ public class Model {
 	
 	}
 
-	public boolean isValidUser(String name, String password) {
+	public boolean isValidAccount(String Table, String name, String password) {
 	
 		String sql;
 	
@@ -169,15 +170,17 @@ public class Model {
 	
 			stmt = conn.createStatement();
 	
-			sql = "SELECT * FROM Users";
+			sql = "SELECT * FROM " + Table;
 	
 			rs = stmt.executeQuery(sql);
 	
 			while (rs.next()) {
+				int Id = rs.getInt("Id");
 				String Name = rs.getString("Name");
 				String Password = rs.getString("Password");
 
 				if (Name.compareTo(name) == 0 && Password.compareTo(password) == 0) {
+					System.out.format("%d - %s - %s\n", Id, Name, Password);
 					return true;
 				}
 

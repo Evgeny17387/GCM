@@ -64,15 +64,27 @@ public class Controller {
 
 			break;
 
-		case "AccountCheck":
+		case "UserCheck":
 
-			AccountCheck accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheck.class);
+			AccountCheck accountCheckUser = gson.fromJson(gson.toJson(request.object), AccountCheck.class);
 
-			boolean isUsersExists = operations.isValidUser(accountCheck.username, accountCheck.password);
+			boolean isUsersExists = operations.isValidAccount("Users", accountCheckUser.username, accountCheckUser.password);
 
-	    	Response responseAccountCheck = new Response("AccountCheck", isUsersExists);
+	    	Response responseUserCheck = new Response("UserCheck", isUsersExists);
 
-	    	jsonString = gson.toJson(responseAccountCheck);
+	    	jsonString = gson.toJson(responseUserCheck);
+
+			break;
+
+		case "WorkerCheck":
+
+			AccountCheck accountCheckWorker = gson.fromJson(gson.toJson(request.object), AccountCheck.class);
+
+			boolean isWorkerExists = operations.isValidAccount("Workers", accountCheckWorker.username, accountCheckWorker.password);
+
+	    	Response responseWorkerCheck = new Response("UserCheck", isWorkerExists);
+
+	    	jsonString = gson.toJson(responseWorkerCheck);
 
 			break;
 

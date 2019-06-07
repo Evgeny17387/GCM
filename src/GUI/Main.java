@@ -206,10 +206,11 @@ public class Main extends Application {
         
         btn.setOnAction(e->{
             	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
-            	Request request = new Request("AccountCheck", accountCheck);
+            	Request request = new Request("UserCheck", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
-            	if(communicate.ask_server())window.setScene(clientZone);
+
+//            	if(communicate.ask_server())window.setScene(clientZone);
 
             });
             
@@ -218,7 +219,7 @@ public class Main extends Application {
         nextW.setOnAction(e->{
            
             	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
-            	Request request = new Request("AccountCheck", accountCheck);
+            	Request request = new Request("WorkerCheck", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);            	
             }
