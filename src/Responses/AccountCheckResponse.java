@@ -2,11 +2,11 @@ package Responses;
 
 public class AccountCheckResponse {
 
-	public boolean mIsValid;
+	public int mErrorCode;
 	public Object mAccount;
 
-	public AccountCheckResponse(boolean aIsValid, Object aAccount) {
-		this.mIsValid = aIsValid;
+	public AccountCheckResponse(int aErrorCode, Object aAccount) {
+		this.mErrorCode = aErrorCode;
 		this.mAccount = aAccount;
 	}
 

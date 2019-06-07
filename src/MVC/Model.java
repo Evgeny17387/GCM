@@ -16,7 +16,9 @@ import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
 import Responses.AccountCheckResponse;
+
 import Utils.PasswordUtils;
+import Utils.ErrorCodes;
 
 public class Model {
 
@@ -26,11 +28,73 @@ public class Model {
 	static private final String USER = "DwZ0BCkIBH";
 	static private final String PASS = "3O6ZV2SgU4";
 
+	// General
+
+	public int ClearTable(String aTable) {
+		
+		int result = ErrorCodes.SUCCESS;
+		
+		String sql;
+	
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			sql = "DELETE FROM " + aTable + " WHERE 1";
+
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.executeUpdate();
+
+		} catch (SQLException se) {
+
+			result = se.getErrorCode();
+
+			se.printStackTrace();
+
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			result = ErrorCodes.FAILURE;
+
+			e.printStackTrace();
+
+		} finally {
+	
+			try {
+	
+				if (prep_stmt != null)
+					prep_stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+
+				result = se.getErrorCode();
+
+				se.printStackTrace();
+	
+			}
+	
+		}
+
+		return result;
+		
+	}
+
 	// Users
 
 	public AccountCheckResponse AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
 		
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(false, null);
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
 
 		String sql;
 		
@@ -66,14 +130,22 @@ public class Model {
 				prep_stmt.close();
 				
 		} catch (SQLException se) {
-	
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
+
+			accountCheckResponse.mErrorCode = se.getErrorCode();
+			
+			if (!(se.getErrorCode() == ErrorCodes.USER_ALREADY_EXISTS)) {
+
+				se.printStackTrace();
+				System.out.println("SQLException: " + se.getMessage());
+		        System.out.println("SQLState: " + se.getSQLState());
+		        System.out.println("VendorError: " + se.getErrorCode());
+
+			}
 	
 		} catch (Exception e) {
-	
+
+			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+
 			e.printStackTrace();
 	
 		} finally {
@@ -86,7 +158,9 @@ public class Model {
 					prep_stmt.close();
 	
 			} catch (SQLException se) {
-	
+
+				accountCheckResponse.mErrorCode = se.getErrorCode();
+
 				se.printStackTrace();
 	
 			}
@@ -97,77 +171,9 @@ public class Model {
 
 	}
 
-	public void PrintUsers() {
-		
-		String sql;
-	
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-	
-		try {
-	
-			Class.forName(JDBC_DRIVER);
-	
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			stmt = conn.createStatement();
-	
-			sql = "SELECT * FROM Users";
-	
-			rs = stmt.executeQuery(sql);
-			
-			System.out.println("============");
-			while (rs.next()) {
-				int Id = rs.getInt("Id");
-				String Name = rs.getString("Name");
-				String Password = rs.getString("Password");
-				String Purchases = rs.getString("Purchases");
-				String Email = rs.getString("Email");
-				String CreditCard = rs.getString("CreditCard");
-				System.out.format("%d - %s - %s - %s - %s - %s\n", Id, Name, Password, Purchases, Email, CreditCard);
-			}
-			System.out.println("============");
-	
-			rs.close();
-			stmt.close();
-			conn.close();
-	
-		} catch (SQLException se) {
-	
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-	
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (conn != null)
-					conn.close();
-	
-			} catch (SQLException se) {
-	
-				se.printStackTrace();
-	
-			}
-	
-		}
-	
-	}
-
 	public AccountCheckResponse isValidAccount(String aTable, String aName, String aPassword) {
 
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(false, null);
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
 
 		String sql;
 
@@ -195,8 +201,6 @@ public class Model {
 				String salt = rs.getString("Salt");
 
 				if (name.compareTo(aName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
-					
-					accountCheckResponse.mIsValid = true;
 
 					switch (aTable) {
 					
@@ -243,7 +247,9 @@ public class Model {
 			conn.close();
 	
 		} catch (SQLException se) {
-	
+
+			accountCheckResponse.mErrorCode = se.getErrorCode();
+
 			se.printStackTrace();
 			System.out.println("SQLException: " + se.getMessage());
 	        System.out.println("SQLState: " + se.getSQLState());

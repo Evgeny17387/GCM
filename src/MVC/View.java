@@ -13,6 +13,7 @@ import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
 import Responses.Response;
+import Utils.ErrorCodes;
 import Responses.AccountCheckResponse;
 
 import GUI.UI_server_communicate;
@@ -37,14 +38,18 @@ public class View {
 			
 			    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
 
-			    	    System.out.println(accountCheckResponse.mIsValid);
+			    	    System.out.println(accountCheckResponse.mErrorCode);
 
-			    		if (accountCheckResponse.mIsValid) {
+			    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
 			    			
 				    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
 							System.out.format("%d - %s - %s - %d - %s - %s\n", accountUser.mId,  accountUser.mName, accountUser.mPassword, accountUser.mPurchases, accountUser.mEmail, accountUser.mCreditCard);
 
+			    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
+			    			
+				    	    System.out.println("User with this name already exists");
+			    			
 			    		}
 			    				    		
 			    	}
@@ -61,9 +66,9 @@ public class View {
 			    				    		
 			    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
 
-			    	    System.out.println(accountCheckResponse.mIsValid);
+			    	    System.out.println(accountCheckResponse.mErrorCode);
 
-			    		if (accountCheckResponse.mIsValid) {
+			    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
 			    			
 				    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
@@ -85,9 +90,9 @@ public class View {
 			    		
 			    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
 		
-			    	    System.out.println(accountCheckResponse.mIsValid);
+			    	    System.out.println(accountCheckResponse.mErrorCode);
 
-			    		if (accountCheckResponse.mIsValid) {
+			    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
 			    			
 			    			AccountWorker accountWorker = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountWorker.class);
 
