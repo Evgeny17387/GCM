@@ -89,7 +89,7 @@ public class Controller {
 
 				AccountCheckResponse accountCheckResponse = operations.isValidAccount("Workers", accountCheck.username, accountCheck.password);
 
-		    	Response response = new Response("UserCheck", accountCheckResponse);
+		    	Response response = new Response("WorkerCheck", accountCheckResponse);
 
 		    	jsonString = gson.toJson(response);
 

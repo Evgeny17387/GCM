@@ -113,10 +113,18 @@ public class View {
 
 			    	{
 			    		
-			    	    boolean isValid = gson.fromJson(gson.toJson(response.object), boolean.class);
+			    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
 		
-			    	    System.out.println(isValid);
-	
+			    	    System.out.println(accountCheckResponse.mIsValid);
+
+			    		if (accountCheckResponse.mIsValid) {
+			    			
+			    			AccountWorker accountWorker = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountWorker.class);
+
+							System.out.format("%d - %s - %s - %s\n", accountWorker.mId,  accountWorker.mName, accountWorker.mPassword, accountWorker.mType);
+
+			    		}
+
 			    	}
 
 		    		UI_server_communicate.mResposeFromserver = true;

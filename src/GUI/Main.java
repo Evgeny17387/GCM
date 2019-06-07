@@ -50,8 +50,8 @@ public class Main extends Application {
     TextField searchTF=new TextField("Type map to search");
     TextField name = new TextField("Please enter username");
     TextField password = new TextField("Please enter password");
-    TextField nameW = new TextField("Please enter username");
-    TextField passwordW = new TextField("Please enter password");
+    TextField nameW = new TextField("Please enter worker name");
+    TextField passwordW = new TextField("Please enter worker password");
     TextField command = new TextField("Please enter command");
     TextField nameR =new TextField("Please enter username");
     TextField passwordR = new TextField("Please enter password");
@@ -218,7 +218,7 @@ public class Main extends Application {
 
         nextW.setOnAction(e->{
            
-        	AccountCheckRequest accountCheck = new AccountCheckRequest(name.getText(), password.getText());
+        	AccountCheckRequest accountCheck = new AccountCheckRequest(nameW.getText(), passwordW.getText());
             	Request request = new Request("WorkerCheck", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);            	
