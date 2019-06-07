@@ -17,6 +17,8 @@ import DB_classes.AccountUser;
 
 class ModelTest {
 
+/*
+
 	@Test
 	void testUsers() {
 
@@ -62,5 +64,7 @@ class ModelTest {
 		Assert.assertTrue(operations.ClearTable("Users") == ErrorCodes.SUCCESS);
 
 	}
+
+*/
 
 }

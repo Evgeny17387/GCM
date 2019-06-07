@@ -14,6 +14,7 @@ import DB_classes.Map;
 import DB_classes.Place;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
+import Requests.Register;
 
 import Responses.AccountCheckResponse;
 
@@ -94,10 +95,22 @@ public class Model {
 
 	// Users
 
-	public AccountCheckResponse AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
+	public AccountCheckResponse AddUser(Register register) {
 		
 		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
 
+		if (
+				register.mFirstName.isEmpty() || 
+				register.mLastName.isEmpty() ||
+				register.mPassword.isEmpty() ||
+				register.mUserName.isEmpty() ||
+				register.mEmail.isEmpty() ||
+				register.mPhoneNumber.isEmpty() ||
+				register.mCreditCard.isEmpty()
+			) {
+			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
+		}
+		
 		String sql;
 		
 		Connection conn = null;
@@ -109,22 +122,25 @@ public class Model {
 	
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	
-			sql = "INSERT INTO `Users`(`Name`, `Password`, `Email`, `CreditCard`, `Salt`) VALUES (?, ?, ?, ?, ?)";
+			sql = "INSERT INTO `Users`(`FirstName`, `LastName`, `UserName`, `Password`, `Email`, `CreditCard`, `PhoneNumber`, `Salt`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 			prep_stmt = conn.prepareStatement(sql);
 
 			String salt = PasswordUtils.getSalt();
-			String encryptedPassword = PasswordUtils.generateSecurePassword(aPassword, salt);
+			String encryptedPassword = PasswordUtils.generateSecurePassword(register.mPassword, salt);
 			
-			prep_stmt.setString(1, aName);
-			prep_stmt.setString(2, encryptedPassword);
-			prep_stmt.setString(3, aEmail);
-			prep_stmt.setString(4, aCreditCard);
-			prep_stmt.setString(5, salt);
+			prep_stmt.setString(1, register.mFirstName);
+			prep_stmt.setString(2, register.mLastName);
+			prep_stmt.setString(3, register.mUserName);
+			prep_stmt.setString(4, encryptedPassword);
+			prep_stmt.setString(5, register.mEmail);
+			prep_stmt.setString(6, register.mCreditCard);
+			prep_stmt.setString(7, register.mPhoneNumber);
+			prep_stmt.setString(8, salt);
 			
 			prep_stmt.executeUpdate();
 			
-			accountCheckResponse = GetAccount("Users", aName, aPassword);
+			accountCheckResponse = GetUserAccount(register.mUserName, register.mPassword);
 
 			if (conn != null)
 				conn.close();
@@ -144,7 +160,7 @@ public class Model {
 
 			}else {
 				
-	    	    System.out.println("User with this name already exists");
+	    	    System.out.println("User with this userName already exists");
 
 			}
 	
@@ -179,7 +195,7 @@ public class Model {
 
 	}
 
-	public AccountCheckResponse GetAccount(String aTable, String aName, String aPassword) {
+	public AccountCheckResponse GetUserAccount(String aUserName, String aPassword) {
 
 		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.USER_NOT_FOUND, null);
 
@@ -197,57 +213,31 @@ public class Model {
 
 			stmt = conn.createStatement();
 
-			sql = "SELECT * FROM " + aTable;
+			sql = "SELECT * FROM Users";
 
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 
-				int id = rs.getInt("Id");
-				String name = rs.getString("Name");
+				String userName = rs.getString("UserName");
 				String encryptedPassword = rs.getString("Password");
 				String salt = rs.getString("Salt");
 
-				if (name.compareTo(aName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
+				if (userName.compareTo(aUserName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
 
 					accountCheckResponse.mErrorCode = ErrorCodes.SUCCESS;
 
-					switch (aTable) {
+					String firstName = rs.getString("FirstName");
+					String lastName = rs.getString("LastName");
+					String email = rs.getString("Email");
+					String phoneNumber = rs.getString("PhoneNumber");
+
+					int purchases = rs.getInt("Purchases");
+
+					accountCheckResponse.mAccount = new AccountUser(firstName, lastName, encryptedPassword, email, phoneNumber, userName, purchases);
+
+					System.out.format("%s - %s - %s - %s - %s - %s - %d\n", firstName, lastName, userName, encryptedPassword, email, phoneNumber, purchases);
 					
-					case "Users":
-						
-						{
-
-							int purchases = rs.getInt("Purchases");
-							String email = rs.getString("Email");
-							String creditCard = rs.getString("CreditCard");
-
-							accountCheckResponse.mAccount = new AccountUser(id, name, encryptedPassword, purchases, email, creditCard);
-
-							System.out.format("%d - %s - %s - %d - %s - %s\n", id, name, encryptedPassword, purchases, email, creditCard);
-
-						}
-
-						break;
-
-						case "Workers":
-							
-						{
-		
-							String type = rs.getString("Type");
-		
-							accountCheckResponse.mAccount = new AccountWorker(id, name, encryptedPassword, type);
-
-							System.out.format("%d - %s - %s - %s\n", id, name, encryptedPassword, type);
-
-						}
-		
-						break;
-
-					}
-
-					break;
-
 				}
 
 			}

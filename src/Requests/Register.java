@@ -1,17 +1,16 @@
 package Requests;
 
-public class Register {
+import DB_classes.AccountBase;
 
-	public String name;
-	public String password;
-	public String email;
-	public String creditCard;
+public class Register extends AccountBase {
 
-	public Register(String name, String password,String email,String creditCard) {
-		this.name = name;
-		this.password = password;
-		this.email = email;
-		this.creditCard = creditCard;
+	public String mUserName;
+	public String mCreditCard;
+
+	public Register(String aFirstName, String aLastName, String aPassword, String aEmail, String aPhoneNumber, String aUserName, String aCreditCard) {
+		super(aFirstName, aLastName, aPassword, aEmail, aPhoneNumber);
+		this.mUserName = aUserName;
+		this.mCreditCard = aCreditCard;
 	}
 
 }

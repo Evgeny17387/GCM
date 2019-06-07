@@ -28,8 +28,6 @@ import MVC.View;
 
 import Communication.ClientConsole;
 
-import Utils.PasswordUtils;
-
 public class Main extends Application {
 	String request_string;
 	
@@ -183,7 +181,7 @@ public class Main extends Application {
 
         signUp2.setOnAction(e->{
 
-        	Register register = new Register(nameR.getText(), passwordR.getText(), email.getText(), creditCard.getText());
+        	Register register = new Register("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText());
         	Request request = new Request("Register", register);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
@@ -270,6 +268,10 @@ public class Main extends Application {
         Button Evgeny_Test = new Button();
         Evgeny_Test.setText("Evgeny_Test");
         Evgeny_Test.setOnAction(e->{
+        	
+        	String string = "";
+        	
+    	    System.out.println(string.isEmpty());
 
 //			AccountCheckRequest accountCheck = new AccountCheckRequest(nameW.getText(), passwordW.getText());
 

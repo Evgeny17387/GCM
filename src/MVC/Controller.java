@@ -35,7 +35,7 @@ public class Controller {
 				
 				Register register = gson.fromJson(gson.toJson(request.object), Register.class);
 				
-				AccountCheckResponse accountCheckResponse = operations.AddUser(register.name, register.password, register.email, register.creditCard);
+				AccountCheckResponse accountCheckResponse = operations.AddUser(register);
 		
 				Response response = new Response("Register", accountCheckResponse);
 		
@@ -48,21 +48,22 @@ public class Controller {
 		case "UserCheck":
 			
 			{
-				
+
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 	
-				AccountCheckResponse accountCheckResponse = operations.GetAccount("Users", accountCheck.username, accountCheck.password);
+				AccountCheckResponse accountCheckResponse = operations.GetUserAccount(accountCheck.username, accountCheck.password);
 	
 		    	Response response = new Response("UserCheck", accountCheckResponse);
 	
 		    	jsonString = gson.toJson(response);
-				
+
 			}
 
 			break;
 
 		case "WorkerCheck":
 
+			/*
 			{
 
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
@@ -74,6 +75,7 @@ public class Controller {
 		    	jsonString = gson.toJson(response);
 
 			}
+			*/
 
 			break;
 

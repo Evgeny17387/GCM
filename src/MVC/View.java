@@ -41,17 +41,21 @@ public class View {
 			    	    System.out.println(accountCheckResponse.mErrorCode);
 
 			    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
-			    			
+
 				    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
-							System.out.format("%d - %s - %s - %d - %s - %s\n", accountUser.mId,  accountUser.mName, accountUser.mPassword, accountUser.mPurchases, accountUser.mEmail, accountUser.mCreditCard);
+							System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName, accountUser.mPurchases);
 
 			    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
 			    			
-				    	    System.out.println("User with this name already exists");
-			    			
+				    	    System.out.println("User with this userName already exists");
+
+			    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
+		    			
+			    			System.out.println("One or more registration details are missing");
+		    			
 			    		}
-			    				    		
+
 			    	}
 
 	    	    	UI_server_communicate.mResposeFromserver = true;
@@ -72,7 +76,7 @@ public class View {
 			    			
 				    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
-							System.out.format("%d - %s - %s - %d - %s - %s\n", accountUser.mId,  accountUser.mName, accountUser.mPassword, accountUser.mPurchases, accountUser.mEmail, accountUser.mCreditCard);
+							System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName, accountUser.mPurchases);
 
 			    		}
 				    		
@@ -86,6 +90,7 @@ public class View {
 
 		    	    System.out.println("WorkerCheck");
 
+		    	    /*
 			    	{
 			    		
 			    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
@@ -101,8 +106,9 @@ public class View {
 			    		}
 
 			    	}
+		    	    */
 
-		    		UI_server_communicate.mResposeFromserver = true;
+		    	    UI_server_communicate.mResposeFromserver = true;
 
 		    	    break;
 
