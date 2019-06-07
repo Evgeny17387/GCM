@@ -27,8 +27,10 @@ public class Model {
 
 	// Users
 
-	public boolean AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
+	public AccountCheckResponse AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
 		
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(false, null);
+
 		String sql;
 		
 		Connection conn = null;
@@ -50,14 +52,15 @@ public class Model {
 			prep_stmt.setString(4, aCreditCard);
 
 			prep_stmt.executeUpdate();
-	
+			
+			accountCheckResponse.mIsValid = true;
+			accountCheckResponse.mAccount = new AccountUser(0, aName, aPassword, 0, aEmail, aCreditCard);
+
 			if (conn != null)
 				conn.close();
 			if (prep_stmt != null)
 				prep_stmt.close();
-			
-			return true;
-	
+				
 		} catch (SQLException se) {
 	
 			se.printStackTrace();
@@ -86,7 +89,7 @@ public class Model {
 	
 		}
 
-		return false;
+		return accountCheckResponse;
 
 	}
 

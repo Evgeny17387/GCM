@@ -30,38 +30,18 @@ public class Controller {
 	  	switch (request.type) {
 
 		case "Register":
-
-			Register register = gson.fromJson(gson.toJson(request.object), Register.class);
 			
-			boolean isUserAdded = operations.AddUser(register.name, register.password, register.email, register.creditCard);
-
-			Response responseRegister = new Response("Register", isUserAdded);
-
-			jsonString = gson.toJson(responseRegister);
-
-			break;
-
-		case "MapSearch_city_key":
-
-			String cityName = gson.fromJson(gson.toJson(request.object), String.class);
-
-			List<Map> mapsListCityName = operations.MapsByCity(cityName);
-
-	    	Response responseMapSearchCityName = new Response("MapSearch_city_key", mapsListCityName);
-
-	    	jsonString = gson.toJson(responseMapSearchCityName);
-
-			break;
-
-		case "MapSearch_place_key":
-
-			String placeName = gson.fromJson(gson.toJson(request.object), String.class);
-
-			List<Map> mapsListPlaceName = operations.MapsByPlace(placeName);
-
-	    	Response responseMapSearchPalceName = new Response("MapSearch_place_key", mapsListPlaceName);
-
-	    	jsonString = gson.toJson(responseMapSearchPalceName);
+			{
+				
+				Register register = gson.fromJson(gson.toJson(request.object), Register.class);
+				
+				AccountCheckResponse accountCheckResponse = operations.AddUser(register.name, register.password, register.email, register.creditCard);
+		
+				Response response = new Response("Register", accountCheckResponse);
+		
+				jsonString = gson.toJson(response);
+				
+			}
 
 			break;
 
@@ -94,6 +74,30 @@ public class Controller {
 		    	jsonString = gson.toJson(response);
 
 			}
+
+			break;
+
+		case "MapSearch_city_key":
+
+			String cityName = gson.fromJson(gson.toJson(request.object), String.class);
+
+			List<Map> mapsListCityName = operations.MapsByCity(cityName);
+
+	    	Response responseMapSearchCityName = new Response("MapSearch_city_key", mapsListCityName);
+
+	    	jsonString = gson.toJson(responseMapSearchCityName);
+
+			break;
+
+		case "MapSearch_place_key":
+
+			String placeName = gson.fromJson(gson.toJson(request.object), String.class);
+
+			List<Map> mapsListPlaceName = operations.MapsByPlace(placeName);
+
+	    	Response responseMapSearchPalceName = new Response("MapSearch_place_key", mapsListPlaceName);
+
+	    	jsonString = gson.toJson(responseMapSearchPalceName);
 
 			break;
 
