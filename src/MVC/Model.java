@@ -286,6 +286,96 @@ public class Model {
 	
 	}
 
+	public AccountCheckResponse GetWorkerAccount(String aFirstName, String aPassword) {
+
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.USER_NOT_FOUND, null);
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM Workers";
+
+			rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+
+				String firstName = rs.getString("FirstName");
+				String encryptedPassword = rs.getString("Password");
+				String salt = rs.getString("Salt");
+
+				if (firstName.compareTo(aFirstName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
+
+					accountCheckResponse.mErrorCode = ErrorCodes.SUCCESS;
+
+					int id = rs.getInt("Id");
+					String lastName = rs.getString("LastName");
+					String email = rs.getString("Email");
+					String phoneNumber = rs.getString("PhoneNumber");
+					String type = rs.getString("Type");
+
+					accountCheckResponse.mAccount = new AccountWorker(firstName, lastName, encryptedPassword, email, phoneNumber, id, type);
+
+					System.out.format("%s - %s - %s - %s - %s - %d - %s\n", firstName, lastName, encryptedPassword, email, phoneNumber, id, type);
+					
+				}
+
+			}
+			
+			rs.close();
+			stmt.close();
+			conn.close();
+	
+		} catch (SQLException se) {
+
+			accountCheckResponse.mErrorCode = se.getErrorCode();
+
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+
+		}
+		
+		return accountCheckResponse;
+	
+	}
+
 	// Purchases
 
 	public int GetPurchases(String name) {

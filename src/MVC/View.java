@@ -78,6 +78,10 @@ public class View {
 
 							System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName, accountUser.mPurchases);
 
+			    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
+
+			    			System.out.println("User not found");
+			    			
 			    		}
 				    		
 			    	}
@@ -90,7 +94,6 @@ public class View {
 
 		    	    System.out.println("WorkerCheck");
 
-		    	    /*
 			    	{
 			    		
 			    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
@@ -101,12 +104,15 @@ public class View {
 			    			
 			    			AccountWorker accountWorker = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountWorker.class);
 
-							System.out.format("%d - %s - %s - %s\n", accountWorker.mId,  accountWorker.mName, accountWorker.mPassword, accountWorker.mType);
+							System.out.format("%s - %s - %s - %s - %s - %d - %s\n", accountWorker.mFirstName, accountWorker.mLastName, accountWorker.mPassword, accountWorker.mEmail, accountWorker.mPhoneNumber, accountWorker.mId, accountWorker.mType);
 
+			    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
+
+			    			System.out.println("Worker not found");
+			    			
 			    		}
 
 			    	}
-		    	    */
 
 		    	    UI_server_communicate.mResposeFromserver = true;
 

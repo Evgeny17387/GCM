@@ -63,19 +63,17 @@ public class Controller {
 
 		case "WorkerCheck":
 
-			/*
 			{
 
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-				AccountCheckResponse accountCheckResponse = operations.GetAccount("Workers", accountCheck.username, accountCheck.password);
+				AccountCheckResponse accountCheckResponse = operations.GetWorkerAccount(accountCheck.username, accountCheck.password);
 
 		    	Response response = new Response("WorkerCheck", accountCheckResponse);
 
 		    	jsonString = gson.toJson(response);
 
 			}
-			*/
 
 			break;
 
