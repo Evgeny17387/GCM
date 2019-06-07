@@ -22,7 +22,7 @@ import GUI.UI_server_communicate;
 
 import Requests.Request;
 import Requests.Register;
-import Requests.AccountCheck;
+import Requests.AccountCheckRequest;
 
 import MVC.View;
 
@@ -205,7 +205,7 @@ public class Main extends Application {
        
         
         btn.setOnAction(e->{
-            	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
+            	AccountCheckRequest accountCheck = new AccountCheckRequest(name.getText(), password.getText());
             	Request request = new Request("UserCheck", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
@@ -218,7 +218,7 @@ public class Main extends Application {
 
         nextW.setOnAction(e->{
            
-            	AccountCheck accountCheck = new AccountCheck(name.getText(), password.getText());
+        	AccountCheckRequest accountCheck = new AccountCheckRequest(name.getText(), password.getText());
             	Request request = new Request("WorkerCheck", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);            	

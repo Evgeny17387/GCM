@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 import DB_classes.Map;
 import DB_classes.Place;
+import DB_classes.AccountUser;
+import DB_classes.AccountWorker;
+
+import Responses.AccountCheckResponse;
 
 public class Model {
 
@@ -22,7 +26,7 @@ public class Model {
 	static private final String PASS = "3O6ZV2SgU4";
 
 	// Users
-	
+
 	public boolean AddUser(String aName, String aPassword, String aEmail, String aCreditCard) {
 		
 		String sql;
@@ -154,38 +158,78 @@ public class Model {
 	
 	}
 
-	public boolean isValidAccount(String Table, String name, String password) {
-	
+	public AccountCheckResponse isValidAccount(String aTable, String aName, String aPassword) {
+
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(false, null);
+
 		String sql;
-	
+
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-	
-		try {
-	
-			Class.forName(JDBC_DRIVER);
-	
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	
-			stmt = conn.createStatement();
-	
-			sql = "SELECT * FROM " + Table;
-	
-			rs = stmt.executeQuery(sql);
-	
-			while (rs.next()) {
-				int Id = rs.getInt("Id");
-				String Name = rs.getString("Name");
-				String Password = rs.getString("Password");
 
-				if (Name.compareTo(name) == 0 && Password.compareTo(password) == 0) {
-					System.out.format("%d - %s - %s\n", Id, Name, Password);
-					return true;
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM " + aTable;
+
+			rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+
+				int id = rs.getInt("Id");
+				String name = rs.getString("Name");
+				String password = rs.getString("Password");
+
+				if (name.compareTo(aName) == 0 && password.compareTo(aPassword) == 0) {
+					
+					accountCheckResponse.mIsValid = true;
+
+					switch (aTable) {
+					
+					case "Users":
+						
+						{
+
+							int purchases = rs.getInt("Purchases");
+							String email = rs.getString("Email");
+							String creditCard = rs.getString("CreditCard");
+
+							accountCheckResponse.mAccount = new AccountUser(id, name, password, purchases, email, creditCard);
+
+							System.out.format("%d - %s - %s - %d - %s - %s\n", id, name, password, purchases, email, creditCard);
+
+						}
+
+						break;
+
+						case "Workers":
+							
+						{
+		
+							String type = rs.getString("Type");
+		
+							accountCheckResponse.mAccount = new AccountWorker(id, name, password, type);
+
+							System.out.format("%d - %s - %s - %s\n", id, name, password, type);
+
+						}
+		
+						break;
+
+					}
+
+					return accountCheckResponse;
+
 				}
 
 			}
-	
+
 			rs.close();
 			stmt.close();
 			conn.close();
@@ -220,7 +264,7 @@ public class Model {
 	
 		}
 		
-		return false;
+		return accountCheckResponse;
 	
 	}
 

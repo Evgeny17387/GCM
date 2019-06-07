@@ -10,9 +10,10 @@ import MVC.Model;
 
 import Requests.Register;
 import Requests.Request;
-import Requests.AccountCheck;
+import Requests.AccountCheckRequest;
 
 import Responses.Response;
+import Responses.AccountCheckResponse;
 
 public class Controller {
 
@@ -65,26 +66,34 @@ public class Controller {
 			break;
 
 		case "UserCheck":
-
-			AccountCheck accountCheckUser = gson.fromJson(gson.toJson(request.object), AccountCheck.class);
-
-			boolean isUsersExists = operations.isValidAccount("Users", accountCheckUser.username, accountCheckUser.password);
-
-	    	Response responseUserCheck = new Response("UserCheck", isUsersExists);
-
-	    	jsonString = gson.toJson(responseUserCheck);
+			
+			{
+				
+				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
+	
+				AccountCheckResponse accountCheckResponse = operations.isValidAccount("Users", accountCheck.username, accountCheck.password);
+	
+		    	Response response = new Response("UserCheck", accountCheckResponse);
+	
+		    	jsonString = gson.toJson(response);
+				
+			}
 
 			break;
 
 		case "WorkerCheck":
 
-			AccountCheck accountCheckWorker = gson.fromJson(gson.toJson(request.object), AccountCheck.class);
+			{
 
-			boolean isWorkerExists = operations.isValidAccount("Workers", accountCheckWorker.username, accountCheckWorker.password);
+				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-	    	Response responseWorkerCheck = new Response("UserCheck", isWorkerExists);
+				AccountCheckResponse accountCheckResponse = operations.isValidAccount("Workers", accountCheck.username, accountCheck.password);
 
-	    	jsonString = gson.toJson(responseWorkerCheck);
+		    	Response response = new Response("UserCheck", accountCheckResponse);
+
+		    	jsonString = gson.toJson(response);
+
+			}
 
 			break;
 

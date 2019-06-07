@@ -9,8 +9,11 @@ import com.google.gson.reflect.TypeToken;
 
 import DB_classes.Map;
 import DB_classes.Place;
+import DB_classes.AccountUser;
+import DB_classes.AccountWorker;
 
 import Responses.Response;
+import Responses.AccountCheckResponse;
 
 import GUI.UI_server_communicate;
 
@@ -37,18 +40,22 @@ public class View {
 		    		break;
 	
 		    	case "MapSearch_city_key":
-	
+
 		    	    System.out.println("MapSearch_city_key");
-	
-		    	    Type typeMap1 = new TypeToken<List<Map>>(){}.getType();
-		    	    List<Map> mapList1 = new Gson().fromJson(gson.toJson(response.object), typeMap1);
-		    	    for (int i = 0; i < mapList1.size(); i++) {
-		    	    	Map map = mapList1.get(i);
-						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
-						for (Place place : map.mPlaces) {
-							System.out.format("%s - %s\n", place.mName, place.mClassification);
-						}
-		    	    }
+
+			    	{
+			    		
+			    	    Type typeMap = new TypeToken<List<Map>>(){}.getType();
+			    	    List<Map> mapList = new Gson().fromJson(gson.toJson(response.object), typeMap);
+			    	    for (int i = 0; i < mapList.size(); i++) {
+			    	    	Map map = mapList.get(i);
+							System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
+							for (Place place : map.mPlaces) {
+								System.out.format("%s - %s\n", place.mName, place.mClassification);
+							}
+			    	    }
+			    		
+			    	}
 	
 		    	    UI_server_communicate.mResposeFromserver = true;
 	
@@ -57,17 +64,21 @@ public class View {
 		    	case "MapSearch_place_key":
 	
 		    	    System.out.println("MapSearch_place_key");
+		    	    
+		    	    {
 	
-		    	    Type typeMap2 = new TypeToken<List<Map>>(){}.getType();
-		    	    List<Map> mapList2 = new Gson().fromJson(gson.toJson(response.object), typeMap2);
-		    	    for (int i = 0; i < mapList2.size(); i++) {
-		    	    	Map map = mapList2.get(i);
-						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
-						for (Place place : map.mPlaces) {
-							System.out.format("%s - %s\n", place.mName, place.mClassification);
-						}
+			    	    Type typeMap = new TypeToken<List<Map>>(){}.getType();
+			    	    List<Map> mapList = new Gson().fromJson(gson.toJson(response.object), typeMap);
+			    	    for (int i = 0; i < mapList.size(); i++) {
+			    	    	Map map = mapList.get(i);
+							System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
+							for (Place place : map.mPlaces) {
+								System.out.format("%s - %s\n", place.mName, place.mClassification);
+							}
+			    	    }
+
 		    	    }
-	
+
 		    	    UI_server_communicate.mResposeFromserver = true;
 	
 		    		break;
@@ -78,9 +89,17 @@ public class View {
 
 			    	{
 			    				    		
-			    	    boolean isValid = gson.fromJson(gson.toJson(response.object), boolean.class);
-		
-			    	    System.out.println(isValid);
+			    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+
+			    	    System.out.println(accountCheckResponse.mIsValid);
+
+			    		if (accountCheckResponse.mIsValid) {
+			    			
+				    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
+
+							System.out.format("%d - %s - %s - %d - %s - %s\n", accountUser.mId,  accountUser.mName, accountUser.mPassword, accountUser.mPurchases, accountUser.mEmail, accountUser.mCreditCard);
+
+			    		}
 				    		
 			    	}
 
