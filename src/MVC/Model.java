@@ -16,6 +16,7 @@ import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
 import Responses.AccountCheckResponse;
+import Utils.PasswordUtils;
 
 public class Model {
 
@@ -42,18 +43,22 @@ public class Model {
 	
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	
-			sql = "INSERT INTO `Users`(`Name`, `Password`, `Email`, `CreditCard`) VALUES (?, ?, ?, ?)";
+			sql = "INSERT INTO `Users`(`Name`, `Password`, `Email`, `CreditCard`, `Salt`) VALUES (?, ?, ?, ?, ?)";
 
 			prep_stmt = conn.prepareStatement(sql);
 
+			String salt = PasswordUtils.getSalt();
+			String encryptedPassword = PasswordUtils.generateSecurePassword(aPassword, salt);
+			
 			prep_stmt.setString(1, aName);
-			prep_stmt.setString(2, aPassword);
+			prep_stmt.setString(2, encryptedPassword);
 			prep_stmt.setString(3, aEmail);
 			prep_stmt.setString(4, aCreditCard);
-
+			prep_stmt.setString(5, salt);
+			
 			prep_stmt.executeUpdate();
 			
-			accountCheckResponse = isValidAccount("Users", aName, aPassword);;
+			accountCheckResponse = isValidAccount("Users", aName, aPassword);
 
 			if (conn != null)
 				conn.close();
@@ -186,9 +191,10 @@ public class Model {
 
 				int id = rs.getInt("Id");
 				String name = rs.getString("Name");
-				String password = rs.getString("Password");
+				String encryptedPassword = rs.getString("Password");
+				String salt = rs.getString("Salt");
 
-				if (name.compareTo(aName) == 0 && password.compareTo(aPassword) == 0) {
+				if (name.compareTo(aName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
 					
 					accountCheckResponse.mIsValid = true;
 
@@ -202,9 +208,9 @@ public class Model {
 							String email = rs.getString("Email");
 							String creditCard = rs.getString("CreditCard");
 
-							accountCheckResponse.mAccount = new AccountUser(id, name, password, purchases, email, creditCard);
+							accountCheckResponse.mAccount = new AccountUser(id, name, encryptedPassword, purchases, email, creditCard);
 
-							System.out.format("%d - %s - %s - %d - %s - %s\n", id, name, password, purchases, email, creditCard);
+							System.out.format("%d - %s - %s - %d - %s - %s\n", id, name, encryptedPassword, purchases, email, creditCard);
 
 						}
 
@@ -216,9 +222,9 @@ public class Model {
 		
 							String type = rs.getString("Type");
 		
-							accountCheckResponse.mAccount = new AccountWorker(id, name, password, type);
+							accountCheckResponse.mAccount = new AccountWorker(id, name, encryptedPassword, type);
 
-							System.out.format("%d - %s - %s - %s\n", id, name, password, type);
+							System.out.format("%d - %s - %s - %s\n", id, name, encryptedPassword, type);
 
 						}
 		

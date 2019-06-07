@@ -28,6 +28,8 @@ import MVC.View;
 
 import Communication.ClientConsole;
 
+import Utils.PasswordUtils;
+
 public class Main extends Application {
 	String request_string;
 	
@@ -180,14 +182,14 @@ public class Main extends Application {
 
 
         signUp2.setOnAction(e->{
+
         	Register register = new Register(nameR.getText(), passwordR.getText(), email.getText(), creditCard.getText());
         	Request request = new Request("Register", register);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
-        	
-        	
-        	window.setScene(welcomeR);
 
+        	window.setScene(welcomeR);
+        	
         });
         
         
