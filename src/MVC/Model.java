@@ -53,8 +53,7 @@ public class Model {
 
 			prep_stmt.executeUpdate();
 			
-			accountCheckResponse.mIsValid = true;
-			accountCheckResponse.mAccount = new AccountUser(0, aName, aPassword, 0, aEmail, aCreditCard);
+			accountCheckResponse = isValidAccount("Users", aName, aPassword);;
 
 			if (conn != null)
 				conn.close();
