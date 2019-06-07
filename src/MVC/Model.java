@@ -78,10 +78,12 @@ public class Model {
 	
 			} catch (SQLException se) {
 
-				result = se.getErrorCode();
-
 				se.printStackTrace();
-	
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
 			}
 	
 		}
@@ -122,7 +124,7 @@ public class Model {
 			
 			prep_stmt.executeUpdate();
 			
-			accountCheckResponse = isValidAccount("Users", aName, aPassword);
+			accountCheckResponse = GetAccount("Users", aName, aPassword);
 
 			if (conn != null)
 				conn.close();
@@ -139,6 +141,10 @@ public class Model {
 				System.out.println("SQLException: " + se.getMessage());
 		        System.out.println("SQLState: " + se.getSQLState());
 		        System.out.println("VendorError: " + se.getErrorCode());
+
+			}else {
+				
+	    	    System.out.println("User with this name already exists");
 
 			}
 	
@@ -159,10 +165,12 @@ public class Model {
 	
 			} catch (SQLException se) {
 
-				accountCheckResponse.mErrorCode = se.getErrorCode();
-
 				se.printStackTrace();
-	
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
 			}
 	
 		}
@@ -171,9 +179,9 @@ public class Model {
 
 	}
 
-	public AccountCheckResponse isValidAccount(String aTable, String aName, String aPassword) {
+	public AccountCheckResponse GetAccount(String aTable, String aName, String aPassword) {
 
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.USER_NOT_FOUND, null);
 
 		String sql;
 
@@ -201,6 +209,8 @@ public class Model {
 				String salt = rs.getString("Salt");
 
 				if (name.compareTo(aName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
+
+					accountCheckResponse.mErrorCode = ErrorCodes.SUCCESS;
 
 					switch (aTable) {
 					
@@ -236,12 +246,12 @@ public class Model {
 
 					}
 
-					return accountCheckResponse;
+					break;
 
 				}
 
 			}
-
+			
 			rs.close();
 			stmt.close();
 			conn.close();
@@ -274,8 +284,12 @@ public class Model {
 	
 				se.printStackTrace();
 	
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
 			}
-	
+
 		}
 		
 		return accountCheckResponse;

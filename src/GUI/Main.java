@@ -188,6 +188,8 @@ public class Main extends Application {
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
 
+        	communicate.ask_server();
+
         	window.setScene(welcomeR);
         	
         });
@@ -212,6 +214,8 @@ public class Main extends Application {
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
 
+            	communicate.ask_server();
+
 //            	if(communicate.ask_server())window.setScene(clientZone);
 
             });
@@ -223,9 +227,11 @@ public class Main extends Application {
         	AccountCheckRequest accountCheck = new AccountCheckRequest(nameW.getText(), passwordW.getText());
             	Request request = new Request("WorkerCheck", accountCheck);
             	String jsonString = gson.toJson(request);
-            	chat.SendToServer(jsonString);            	
-            }
-        );
+            	chat.SendToServer(jsonString);
+
+            	communicate.ask_server();
+
+        });
 
         
         /****background zone****/

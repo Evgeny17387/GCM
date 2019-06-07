@@ -39,21 +39,17 @@ class ModelTest {
 
 		AccountUser accountUser = (AccountUser)accountCheckResponse.mAccount;
 		
-		Assert.assertTrue(accountUser.mName.equals("1"));
-		Assert.assertTrue(accountUser.mEmail.equals("1"));
-		Assert.assertTrue(accountUser.mCreditCard.equals("1"));
+		Assert.assertTrue(accountUser.mName.equals("1") && accountUser.mEmail.equals("1") && accountUser.mCreditCard.equals("1"));
 
 		// Check user exists
 
-		accountCheckResponse = operations.isValidAccount("Users", name, password);
+		accountCheckResponse = operations.GetAccount("Users", name, password);
 		
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
 		accountUser = (AccountUser)accountCheckResponse.mAccount;
 		
-		Assert.assertTrue(accountUser.mName.equals("1"));
-		Assert.assertTrue(accountUser.mEmail.equals("1"));
-		Assert.assertTrue(accountUser.mCreditCard.equals("1"));
+		Assert.assertTrue(accountUser.mName.equals("1") && accountUser.mEmail.equals("1") && accountUser.mCreditCard.equals("1"));
 
 		// Add user with the same name
 

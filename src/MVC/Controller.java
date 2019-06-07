@@ -51,7 +51,7 @@ public class Controller {
 				
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 	
-				AccountCheckResponse accountCheckResponse = operations.isValidAccount("Users", accountCheck.username, accountCheck.password);
+				AccountCheckResponse accountCheckResponse = operations.GetAccount("Users", accountCheck.username, accountCheck.password);
 	
 		    	Response response = new Response("UserCheck", accountCheckResponse);
 	
@@ -67,7 +67,7 @@ public class Controller {
 
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-				AccountCheckResponse accountCheckResponse = operations.isValidAccount("Workers", accountCheck.username, accountCheck.password);
+				AccountCheckResponse accountCheckResponse = operations.GetAccount("Workers", accountCheck.username, accountCheck.password);
 
 		    	Response response = new Response("WorkerCheck", accountCheckResponse);
 
