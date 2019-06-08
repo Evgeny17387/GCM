@@ -23,7 +23,8 @@ public class AccountUser extends AccountBase {
 				"Email: " + this.mEmail + " ; " +
 				"PhoneNumber: " + this.mPhoneNumber + " ; " +
 				"UserName: " + this.mUserName + " ; " +
-				"CreditCard: " + this.mCreditCard
+				"CreditCard: " + this.mCreditCard + " ; " +
+				"Purchases:" +  this.mPurchases.toString()
 				);
 	}
 	

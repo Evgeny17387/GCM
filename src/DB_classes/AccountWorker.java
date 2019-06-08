@@ -11,4 +11,16 @@ public class AccountWorker extends AccountBase {
 		this.mType = aType;
 	}
 
+	public String toString() {
+		return (
+				"FirstName: " + this.mFirstName + " ; " +
+				"LastName: " + this.mLastName + " ; " +
+				"Password: " + this.mPassword + " ; " +
+				"Email: " + this.mEmail + " ; " +
+				"PhoneNumber: " + this.mPhoneNumber + " ; " +
+				"Type: " + this.mType + " ; " +
+				"Id: " + this.mId
+				);
+	}
+
 }

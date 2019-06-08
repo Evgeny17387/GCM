@@ -49,7 +49,7 @@ public class View {
 
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
-						System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName);
+						System.out.format(accountUser.toString());
 
 		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
 		    			
@@ -79,7 +79,7 @@ public class View {
 		    			
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
-						System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName);
+						System.out.println(accountUser.toString());
 
 		    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
 
@@ -109,7 +109,7 @@ public class View {
 
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
-						System.out.format("%s - %s - %s - %s - %s - %s\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName);
+						System.out.format(accountUser.toString());
 
 		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
 	    			
@@ -163,7 +163,7 @@ public class View {
 		    			
 		    			AccountWorker accountWorker = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountWorker.class);
 
-						System.out.format("%s - %s - %s - %s - %s - %d - %s\n", accountWorker.mFirstName, accountWorker.mLastName, accountWorker.mPassword, accountWorker.mEmail, accountWorker.mPhoneNumber, accountWorker.mId, accountWorker.mType);
+						System.out.format(accountWorker.toString());
 
 		    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
 
