@@ -324,6 +324,90 @@ public class Model {
 
 	}
 
+	// Purchases
+
+	public AccountCheckResponse BuyMap(String aUserName, String aCityName, String aType) {
+
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+
+		if (aUserName.isEmpty() || aUserName.isEmpty() || aType.isEmpty()) {
+			return new AccountCheckResponse(ErrorCodes.PURCHASE_DETAILS_MISSING, null);
+		}
+
+		String sql;
+		
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			sql = "INSERT INTO `Purchases`(`UserName`, `CityName`, `Type`) VALUES (?, ?, ?)";
+
+			prep_stmt = conn.prepareStatement(sql);
+			
+			prep_stmt.setString(1, aUserName);
+			prep_stmt.setString(2, aCityName);
+			prep_stmt.setString(3, aType);
+			
+			prep_stmt.executeUpdate();
+
+			if (conn != null)
+				conn.close();
+			if (prep_stmt != null)
+				prep_stmt.close();
+				
+		} catch (SQLException se) {
+
+			accountCheckResponse.mErrorCode = se.getErrorCode();
+			
+			if (!(se.getErrorCode() == ErrorCodes.USER_ALREADY_EXISTS)) {
+
+				se.printStackTrace();
+				System.out.println("SQLException: " + se.getMessage());
+		        System.out.println("SQLState: " + se.getSQLState());
+		        System.out.println("VendorError: " + se.getErrorCode());
+
+			}else {
+				
+	    	    System.out.println("User with this userName already exists");
+
+			}
+	
+		} catch (Exception e) {
+
+			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+		return accountCheckResponse;
+
+	}
+	
 	// Workers
 
 	public AccountCheckResponse GetWorker(String aFirstName, String aPassword) {
@@ -453,9 +537,10 @@ public class Model {
 			while (rs.next()) {
 
 				String userName = rs.getString("UserName");
-				String mapName = rs.getString("MapName");
+				String cityName = rs.getString("CityName");
+				String type = rs.getString("Type");
 
-				Purchase purchase = new Purchase(userName, mapName);
+				Purchase purchase = new Purchase(userName, cityName, type);
 				
 				purchaseList.add(purchase);
 

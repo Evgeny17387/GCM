@@ -2,9 +2,17 @@ package Constants;
 
 public class API {
 
+	// Users
+	
 	public static final String ADD_USER = "AddUser";
 	public static final String GET_USER = "GetUser";
 	public static final String UPDATE_USER = "UpdateUser";
+
+	// Purchases
+
+	public static final String BUY_MAP = "BuyMap";
+
+	// Workers
 
 	public static final String GET_WORKER = "GetWorker";
 	public static final String GET_USER_PURCHASES = "GetUsersPurchases";

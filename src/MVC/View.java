@@ -121,6 +121,32 @@ public class View {
 
     	    	break;
 
+        	// Purchases
+
+	    	case API.BUY_MAP:
+
+	    	    System.out.println(API.BUY_MAP);
+
+		    	{
+		    		
+		    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+	
+		    	    System.out.println(accountCheckResponse.mErrorCode);
+
+		    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+		    			
+		    			
+		    			
+		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.PURCHASE_DETAILS_MISSING) {
+
+			    	    System.out.println("Purchase details are missing");
+
+			    	}
+
+		    	}
+
+	    	    break;
+
     	    // Workers
 
 	    	case API.GET_WORKER:

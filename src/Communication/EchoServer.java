@@ -101,7 +101,7 @@ public class EchoServer extends AbstractServer
       	
       	Controller controller = new Controller();
       	
-		String response = controller.control(msg.toString());
+		String response = controller.Run(msg.toString());
 		
 //		this.sendToAllClients(client.getInfo("loginID") + "> " + response);
 		this.sendToAllClients(response);

@@ -15,19 +15,20 @@ import MVC.Model;
 
 import Requests.Request;
 import Requests.AccountCheckRequest;
+import Requests.BuyMapRequest;
 
 import Responses.Response;
 import Responses.AccountCheckResponse;
 
 public class Controller {
 
-	public String control(String msg) {
+	public String Run(String msg) {
 
     	Gson gson = new Gson();
 
     	Request request = gson.fromJson(msg.toString(), Request.class);
 
-	  	Model operations = new Model();
+	  	Model model = new Model();
 
 	  	String jsonString = "";
 
@@ -43,7 +44,7 @@ public class Controller {
 				
 				AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
 				
-				AccountCheckResponse accountCheckResponse = operations.AddUser(accountUser);
+				AccountCheckResponse accountCheckResponse = model.AddUser(accountUser);
 		
 				Response response = new Response(API.ADD_USER, accountCheckResponse);
 		
@@ -56,39 +57,60 @@ public class Controller {
 		case API.GET_USER:
 
 			System.out.println(API.GET_USER);
-			
-		{
+				
+			{
+	
+				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
+	
+				AccountCheckResponse accountCheckResponse = model.GetUser(accountCheck.username, accountCheck.password);
+	
+		    	Response response = new Response(API.GET_USER, accountCheckResponse);
+	
+		    	jsonString = gson.toJson(response);
+	
+			}
 
-			AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
-
-			AccountCheckResponse accountCheckResponse = operations.GetUser(accountCheck.username, accountCheck.password);
-
-	    	Response response = new Response(API.GET_USER, accountCheckResponse);
-
-	    	jsonString = gson.toJson(response);
-
-		}
-
-		break;
+			break;
 
 		case API.UPDATE_USER:
 
 			System.out.println(API.UPDATE_USER);
 
-		{
-			
-			AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
-			
-			AccountCheckResponse accountCheckResponse = operations.UpdateUser(accountUser);
-
-			
-			Response response = new Response(API.UPDATE_USER, accountCheckResponse);
+			{
+				
+				AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
+				
+				AccountCheckResponse accountCheckResponse = model.UpdateUser(accountUser);
 	
-			jsonString = gson.toJson(response);
-			
-		}
+				
+				Response response = new Response(API.UPDATE_USER, accountCheckResponse);
+		
+				jsonString = gson.toJson(response);
+				
+			}
+	
+			break;
 
-		break;
+		// Purchases
+			
+		case API.BUY_MAP:
+
+			System.out.println(API.BUY_MAP);
+
+			{
+
+				BuyMapRequest buyMapRequest = gson.fromJson(gson.toJson(request.object), BuyMapRequest.class);
+
+				AccountCheckResponse accountCheckResponse = model.BuyMap(buyMapRequest.mUserName, buyMapRequest.mCityName, buyMapRequest.mType);
+
+		    	Response response = new Response(API.BUY_MAP, accountCheckResponse);
+
+		    	jsonString = gson.toJson(response);
+
+			}
+
+			break;
+			
 
 	  	// Workers
 
@@ -100,7 +122,7 @@ public class Controller {
 
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-				AccountCheckResponse accountCheckResponse = operations.GetWorker(accountCheck.username, accountCheck.password);
+				AccountCheckResponse accountCheckResponse = model.GetWorker(accountCheck.username, accountCheck.password);
 
 		    	Response response = new Response(API.GET_WORKER, accountCheckResponse);
 
@@ -118,7 +140,7 @@ public class Controller {
 
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-				AccountCheckResponse accountCheckResponse = operations.GetWorker(accountCheck.username, accountCheck.password);
+				AccountCheckResponse accountCheckResponse = model.GetWorker(accountCheck.username, accountCheck.password);
 				
 				Response response;
 
@@ -126,7 +148,7 @@ public class Controller {
 
 					if ( ((AccountWorker)accountCheckResponse.mAccount).mType.equals("Manager") || ((AccountWorker)accountCheckResponse.mAccount).mType.equals("ManagerContent") ) {
 
-						accountCheckResponse = operations.GetUsersPurchases();
+						accountCheckResponse = model.GetUsersPurchases();
 
 					} else {
 
@@ -144,13 +166,15 @@ public class Controller {
 
 			break;
 
+		// Maps search
+
 		case "MapSearch_city_key":
 
 			System.out.println("MapSearch_city_key");
 
 			String cityName = gson.fromJson(gson.toJson(request.object), String.class);
 
-			List<Map> mapsListCityName = operations.MapsByCity(cityName);
+			List<Map> mapsListCityName = model.MapsByCity(cityName);
 
 	    	Response responseMapSearchCityName = new Response("MapSearch_city_key", mapsListCityName);
 
@@ -164,7 +188,7 @@ public class Controller {
 
 			String placeName = gson.fromJson(gson.toJson(request.object), String.class);
 
-			List<Map> mapsListPlaceName = operations.MapsByPlace(placeName);
+			List<Map> mapsListPlaceName = model.MapsByPlace(placeName);
 
 	    	Response responseMapSearchPalceName = new Response("MapSearch_place_key", mapsListPlaceName);
 

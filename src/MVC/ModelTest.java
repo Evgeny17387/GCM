@@ -1,42 +1,28 @@
 package MVC;
 
 import org.junit.Assert;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
-import org.junit.runners.MethodSorters;
 
 import Constants.ErrorCodes;
+
 import Responses.AccountCheckResponse;
+
 import MVC.Model;
 
 import DB_classes.AccountUser;
 
-import Constants.API;
-
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-
 class ModelTest {
-
-	@Test
-	void testWorkers() {
-
-		Model operations = new Model();
-
-		String firstName = "1";
-		String password = "1";
-
-		// GetUserHistory
-
-		AccountCheckResponse accountCheckResponse = operations.GetUsersPurchases();
-
-	}
-
-	/*
 
 	@Test
 	void testUsers() {
 
-		Model operations = new Model();
+		Model model = new Model();
+
+		// ClearTable
+
+		Assert.assertTrue(model.ClearTable("Users") == ErrorCodes.SUCCESS);
+
+		// AddUser
 
 		String firstName = "firstName";
 		String lastName = "lastName";
@@ -46,15 +32,9 @@ class ModelTest {
 		String userName = "userName";
 		String creditCard = "creditCard";
 
-		// ClearTable
-
-		Assert.assertTrue(operations.ClearTable("Users") == ErrorCodes.SUCCESS);
-
-		// AddUser
-
 		AccountUser accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard);
 
-		AccountCheckResponse accountCheckResponse = operations.AddUser(accountUser);
+		AccountCheckResponse accountCheckResponse = model.AddUser(accountUser);
 
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
@@ -72,7 +52,7 @@ class ModelTest {
 
 		// GetUser
 
-		accountCheckResponse = operations.GetUser(userName, password);
+		accountCheckResponse = model.GetUser(userName, password);
 		
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
@@ -90,7 +70,7 @@ class ModelTest {
 
 		// AddUser - already exists - should Fail
 
-		accountCheckResponse = operations.AddUser(accountUser);
+		accountCheckResponse = model.AddUser(accountUser);
 
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS);
 
@@ -110,7 +90,7 @@ class ModelTest {
 		accountUser.mPhoneNumber = phoneNumber;
 		accountUser.mCreditCard = creditCard;
 
-		accountCheckResponse = operations.UpdateUser(accountUser);
+		accountCheckResponse = model.UpdateUser(accountUser);
 
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
@@ -126,7 +106,7 @@ class ModelTest {
 
 		// GetUser
 
-		accountCheckResponse = operations.GetUser(userName, password);
+		accountCheckResponse = model.GetUser(userName, password);
 		
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
@@ -142,12 +122,6 @@ class ModelTest {
 				accountUser.mCreditCard.equals(creditCard)
 			);
 
-		// Clear users table
-
-		Assert.assertTrue(operations.ClearTable("Users") == ErrorCodes.SUCCESS);
-
 	}
-
-	*/
 
 }
