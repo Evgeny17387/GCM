@@ -5,13 +5,13 @@ import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
 
+import Constants.ErrorCodes;
 import Responses.AccountCheckResponse;
-
-import Utils.ErrorCodes;
-
 import MVC.Model;
 
 import DB_classes.AccountUser;
+
+import Constants.API;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 

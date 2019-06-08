@@ -7,6 +7,9 @@ import java.lang.reflect.Type;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import Constants.ErrorCodes;
+import Constants.API;
+
 import DB_classes.Map;
 import DB_classes.Place;
 import DB_classes.Purchase;
@@ -14,7 +17,6 @@ import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
 import Responses.Response;
-import Utils.ErrorCodes;
 import Responses.AccountCheckResponse;
 
 import GUI.UI_server_communicate;
@@ -33,9 +35,9 @@ public class View {
 
       		// Users
       	
-	    	case "AddUser":
+	    	case API.ADD_USER:
 
-	    	    System.out.println("AddUser");
+	    	    System.out.println(API.ADD_USER);
 
 		    	{
 		
@@ -63,9 +65,9 @@ public class View {
 
     	    	break;
 
-	    	case "GetUser":
+	    	case API.GET_USER:
 
-	    	    System.out.println("GetUser");
+	    	    System.out.println(API.GET_USER);
 
 		    	{
 		    				    		
@@ -93,9 +95,9 @@ public class View {
 
 	    	    break;
 
-	    	case "UpdateUser":
+	    	case API.UPDATE_USER:
 	    		
-	    	    System.out.println("UpdateUser");
+	    	    System.out.println(API.UPDATE_USER);
 
 		    	{
 		
@@ -121,9 +123,9 @@ public class View {
 
     	    // Workers
 
-	    	case "GetWorker":
+	    	case API.GET_WORKER:
 
-	    	    System.out.println("GetWorker");
+	    	    System.out.println(API.GET_WORKER);
 
 		    	{
 		    		
@@ -147,9 +149,9 @@ public class View {
 
 	    	    break;
 
-	    	case "GetUsersPurchases":
+	    	case API.GET_USER_PURCHASES:
 
-	    	    System.out.println("GetUsersPurchases");
+	    	    System.out.println(API.GET_USER_PURCHASES);
 
 		    	{
 

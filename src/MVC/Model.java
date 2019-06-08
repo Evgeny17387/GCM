@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.List;
+
+import Constants.ErrorCodes;
+import Constants.API;
+
 import java.util.ArrayList;
 
 import DB_classes.Map;
@@ -17,7 +21,6 @@ import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
 import Responses.AccountCheckResponse;
-import Utils.ErrorCodes;
 
 public class Model {
 

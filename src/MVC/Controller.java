@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import Constants.ErrorCodes;
+import Constants.API;
+
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 import DB_classes.Map;
@@ -15,8 +18,6 @@ import Requests.AccountCheckRequest;
 
 import Responses.Response;
 import Responses.AccountCheckResponse;
-
-import Utils.ErrorCodes;
 
 public class Controller {
 
@@ -33,10 +34,10 @@ public class Controller {
 	  	switch (request.type) {
 	  	
 	  	// Users
+	  	
+		case API.ADD_USER:
 
-		case "AddUser":
-
-			System.out.println("AddUser");
+			System.out.println(API.ADD_USER);
 
 			{
 				
@@ -44,7 +45,7 @@ public class Controller {
 				
 				AccountCheckResponse accountCheckResponse = operations.AddUser(accountUser);
 		
-				Response response = new Response("AddUser", accountCheckResponse);
+				Response response = new Response(API.ADD_USER, accountCheckResponse);
 		
 				jsonString = gson.toJson(response);
 				
@@ -52,9 +53,9 @@ public class Controller {
 
 			break;
 
-		case "GetUser":
+		case API.GET_USER:
 
-			System.out.println("GetUser");
+			System.out.println(API.GET_USER);
 			
 		{
 
@@ -62,7 +63,7 @@ public class Controller {
 
 			AccountCheckResponse accountCheckResponse = operations.GetUser(accountCheck.username, accountCheck.password);
 
-	    	Response response = new Response("GetUser", accountCheckResponse);
+	    	Response response = new Response(API.GET_USER, accountCheckResponse);
 
 	    	jsonString = gson.toJson(response);
 
@@ -70,9 +71,9 @@ public class Controller {
 
 		break;
 
-		case "UpdateUser":
+		case API.UPDATE_USER:
 
-			System.out.println("UpdateUser");
+			System.out.println(API.UPDATE_USER);
 
 		{
 			
@@ -81,7 +82,7 @@ public class Controller {
 			AccountCheckResponse accountCheckResponse = operations.UpdateUser(accountUser);
 
 			
-			Response response = new Response("UpdateUser", accountCheckResponse);
+			Response response = new Response(API.UPDATE_USER, accountCheckResponse);
 	
 			jsonString = gson.toJson(response);
 			
@@ -91,9 +92,9 @@ public class Controller {
 
 	  	// Workers
 
-		case "GetWorker":
+		case API.GET_WORKER:
 
-			System.out.println("GetWorker");
+			System.out.println(API.GET_WORKER);
 
 			{
 
@@ -101,7 +102,7 @@ public class Controller {
 
 				AccountCheckResponse accountCheckResponse = operations.GetWorker(accountCheck.username, accountCheck.password);
 
-		    	Response response = new Response("GetWorker", accountCheckResponse);
+		    	Response response = new Response(API.GET_WORKER, accountCheckResponse);
 
 		    	jsonString = gson.toJson(response);
 
@@ -109,9 +110,9 @@ public class Controller {
 
 			break;
 
-		case "GetUsersPurchases":
+		case API.GET_USER_PURCHASES:
 
-			System.out.println("GetUsersPurchases");
+			System.out.println(API.GET_USER_PURCHASES);
 
 			{
 
@@ -135,7 +136,7 @@ public class Controller {
 										
 				}
 
-		    	response = new Response("GetUsersPurchases", accountCheckResponse);
+		    	response = new Response(API.GET_USER_PURCHASES, accountCheckResponse);
 
 		    	jsonString = gson.toJson(response);
 

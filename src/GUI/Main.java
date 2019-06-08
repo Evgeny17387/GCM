@@ -26,7 +26,10 @@ import Requests.AccountCheckRequest;
 import MVC.View;
 
 import Communication.ClientConsole;
+
 import DB_classes.AccountUser;
+
+import Constants.API;
 
 public class Main extends Application {
 	String request_string;
@@ -182,7 +185,7 @@ public class Main extends Application {
         signUp2.setOnAction(e->{
 
         	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText());
-        	Request request = new Request("AddUser", accountUser);
+        	Request request = new Request(API.ADD_USER, accountUser);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
 
@@ -208,7 +211,7 @@ public class Main extends Application {
         
         btn.setOnAction(e->{
             	AccountCheckRequest accountCheck = new AccountCheckRequest(name.getText(), password.getText());
-            	Request request = new Request("UserCheck", accountCheck);
+            	Request request = new Request(API.GET_USER, accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
 
@@ -223,8 +226,8 @@ public class Main extends Application {
         nextW.setOnAction(e->{
            
         	AccountCheckRequest accountCheck = new AccountCheckRequest(nameW.getText(), passwordW.getText());
-            	Request request = new Request("GetWorker", accountCheck);
-//            	Request request = new Request("GetUsersPurchases", accountCheck);
+            	Request request = new Request(API.GET_WORKER, accountCheck);
+//            	Request request = new Request(API.GET_USER_PURCHASES, accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
 
