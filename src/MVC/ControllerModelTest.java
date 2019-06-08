@@ -54,8 +54,8 @@ class ControllerModelTest {
 
 		// AddUser
 
-	    jsonTest = "{\"type\":\"AddUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":[],\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
-
+	    jsonTest = "{\"mType\":\"AddUser\",\"mObject\":{\"mErrorCode\":0,\"mObject\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":[],\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
+	    
 		firstName = "firstName";
 		lastName = "lastName";
 		password = "password";
@@ -78,7 +78,7 @@ class ControllerModelTest {
 
 		// AddUser - already registered - should fail
 
-	    jsonTest = "{\"type\":\"AddUser\",\"object\":{\"mErrorCode\":1062}}";
+	    jsonTest = "{\"mType\":\"AddUser\",\"mObject\":{\"mErrorCode\":1062}}";
 	    
     	jsonController = controller.Run(jsonRequest);
 
@@ -88,7 +88,7 @@ class ControllerModelTest {
 
 		// GetUser
 
-	    jsonTest = "{\"type\":\"GetUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":[],\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
+	    jsonTest = "{\"mType\":\"GetUser\",\"mObject\":{\"mErrorCode\":0,\"mObject\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":[],\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
 
     	accountCheckRequest = new AccountCheckRequest(userName, password);
 
@@ -104,7 +104,7 @@ class ControllerModelTest {
 
 		// UpdateUser
 
-	    jsonTest = "{\"type\":\"UpdateUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard1\",\"mPurchases\":[],\"mFirstName\":\"firstName1\",\"mLastName\":\"lastName1\",\"mPassword\":\"password1\",\"mEmail\":\"email1\",\"mPhoneNumber\":\"phoneNumber1\"}}}";
+	    jsonTest = "{\"mType\":\"UpdateUser\",\"mObject\":{\"mErrorCode\":0,\"mObject\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard1\",\"mPurchases\":[],\"mFirstName\":\"firstName1\",\"mLastName\":\"lastName1\",\"mPassword\":\"password1\",\"mEmail\":\"email1\",\"mPhoneNumber\":\"phoneNumber1\"}}}";
 
 		firstName = "firstName1";
 		lastName = "lastName1";
@@ -128,7 +128,7 @@ class ControllerModelTest {
 
 		// By map
 
-	    jsonTest = "{\"type\":\"BuyMap\",\"object\":{\"mErrorCode\":0}}";
+	    jsonTest = "{\"mType\":\"BuyMap\",\"mObject\":{\"mErrorCode\":0}}";
 
 		cityName = "1";
 		type = PurchaseType.ONE_TIME;
@@ -147,7 +147,7 @@ class ControllerModelTest {
 
 		// By map
 
-	    jsonTest = "{\"type\":\"BuyMap\",\"object\":{\"mErrorCode\":0}}";
+	    jsonTest = "{\"mType\":\"BuyMap\",\"mObject\":{\"mErrorCode\":0}}";
 
 		cityName = "2";
 		type = PurchaseType.SUBSCRIPTION;
@@ -166,7 +166,7 @@ class ControllerModelTest {
 
 		// GetUser
 
-	    jsonTest = "{\"type\":\"GetUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard1\",\"mPurchases\":[{\"mUserName\":\"userName\",\"mCityName\":\"1\",\"mType\":\"1\"},{\"mUserName\":\"userName\",\"mCityName\":\"2\",\"mType\":\"2\"}],\"mFirstName\":\"firstName1\",\"mLastName\":\"lastName1\",\"mPassword\":\"password1\",\"mEmail\":\"email1\",\"mPhoneNumber\":\"phoneNumber1\"}}}";
+	    jsonTest = "{\"mType\":\"GetUser\",\"mObject\":{\"mErrorCode\":0,\"mObject\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard1\",\"mPurchases\":[{\"mUserName\":\"userName\",\"mCityName\":\"1\",\"mType\":\"OneTime\"},{\"mUserName\":\"userName\",\"mCityName\":\"2\",\"mType\":\"Subscruption\"}],\"mFirstName\":\"firstName1\",\"mLastName\":\"lastName1\",\"mPassword\":\"password1\",\"mEmail\":\"email1\",\"mPhoneNumber\":\"phoneNumber1\"}}}";
 
     	accountCheckRequest = new AccountCheckRequest(userName, password);
 
@@ -182,7 +182,7 @@ class ControllerModelTest {
 
 		// Show all purchases
 
-	    jsonTest = "{\"type\":\"GetUsersPurchases\",\"object\":{\"mErrorCode\":0,\"mAccount\":[{\"mUserName\":\"userName\",\"mCityName\":\"1\",\"mType\":\"1\"},{\"mUserName\":\"userName\",\"mCityName\":\"2\",\"mType\":\"2\"}]}}";
+	    jsonTest = "{\"mType\":\"GetUsersPurchases\",\"mObject\":{\"mErrorCode\":0,\"mObject\":[{\"mUserName\":\"userName\",\"mCityName\":\"1\",\"mType\":\"OneTime\"},{\"mUserName\":\"userName\",\"mCityName\":\"2\",\"mType\":\"Subscruption\"}]}}";
 
 	    accountCheckRequest = new AccountCheckRequest("1", "1");
 
