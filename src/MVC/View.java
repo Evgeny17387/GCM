@@ -30,9 +30,9 @@ public class View {
 
 	      	switch (response.type) {
 
-		    	case "Register":
+		    	case "AddUser":
 	
-		    	    System.out.println("Register");
+		    	    System.out.println("AddUser");
 
 			    	{
 			
@@ -62,9 +62,9 @@ public class View {
 
 	    	    	break;
 
-		    	case "UserCheck":
+		    	case "GetUser":
 
-		    	    System.out.println("UserCheck");
+		    	    System.out.println("GetUser");
 
 			    	{
 			    				    		
@@ -82,6 +82,10 @@ public class View {
 
 			    			System.out.println("User not found");
 			    			
+			    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
+			    			
+			    			System.out.println("UserName or Password are missing");
+		    			
 			    		}
 				    		
 			    	}
@@ -89,6 +93,34 @@ public class View {
 	    	    	UI_server_communicate.mResposeFromserver = true;
 
 		    	    break;
+
+		    	case "UpdateUser":
+		    		
+		    	    System.out.println("UpdateUser");
+
+			    	{
+			
+			    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+
+			    	    System.out.println(accountCheckResponse.mErrorCode);
+
+			    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+
+				    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
+
+							System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName, accountUser.mPurchases);
+
+			    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
+		    			
+			    			System.out.println("One or more user details are missing");
+		    			
+			    		}
+
+			    	}
+
+	    	    	UI_server_communicate.mResposeFromserver = true;
+
+	    	    	break;
 
 		    	case "WorkerCheck":
 

@@ -17,54 +17,119 @@ import DB_classes.AccountUser;
 
 class ModelTest {
 
-/*
-
 	@Test
 	void testUsers() {
 
 		Model operations = new Model();
 
-		String name = "1";
-		String password = "1";
-		String email = "1";
-		String creditCard = "1";
+		String firstName = "firstName";
+		String lastName = "lastName";
+		String password = "password";
+		String email = "email";
+		String phoneNumber = "phoneNumber";
+		String userName = "userName";
+		String creditCard = "creditCard";
 
-		// Clear users table
-		
+		// ClearTable
+
 		Assert.assertTrue(operations.ClearTable("Users") == ErrorCodes.SUCCESS);
 
-		// Add user
+		// AddUser
 
-		AccountCheckResponse accountCheckResponse = operations.AddUser(name, password, email, creditCard);
-		
+		AccountUser accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard);
+
+		AccountCheckResponse accountCheckResponse = operations.AddUser(accountUser);
+
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
-		AccountUser accountUser = (AccountUser)accountCheckResponse.mAccount;
-		
-		Assert.assertTrue(accountUser.mName.equals("1") && accountUser.mEmail.equals("1") && accountUser.mCreditCard.equals("1"));
+		accountUser = (AccountUser)accountCheckResponse.mAccount;
 
-		// Check user exists
+		Assert.assertTrue(
+							accountUser.mFirstName.equals(firstName) &&
+							accountUser.mLastName.equals(lastName) &&
+							accountUser.mPassword.equals(password) &&
+							accountUser.mEmail.equals(email) &&
+							accountUser.mPhoneNumber.equals(phoneNumber) &&
+							accountUser.mUserName.equals(userName) &&
+							accountUser.mCreditCard.equals(creditCard)
+						);
 
-		accountCheckResponse = operations.GetAccount("Users", name, password);
+		// GetUser
+
+		accountCheckResponse = operations.GetUser(userName, password);
 		
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
 		accountUser = (AccountUser)accountCheckResponse.mAccount;
-		
-		Assert.assertTrue(accountUser.mName.equals("1") && accountUser.mEmail.equals("1") && accountUser.mCreditCard.equals("1"));
 
-		// Add user with the same name
+		Assert.assertTrue(
+				accountUser.mFirstName.equals(firstName) &&
+				accountUser.mLastName.equals(lastName) &&
+				accountUser.mPassword.equals(password) &&
+				accountUser.mEmail.equals(email) &&
+				accountUser.mPhoneNumber.equals(phoneNumber) &&
+				accountUser.mUserName.equals(userName) &&
+				accountUser.mCreditCard.equals(creditCard)
+			);
 
-		accountCheckResponse = operations.AddUser(name, password, email, creditCard);
+		// AddUser - already exists - should Fail
+
+		accountCheckResponse = operations.AddUser(accountUser);
 
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS);
+
+		// UpdateUser
+
+		firstName = "firstName1";
+		lastName = "lastName1";
+		password = "password1";
+		email = "email1";
+		phoneNumber = "phoneNumber1";
+		creditCard = "creditCard1";
+
+		accountUser.mFirstName = firstName;
+		accountUser.mLastName = lastName;
+		accountUser.mPassword = password;
+		accountUser.mEmail = email;
+		accountUser.mPhoneNumber = phoneNumber;
+		accountUser.mCreditCard = creditCard;
+
+		accountCheckResponse = operations.UpdateUser(accountUser);
+
+		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
+
+		Assert.assertTrue(
+				accountUser.mFirstName.equals(firstName) &&
+				accountUser.mLastName.equals(lastName) &&
+				accountUser.mPassword.equals(password) &&
+				accountUser.mEmail.equals(email) &&
+				accountUser.mPhoneNumber.equals(phoneNumber) &&
+				accountUser.mUserName.equals(userName) &&
+				accountUser.mCreditCard.equals(creditCard)
+			);
+
+		// GetUser
+
+		accountCheckResponse = operations.GetUser(userName, password);
+		
+		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
+
+		accountUser = (AccountUser)accountCheckResponse.mAccount;
+
+		Assert.assertTrue(
+				accountUser.mFirstName.equals(firstName) &&
+				accountUser.mLastName.equals(lastName) &&
+				accountUser.mPassword.equals(password) &&
+				accountUser.mEmail.equals(email) &&
+				accountUser.mPhoneNumber.equals(phoneNumber) &&
+				accountUser.mUserName.equals(userName) &&
+				accountUser.mCreditCard.equals(creditCard)
+			);
 
 		// Clear users table
 
 		Assert.assertTrue(operations.ClearTable("Users") == ErrorCodes.SUCCESS);
 
 	}
-
-*/
 
 }

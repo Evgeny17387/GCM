@@ -14,7 +14,6 @@ import DB_classes.Map;
 import DB_classes.Place;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
-import Requests.Register;
 
 import Responses.AccountCheckResponse;
 
@@ -29,84 +28,20 @@ public class Model {
 	static private final String USER = "DwZ0BCkIBH";
 	static private final String PASS = "3O6ZV2SgU4";
 
-	// General
-
-	public int ClearTable(String aTable) {
-		
-		int result = ErrorCodes.SUCCESS;
-		
-		String sql;
-	
-		Connection conn = null;
-		PreparedStatement prep_stmt = null;
-	
-		try {
-	
-			Class.forName(JDBC_DRIVER);
-	
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	
-			sql = "DELETE FROM " + aTable + " WHERE 1";
-
-			prep_stmt = conn.prepareStatement(sql);
-
-			prep_stmt.executeUpdate();
-
-		} catch (SQLException se) {
-
-			result = se.getErrorCode();
-
-			se.printStackTrace();
-
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-
-			result = ErrorCodes.FAILURE;
-
-			e.printStackTrace();
-
-		} finally {
-	
-			try {
-	
-				if (prep_stmt != null)
-					prep_stmt.close();
-				if (conn != null)
-					conn.close();
-	
-			} catch (SQLException se) {
-
-				se.printStackTrace();
-				
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-		
-			}
-	
-		}
-
-		return result;
-		
-	}
-
 	// Users
 
-	public AccountCheckResponse AddUser(Register register) {
-		
+	public AccountCheckResponse AddUser(AccountUser accountUser) {
+
 		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
 
 		if (
-				register.mFirstName.isEmpty() || 
-				register.mLastName.isEmpty() ||
-				register.mPassword.isEmpty() ||
-				register.mUserName.isEmpty() ||
-				register.mEmail.isEmpty() ||
-				register.mPhoneNumber.isEmpty() ||
-				register.mCreditCard.isEmpty()
+				accountUser.mFirstName.isEmpty() || 
+				accountUser.mLastName.isEmpty() ||
+				accountUser.mPassword.isEmpty() ||
+				accountUser.mUserName.isEmpty() ||
+				accountUser.mEmail.isEmpty() ||
+				accountUser.mPhoneNumber.isEmpty() ||
+				accountUser.mCreditCard.isEmpty()
 			) {
 			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
 		}
@@ -122,25 +57,26 @@ public class Model {
 	
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	
-			sql = "INSERT INTO `Users`(`FirstName`, `LastName`, `UserName`, `Password`, `Email`, `CreditCard`, `PhoneNumber`, `Salt`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			sql = "INSERT INTO `Users`(`FirstName`, `LastName`, `UserName`, `Password`, `Email`, `CreditCard`, `PhoneNumber`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 			prep_stmt = conn.prepareStatement(sql);
 
-			String salt = PasswordUtils.getSalt();
-			String encryptedPassword = PasswordUtils.generateSecurePassword(register.mPassword, salt);
+//			String salt = PasswordUtils.getSalt();
+//			String encryptedPassword = PasswordUtils.generateSecurePassword(register.mPassword, salt);
 			
-			prep_stmt.setString(1, register.mFirstName);
-			prep_stmt.setString(2, register.mLastName);
-			prep_stmt.setString(3, register.mUserName);
-			prep_stmt.setString(4, encryptedPassword);
-			prep_stmt.setString(5, register.mEmail);
-			prep_stmt.setString(6, register.mCreditCard);
-			prep_stmt.setString(7, register.mPhoneNumber);
-			prep_stmt.setString(8, salt);
+			prep_stmt.setString(1, accountUser.mFirstName);
+			prep_stmt.setString(2, accountUser.mLastName);
+			prep_stmt.setString(3, accountUser.mUserName);
+			prep_stmt.setString(4, accountUser.mPassword);
+			prep_stmt.setString(5, accountUser.mEmail);
+			prep_stmt.setString(6, accountUser.mCreditCard);
+			prep_stmt.setString(7, accountUser.mPhoneNumber);
+
+//			prep_stmt.setString(8, salt);
 			
 			prep_stmt.executeUpdate();
 			
-			accountCheckResponse = GetUserAccount(register.mUserName, register.mPassword);
+			accountCheckResponse = GetUser(accountUser.mUserName, accountUser.mPassword);
 
 			if (conn != null)
 				conn.close();
@@ -195,7 +131,14 @@ public class Model {
 
 	}
 
-	public AccountCheckResponse GetUserAccount(String aUserName, String aPassword) {
+	public AccountCheckResponse GetUser(String aUserName, String aPassword) {
+
+		if (
+				aUserName.isEmpty() ||
+				aPassword.isEmpty()
+			) {
+			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
+		}
 
 		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.USER_NOT_FOUND, null);
 
@@ -220,10 +163,13 @@ public class Model {
 			while (rs.next()) {
 
 				String userName = rs.getString("UserName");
-				String encryptedPassword = rs.getString("Password");
-				String salt = rs.getString("Salt");
+//				String encryptedPassword = rs.getString("Password");
+				String password = rs.getString("Password");
 
-				if (userName.compareTo(aUserName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
+//				String salt = rs.getString("Salt");
+
+//				if (userName.compareTo(aUserName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
+				if (userName.compareTo(aUserName) == 0 && password.compareTo(aPassword) == 0) {
 
 					accountCheckResponse.mErrorCode = ErrorCodes.SUCCESS;
 
@@ -231,12 +177,12 @@ public class Model {
 					String lastName = rs.getString("LastName");
 					String email = rs.getString("Email");
 					String phoneNumber = rs.getString("PhoneNumber");
-
+					String creditCard = rs.getString("CreditCard");
 					int purchases = rs.getInt("Purchases");
 
-					accountCheckResponse.mAccount = new AccountUser(firstName, lastName, encryptedPassword, email, phoneNumber, userName, purchases);
+					accountCheckResponse.mAccount = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, purchases);
 
-					System.out.format("%s - %s - %s - %s - %s - %s - %d\n", firstName, lastName, userName, encryptedPassword, email, phoneNumber, purchases);
+					System.out.format("%s - %s - %s - %s - %s - %s - %s - %d\n", firstName, lastName, password, email, phoneNumber, userName, creditCard, purchases);
 					
 				}
 
@@ -256,7 +202,9 @@ public class Model {
 	        System.out.println("VendorError: " + se.getErrorCode());
 	
 		} catch (Exception e) {
-	
+
+			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+
 			e.printStackTrace();
 	
 		} finally {
@@ -286,7 +234,97 @@ public class Model {
 	
 	}
 
-	public AccountCheckResponse GetWorkerAccount(String aFirstName, String aPassword) {
+	public AccountCheckResponse UpdateUser(AccountUser aAccountUser) {
+		
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+
+		if (
+				aAccountUser.mFirstName.isEmpty() ||
+				aAccountUser.mLastName.isEmpty() ||
+				aAccountUser.mPassword.isEmpty() ||
+				aAccountUser.mEmail.isEmpty() ||
+				aAccountUser.mPhoneNumber.isEmpty() ||
+				aAccountUser.mCreditCard.isEmpty() ||
+				aAccountUser.mUserName.isEmpty()
+			) {
+			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
+		}
+		
+		String sql;
+		
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			sql = "UPDATE `Users` SET `FirstName`=?, `LastName`=?, `Password`=?, `Email`=?, `PhoneNumber`=?, `CreditCard`=? WHERE `UserName`=?";
+
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.setString(1, aAccountUser.mFirstName);
+			prep_stmt.setString(2, aAccountUser.mLastName);
+			prep_stmt.setString(3, aAccountUser.mPassword);
+			prep_stmt.setString(4, aAccountUser.mEmail);
+			prep_stmt.setString(5, aAccountUser.mPhoneNumber);
+			prep_stmt.setString(6, aAccountUser.mCreditCard);
+			prep_stmt.setString(7, aAccountUser.mUserName);
+
+			prep_stmt.executeUpdate();
+
+			accountCheckResponse = GetUser(aAccountUser.mUserName, aAccountUser.mPassword);
+
+			if (conn != null)
+				conn.close();
+			if (prep_stmt != null)
+				prep_stmt.close();
+				
+		} catch (SQLException se) {
+
+			accountCheckResponse.mErrorCode = se.getErrorCode();
+			
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+		return accountCheckResponse;
+
+	}
+
+	// Workers
+
+	public AccountCheckResponse GetWorker(String aFirstName, String aPassword) {
 
 		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.USER_NOT_FOUND, null);
 
@@ -897,6 +935,70 @@ public class Model {
 		
 		return mapsList;
 	
+	}
+
+	// General
+
+	public int ClearTable(String aTable) {
+		
+		int result = ErrorCodes.SUCCESS;
+		
+		String sql;
+	
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			sql = "DELETE FROM " + aTable + " WHERE 1";
+
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.executeUpdate();
+
+		} catch (SQLException se) {
+
+			result = se.getErrorCode();
+
+			se.printStackTrace();
+
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			result = ErrorCodes.FAILURE;
+
+			e.printStackTrace();
+
+		} finally {
+	
+			try {
+	
+				if (prep_stmt != null)
+					prep_stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+		return result;
+		
 	}
 
 }

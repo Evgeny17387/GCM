@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import DB_classes.AccountUser;
 import DB_classes.Map;
 
 import MVC.Model;
 
-import Requests.Register;
 import Requests.Request;
 import Requests.AccountCheckRequest;
 
@@ -29,15 +29,15 @@ public class Controller {
 
 	  	switch (request.type) {
 
-		case "Register":
+		case "AddUser":
 			
 			{
 				
-				Register register = gson.fromJson(gson.toJson(request.object), Register.class);
+				AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
 				
-				AccountCheckResponse accountCheckResponse = operations.AddUser(register);
+				AccountCheckResponse accountCheckResponse = operations.AddUser(accountUser);
 		
-				Response response = new Response("Register", accountCheckResponse);
+				Response response = new Response("AddUser", accountCheckResponse);
 		
 				jsonString = gson.toJson(response);
 				
@@ -45,21 +45,38 @@ public class Controller {
 
 			break;
 
-		case "UserCheck":
+		case "GetUser":
 			
-			{
+		{
 
-				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
-	
-				AccountCheckResponse accountCheckResponse = operations.GetUserAccount(accountCheck.username, accountCheck.password);
-	
-		    	Response response = new Response("UserCheck", accountCheckResponse);
-	
-		    	jsonString = gson.toJson(response);
+			AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-			}
+			AccountCheckResponse accountCheckResponse = operations.GetUser(accountCheck.username, accountCheck.password);
 
-			break;
+	    	Response response = new Response("GetUser", accountCheckResponse);
+
+	    	jsonString = gson.toJson(response);
+
+		}
+
+		break;
+
+		case "UpdateUser":
+			
+		{
+			
+			AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
+			
+			AccountCheckResponse accountCheckResponse = operations.UpdateUser(accountUser);
+
+			
+			Response response = new Response("UpdateUser", accountCheckResponse);
+	
+			jsonString = gson.toJson(response);
+			
+		}
+
+		break;
 
 		case "WorkerCheck":
 
@@ -67,7 +84,7 @@ public class Controller {
 
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-				AccountCheckResponse accountCheckResponse = operations.GetWorkerAccount(accountCheck.username, accountCheck.password);
+				AccountCheckResponse accountCheckResponse = operations.GetWorker(accountCheck.username, accountCheck.password);
 
 		    	Response response = new Response("WorkerCheck", accountCheckResponse);
 

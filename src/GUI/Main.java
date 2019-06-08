@@ -21,12 +21,12 @@ import com.google.gson.Gson;
 import GUI.UI_server_communicate;
 
 import Requests.Request;
-import Requests.Register;
 import Requests.AccountCheckRequest;
 
 import MVC.View;
 
 import Communication.ClientConsole;
+import DB_classes.AccountUser;
 
 public class Main extends Application {
 	String request_string;
@@ -181,8 +181,8 @@ public class Main extends Application {
 
         signUp2.setOnAction(e->{
 
-        	Register register = new Register("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText());
-        	Request request = new Request("Register", register);
+        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText());
+        	Request request = new Request("AddUser", accountUser);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
 
