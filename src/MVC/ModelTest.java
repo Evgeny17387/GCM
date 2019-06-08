@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import Constants.ErrorCodes;
 
-import Responses.AccountCheckResponse;
+import Responses.ResponseModel;
 
 import MVC.Model;
 
@@ -34,11 +34,11 @@ class ModelTest {
 
 		AccountUser accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, null);
 
-		AccountCheckResponse accountCheckResponse = model.AddUser(accountUser);
+		ResponseModel accountCheckResponse = model.AddUser(accountUser);
 
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
-		accountUser = (AccountUser)accountCheckResponse.mAccount;
+		accountUser = (AccountUser)accountCheckResponse.mObject;
 
 		Assert.assertTrue(
 							accountUser.mFirstName.equals(firstName) &&
@@ -56,7 +56,7 @@ class ModelTest {
 		
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
-		accountUser = (AccountUser)accountCheckResponse.mAccount;
+		accountUser = (AccountUser)accountCheckResponse.mObject;
 
 		Assert.assertTrue(
 				accountUser.mFirstName.equals(firstName) &&
@@ -110,7 +110,7 @@ class ModelTest {
 		
 		Assert.assertTrue(accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS);
 
-		accountUser = (AccountUser)accountCheckResponse.mAccount;
+		accountUser = (AccountUser)accountCheckResponse.mObject;
 
 		Assert.assertTrue(
 				accountUser.mFirstName.equals(firstName) &&

@@ -20,7 +20,7 @@ import DB_classes.Purchase;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
-import Responses.AccountCheckResponse;
+import Responses.ResponseModel;
 
 public class Model {
 
@@ -32,9 +32,9 @@ public class Model {
 
 	// Users
 
-	public AccountCheckResponse AddUser(AccountUser accountUser) {
+	public ResponseModel AddUser(AccountUser accountUser) {
 
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
 
 		if (
 				accountUser.mFirstName.isEmpty() || 
@@ -45,7 +45,7 @@ public class Model {
 				accountUser.mPhoneNumber.isEmpty() ||
 				accountUser.mCreditCard.isEmpty()
 			) {
-			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
+			return new ResponseModel(ErrorCodes.USER_DETAILS_MISSING, null);
 		}
 		
 		String sql;
@@ -78,7 +78,7 @@ public class Model {
 			
 			prep_stmt.executeUpdate();
 			
-			accountCheckResponse = GetUser(accountUser.mUserName, accountUser.mPassword);
+			responseModel = GetUser(accountUser.mUserName, accountUser.mPassword);
 
 			if (conn != null)
 				conn.close();
@@ -87,7 +87,7 @@ public class Model {
 				
 		} catch (SQLException se) {
 
-			accountCheckResponse.mErrorCode = se.getErrorCode();
+			responseModel.mErrorCode = se.getErrorCode();
 			
 			if (!(se.getErrorCode() == ErrorCodes.USER_ALREADY_EXISTS)) {
 
@@ -104,7 +104,7 @@ public class Model {
 	
 		} catch (Exception e) {
 
-			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+			responseModel.mErrorCode = ErrorCodes.FAILURE;
 
 			e.printStackTrace();
 	
@@ -129,20 +129,20 @@ public class Model {
 	
 		}
 
-		return accountCheckResponse;
+		return responseModel;
 
 	}
 
-	public AccountCheckResponse GetUser(String aUserName, String aPassword) {
+	public ResponseModel GetUser(String aUserName, String aPassword) {
 
 		if (
 				aUserName.isEmpty() ||
 				aPassword.isEmpty()
 			) {
-			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
+			return new ResponseModel(ErrorCodes.USER_DETAILS_MISSING, null);
 		}
 
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.USER_NOT_FOUND, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.USER_NOT_FOUND, null);
 
 		String sql;
 
@@ -169,7 +169,7 @@ public class Model {
 
 				if (userName.compareTo(aUserName) == 0 && password.compareTo(aPassword) == 0) {
 
-					accountCheckResponse.mErrorCode = ErrorCodes.SUCCESS;
+					responseModel.mErrorCode = ErrorCodes.SUCCESS;
 
 					String firstName = rs.getString("FirstName");
 					String lastName = rs.getString("LastName");
@@ -177,9 +177,9 @@ public class Model {
 					String phoneNumber = rs.getString("PhoneNumber");
 					String creditCard = rs.getString("CreditCard");
 
-					accountCheckResponse.mAccount = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, GetUserPurchases(userName));
+					responseModel.mObject = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, GetUserPurchases(userName));
 
-					System.out.println(accountCheckResponse.mAccount.toString());
+					System.out.println(responseModel.mObject.toString());
 
 				}
 
@@ -191,7 +191,7 @@ public class Model {
 	
 		} catch (SQLException se) {
 
-			accountCheckResponse.mErrorCode = se.getErrorCode();
+			responseModel.mErrorCode = se.getErrorCode();
 
 			se.printStackTrace();
 			System.out.println("SQLException: " + se.getMessage());
@@ -200,7 +200,7 @@ public class Model {
 	
 		} catch (Exception e) {
 
-			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+			responseModel.mErrorCode = ErrorCodes.FAILURE;
 
 			e.printStackTrace();
 	
@@ -227,13 +227,13 @@ public class Model {
 
 		}
 		
-		return accountCheckResponse;
+		return responseModel;
 	
 	}
 
-	public AccountCheckResponse UpdateUser(AccountUser aAccountUser) {
+	public ResponseModel UpdateUser(AccountUser aAccountUser) {
 		
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
 
 		if (
 				aAccountUser.mFirstName.isEmpty() ||
@@ -244,7 +244,7 @@ public class Model {
 				aAccountUser.mCreditCard.isEmpty() ||
 				aAccountUser.mUserName.isEmpty()
 			) {
-			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
+			return new ResponseModel(ErrorCodes.USER_DETAILS_MISSING, null);
 		}
 		
 		String sql;
@@ -272,7 +272,7 @@ public class Model {
 
 			prep_stmt.executeUpdate();
 
-			accountCheckResponse = GetUser(aAccountUser.mUserName, aAccountUser.mPassword);
+			responseModel = GetUser(aAccountUser.mUserName, aAccountUser.mPassword);
 
 			if (conn != null)
 				conn.close();
@@ -281,7 +281,7 @@ public class Model {
 				
 		} catch (SQLException se) {
 
-			accountCheckResponse.mErrorCode = se.getErrorCode();
+			responseModel.mErrorCode = se.getErrorCode();
 			
 			se.printStackTrace();
 			System.out.println("SQLException: " + se.getMessage());
@@ -290,7 +290,7 @@ public class Model {
 	
 		} catch (Exception e) {
 
-			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+			responseModel.mErrorCode = ErrorCodes.FAILURE;
 
 			e.printStackTrace();
 	
@@ -315,15 +315,15 @@ public class Model {
 	
 		}
 
-		return accountCheckResponse;
+		return responseModel;
 
 	}
 
 	// Purchases
 
-	public AccountCheckResponse GetUsersPurchases() {
+	public ResponseModel GetUsersPurchases() {
 
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
 
 		List<Purchase> purchaseList = null;
 
@@ -361,7 +361,7 @@ public class Model {
 
 			}
 			
-			accountCheckResponse.mAccount = purchaseList;
+			responseModel.mObject = purchaseList;
 
 			rs.close();
 			stmt.close();
@@ -369,7 +369,7 @@ public class Model {
 
 		} catch (SQLException se) {
 
-			accountCheckResponse.mErrorCode = se.getErrorCode();
+			responseModel.mErrorCode = se.getErrorCode();
 
 			se.printStackTrace();
 			System.out.println("SQLException: " + se.getMessage());
@@ -378,7 +378,7 @@ public class Model {
 	
 		} catch (Exception e) {
 	
-			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
 
 			e.printStackTrace();
 	
@@ -405,16 +405,16 @@ public class Model {
 
 		}
 		
-		return accountCheckResponse;
+		return responseModel;
 	
 	}
 	
-	public AccountCheckResponse BuyMap(String aUserName, String aCityName, String aType) {
+	public ResponseModel BuyMap(String aUserName, String aCityName, String aType) {
 
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
 
 		if (aUserName.isEmpty() || aUserName.isEmpty() || aType.isEmpty()) {
-			return new AccountCheckResponse(ErrorCodes.PURCHASE_DETAILS_MISSING, null);
+			return new ResponseModel(ErrorCodes.PURCHASE_DETAILS_MISSING, null);
 		}
 
 		String sql;
@@ -445,7 +445,7 @@ public class Model {
 				
 		} catch (SQLException se) {
 
-			accountCheckResponse.mErrorCode = se.getErrorCode();
+			responseModel.mErrorCode = se.getErrorCode();
 			
 			if (!(se.getErrorCode() == ErrorCodes.USER_ALREADY_EXISTS)) {
 
@@ -462,7 +462,7 @@ public class Model {
 	
 		} catch (Exception e) {
 
-			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+			responseModel.mErrorCode = ErrorCodes.FAILURE;
 
 			e.printStackTrace();
 	
@@ -487,22 +487,22 @@ public class Model {
 	
 		}
 
-		return accountCheckResponse;
+		return responseModel;
 
 	}
 	
 	// Workers
 
-	public AccountCheckResponse GetWorker(String aFirstName, String aPassword) {
+	public ResponseModel GetWorker(String aFirstName, String aPassword) {
 
 		if (
 				aFirstName.isEmpty() ||
 				aPassword.isEmpty()
 			) {
-			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
+			return new ResponseModel(ErrorCodes.USER_DETAILS_MISSING, null);
 		}
 
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.USER_NOT_FOUND, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.USER_NOT_FOUND, null);
 
 		String sql;
 
@@ -529,7 +529,7 @@ public class Model {
 
 				if (firstName.compareTo(aFirstName) == 0 && password.compareTo(aPassword) == 0) {
 
-					accountCheckResponse.mErrorCode = ErrorCodes.SUCCESS;
+					responseModel.mErrorCode = ErrorCodes.SUCCESS;
 
 					int id = rs.getInt("Id");
 					String lastName = rs.getString("LastName");
@@ -537,7 +537,7 @@ public class Model {
 					String phoneNumber = rs.getString("PhoneNumber");
 					String type = rs.getString("Type");
 
-					accountCheckResponse.mAccount = new AccountWorker(firstName, lastName, password, email, phoneNumber, id, type);
+					responseModel.mObject = new AccountWorker(firstName, lastName, password, email, phoneNumber, id, type);
 
 					System.out.format("%s - %s - %s - %s - %s - %d - %s\n", firstName, lastName, password, email, phoneNumber, id, type);
 					
@@ -551,7 +551,7 @@ public class Model {
 	
 		} catch (SQLException se) {
 
-			accountCheckResponse.mErrorCode = se.getErrorCode();
+			responseModel.mErrorCode = se.getErrorCode();
 
 			se.printStackTrace();
 			System.out.println("SQLException: " + se.getMessage());
@@ -560,7 +560,7 @@ public class Model {
 	
 		} catch (Exception e) {
 	
-			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+			responseModel.mErrorCode = ErrorCodes.FAILURE;
 
 			e.printStackTrace();
 	
@@ -587,7 +587,7 @@ public class Model {
 
 		}
 		
-		return accountCheckResponse;
+		return responseModel;
 	
 	}
 
@@ -669,161 +669,6 @@ public class Model {
 		
 		return purchaseList;
 	
-	}
-
-	// Purchases
-
-	public int GetPurchases(String name) {
-		
-		String sql;
-	
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-	
-		try {
-	
-			Class.forName(JDBC_DRIVER);
-	
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	
-			stmt = conn.createStatement();
-	
-			sql = "SELECT * FROM Users";
-	
-			rs = stmt.executeQuery(sql);
-	
-			while (rs.next()) {
-				String Name = rs.getString("Name");
-				int Purchases = rs.getInt("Purchases");
-
-				if (Name.compareTo(name) == 0) {
-					return Purchases;
-				}
-
-			}
-	
-			rs.close();
-			stmt.close();
-			conn.close();
-	
-		} catch (SQLException se) {
-	
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-	
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (conn != null)
-					conn.close();
-	
-			} catch (SQLException se) {
-	
-				se.printStackTrace();
-	
-			}
-	
-		}
-		
-		return -1;
-	
-	}
-
-	public void IncreasePurchases(String name) {
-		
-		String sql;
-	
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		PreparedStatement prep_stmt = null;
-	
-		try {
-	
-			Class.forName(JDBC_DRIVER);
-	
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	
-			stmt = conn.createStatement();
-	
-			sql = "SELECT * FROM Users";
-	
-			rs = stmt.executeQuery(sql);
-	
-			while (rs.next()) {
-
-				String Name = rs.getString("Name");
-
-				if (Name.compareTo(name) == 0) {
-
-					String newPurchases = String.valueOf(rs.getInt("Purchases") + 1);
-
-					sql = "UPDATE Users SET Purchases = ? WHERE Name = ?";
-
-					prep_stmt = conn.prepareStatement(sql);
-
-					prep_stmt.setString(1, newPurchases);
-					prep_stmt.setString(2, Name);
-
-					prep_stmt.executeUpdate();
-
-				}
-
-			}
-	
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-			if (prep_stmt != null)
-				prep_stmt.close();
-
-		} catch (SQLException se) {
-
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		} finally {
-
-			try {
-
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (conn != null)
-					conn.close();
-				if (prep_stmt != null)
-					prep_stmt.close();
-
-			} catch (SQLException se) {
-
-				se.printStackTrace();
-
-			}
-
-		}
-
 	}
 
 	// Maps

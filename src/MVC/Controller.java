@@ -17,8 +17,8 @@ import Requests.Request;
 import Requests.AccountCheckRequest;
 import Requests.BuyMapRequest;
 
-import Responses.Response;
-import Responses.AccountCheckResponse;
+import Responses.ResponseController;
+import Responses.ResponseModel;
 
 public class Controller {
 
@@ -44,11 +44,11 @@ public class Controller {
 				
 				AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
 				
-				AccountCheckResponse accountCheckResponse = model.AddUser(accountUser);
+				ResponseModel responseModel = model.AddUser(accountUser);
 		
-				Response response = new Response(API.ADD_USER, accountCheckResponse);
+				ResponseController responseController = new ResponseController(API.ADD_USER, responseModel);
 		
-				jsonString = gson.toJson(response);
+				jsonString = gson.toJson(responseController);
 				
 			}
 
@@ -62,11 +62,11 @@ public class Controller {
 	
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 	
-				AccountCheckResponse accountCheckResponse = model.GetUser(accountCheck.username, accountCheck.password);
+				ResponseModel responseModel = model.GetUser(accountCheck.username, accountCheck.password);
 	
-		    	Response response = new Response(API.GET_USER, accountCheckResponse);
+		    	ResponseController responseController = new ResponseController(API.GET_USER, responseModel);
 	
-		    	jsonString = gson.toJson(response);
+		    	jsonString = gson.toJson(responseController);
 	
 			}
 
@@ -80,12 +80,12 @@ public class Controller {
 				
 				AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
 				
-				AccountCheckResponse accountCheckResponse = model.UpdateUser(accountUser);
+				ResponseModel responseModel = model.UpdateUser(accountUser);
 	
 				
-				Response response = new Response(API.UPDATE_USER, accountCheckResponse);
+				ResponseController responseController = new ResponseController(API.UPDATE_USER, responseModel);
 		
-				jsonString = gson.toJson(response);
+				jsonString = gson.toJson(responseController);
 				
 			}
 	
@@ -101,11 +101,11 @@ public class Controller {
 
 				BuyMapRequest buyMapRequest = gson.fromJson(gson.toJson(request.object), BuyMapRequest.class);
 
-				AccountCheckResponse accountCheckResponse = model.BuyMap(buyMapRequest.mUserName, buyMapRequest.mCityName, buyMapRequest.mType);
+				ResponseModel responseModel = model.BuyMap(buyMapRequest.mUserName, buyMapRequest.mCityName, buyMapRequest.mType);
 
-		    	Response response = new Response(API.BUY_MAP, accountCheckResponse);
+		    	ResponseController responseController = new ResponseController(API.BUY_MAP, responseModel);
 
-		    	jsonString = gson.toJson(response);
+		    	jsonString = gson.toJson(responseController);
 
 			}
 
@@ -122,11 +122,11 @@ public class Controller {
 
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-				AccountCheckResponse accountCheckResponse = model.GetWorker(accountCheck.username, accountCheck.password);
+				ResponseModel responseModel = model.GetWorker(accountCheck.username, accountCheck.password);
 
-		    	Response response = new Response(API.GET_WORKER, accountCheckResponse);
+		    	ResponseController responseController = new ResponseController(API.GET_WORKER, responseModel);
 
-		    	jsonString = gson.toJson(response);
+		    	jsonString = gson.toJson(responseController);
 
 			}
 
@@ -140,27 +140,27 @@ public class Controller {
 
 				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
 
-				AccountCheckResponse accountCheckResponse = model.GetWorker(accountCheck.username, accountCheck.password);
+				ResponseModel responseModel = model.GetWorker(accountCheck.username, accountCheck.password);
 				
-				Response response;
+				ResponseController responseController;
 
-				if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+				if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 
-					if ( ((AccountWorker)accountCheckResponse.mAccount).mType.equals("Manager") || ((AccountWorker)accountCheckResponse.mAccount).mType.equals("ManagerContent") ) {
+					if ( ((AccountWorker)responseModel.mObject).mType.equals("Manager") || ((AccountWorker)responseModel.mObject).mType.equals("ManagerContent") ) {
 
-						accountCheckResponse = model.GetUsersPurchases();
+						responseModel = model.GetUsersPurchases();
 
 					} else {
 
-						accountCheckResponse.mErrorCode = ErrorCodes.WORKER_NOT_MANAGER;
+						responseModel.mErrorCode = ErrorCodes.WORKER_NOT_MANAGER;
 
 					}
 										
 				}
 
-		    	response = new Response(API.GET_USER_PURCHASES, accountCheckResponse);
+				responseController = new ResponseController(API.GET_USER_PURCHASES, responseModel);
 
-		    	jsonString = gson.toJson(response);
+		    	jsonString = gson.toJson(responseController);
 
 			}
 
@@ -172,13 +172,17 @@ public class Controller {
 
 			System.out.println("MapSearch_city_key");
 
-			String cityName = gson.fromJson(gson.toJson(request.object), String.class);
+			{
 
-			List<Map> mapsListCityName = model.MapsByCity(cityName);
+				String cityName = gson.fromJson(gson.toJson(request.object), String.class);
 
-	    	Response responseMapSearchCityName = new Response("MapSearch_city_key", mapsListCityName);
+				List<Map> mapsListCityName = model.MapsByCity(cityName);
+		
+		    	ResponseController responseController = new ResponseController("MapSearch_city_key", mapsListCityName);
+		
+		    	jsonString = gson.toJson(responseController);
 
-	    	jsonString = gson.toJson(responseMapSearchCityName);
+			}
 
 			break;
 
@@ -186,13 +190,17 @@ public class Controller {
 
 			System.out.println("MapSearch_place_key");
 
-			String placeName = gson.fromJson(gson.toJson(request.object), String.class);
-
-			List<Map> mapsListPlaceName = model.MapsByPlace(placeName);
-
-	    	Response responseMapSearchPalceName = new Response("MapSearch_place_key", mapsListPlaceName);
-
-	    	jsonString = gson.toJson(responseMapSearchPalceName);
+			{
+				
+				String placeName = gson.fromJson(gson.toJson(request.object), String.class);
+		
+				List<Map> mapsListPlaceName = model.MapsByPlace(placeName);
+		
+		    	ResponseController responseController = new ResponseController("MapSearch_place_key", mapsListPlaceName);
+		
+		    	jsonString = gson.toJson(responseController);
+				
+			}
 
 			break;
 

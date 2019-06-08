@@ -16,8 +16,8 @@ import DB_classes.Purchase;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
-import Responses.Response;
-import Responses.AccountCheckResponse;
+import Responses.ResponseController;
+import Responses.ResponseModel;
 
 import GUI.UI_server_communicate;
 
@@ -29,9 +29,9 @@ public class View {
 
 	    	Gson gson = new Gson();
 
-	    	Response response = gson.fromJson(message, Response.class);
+	    	ResponseController responseController = gson.fromJson(message, ResponseController.class);
 
-	      	switch (response.type) {
+	      	switch (responseController.mType) {
 
       		// Users
       	
@@ -41,21 +41,21 @@ public class View {
 
 		    	{
 		
-		    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 
-		    	    System.out.println(accountCheckResponse.mErrorCode);
+		    	    System.out.println(responseModel.mErrorCode);
 
-		    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 
-			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
+			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
 
 						System.out.format(accountUser.toString());
 
-		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
+		    		}else if (responseModel.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
 		    			
 			    	    System.out.println("User with this userName already exists");
 
-		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
+		    		}else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
 	    			
 		    			System.out.println("One or more registration details are missing");
 	    			
@@ -71,21 +71,21 @@ public class View {
 
 		    	{
 		    				    		
-		    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 
-		    	    System.out.println(accountCheckResponse.mErrorCode);
+		    	    System.out.println(responseModel.mErrorCode);
 
-		    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 		    			
-			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
+			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
 
 						System.out.println(accountUser.toString());
 
-		    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
+		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
 
 		    			System.out.println("User not found");
 		    			
-		    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
+		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
 		    			
 		    			System.out.println("UserName or Password are missing");
 	    			
@@ -101,17 +101,17 @@ public class View {
 
 		    	{
 		
-		    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 
-		    	    System.out.println(accountCheckResponse.mErrorCode);
+		    	    System.out.println(responseModel.mErrorCode);
 
-		    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 
-			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
+			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
 
 						System.out.format(accountUser.toString());
 
-		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
+		    		}else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
 	    			
 		    			System.out.println("One or more user details are missing");
 	    			
@@ -129,15 +129,15 @@ public class View {
 
 		    	{
 		    		
-		    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 	
-		    	    System.out.println(accountCheckResponse.mErrorCode);
+		    	    System.out.println(responseModel.mErrorCode);
 
-		    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 		    			
 		    			
 		    			
-		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.PURCHASE_DETAILS_MISSING) {
+		    		}else if (responseModel.mErrorCode == ErrorCodes.PURCHASE_DETAILS_MISSING) {
 
 			    	    System.out.println("Purchase details are missing");
 
@@ -155,17 +155,17 @@ public class View {
 
 		    	{
 		    		
-		    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 	
-		    	    System.out.println(accountCheckResponse.mErrorCode);
+		    	    System.out.println(responseModel.mErrorCode);
 
-		    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 		    			
-		    			AccountWorker accountWorker = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountWorker.class);
+		    			AccountWorker accountWorker = gson.fromJson(gson.toJson(responseModel.mObject), AccountWorker.class);
 
 						System.out.format(accountWorker.toString());
 
-		    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
+		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
 
 		    			System.out.println("Worker not found");
 		    			
@@ -181,26 +181,26 @@ public class View {
 
 		    	{
 
-		    		AccountCheckResponse accountCheckResponse = gson.fromJson(gson.toJson(response.object), AccountCheckResponse.class);
+		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 
-		    	    System.out.println(accountCheckResponse.mErrorCode);
+		    	    System.out.println(responseModel.mErrorCode);
 
-		    		if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 
 			    	    Type type = new TypeToken<List<Purchase>>(){}.getType();
 
-			    	    List<Purchase> purchaseList = new Gson().fromJson(gson.toJson(accountCheckResponse.mAccount), type);
+			    	    List<Purchase> purchaseList = new Gson().fromJson(gson.toJson(responseModel.mObject), type);
 
 			    	    for (int i = 0; i < purchaseList.size(); i++) {
 			    	    	Purchase purchase = purchaseList.get(i);
 							System.out.println(purchase.toString());
 			    	    }
 		    			
-		    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
+		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
 
 		    			System.out.println("Worker is not found");
 
-		    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.WORKER_NOT_MANAGER) {
+		    		} else if (responseModel.mErrorCode == ErrorCodes.WORKER_NOT_MANAGER) {
 
 		    			System.out.println("Worker is not manager");
 
@@ -217,7 +217,7 @@ public class View {
 		    	{
 		    		
 		    	    Type typeMap = new TypeToken<List<Map>>(){}.getType();
-		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(response.object), typeMap);
+		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
 		    	    for (int i = 0; i < mapList.size(); i++) {
 		    	    	Map map = mapList.get(i);
 						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
@@ -237,7 +237,7 @@ public class View {
 	    	    {
 
 		    	    Type typeMap = new TypeToken<List<Map>>(){}.getType();
-		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(response.object), typeMap);
+		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
 		    	    for (int i = 0; i < mapList.size(); i++) {
 		    	    	Map map = mapList.get(i);
 						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
