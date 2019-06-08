@@ -14,7 +14,7 @@ import DB_classes.Map;
 import MVC.Model;
 
 import Requests.Request;
-import Requests.AccountCheckRequest;
+import Requests.GeneralRequest;
 import Requests.BuyMapRequest;
 
 import Responses.ResponseController;
@@ -60,9 +60,9 @@ public class Controller {
 				
 			{
 	
-				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), AccountCheckRequest.class);
+				GeneralRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
 	
-				ResponseModel responseModel = model.GetUser(accountCheck.username, accountCheck.password);
+				ResponseModel responseModel = model.GetUser(accountCheck.mUserName, accountCheck.mPassword);
 	
 		    	ResponseController responseController = new ResponseController(API.GET_USER, responseModel);
 	
@@ -90,6 +90,26 @@ public class Controller {
 	
 			break;
 
+		// Subscription
+
+		case API.BUY_SUBSCRITION:
+
+			System.out.println(API.BUY_SUBSCRITION);
+
+			{
+
+				GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
+
+				ResponseModel responseModel = model.BuySubscription(generalRequest.mUserName);
+
+				ResponseController responseController = new ResponseController(API.BUY_SUBSCRITION, responseModel);
+
+				jsonString = gson.toJson(responseController);
+
+			}
+
+			break;
+			
 		// Purchases
 			
 		case API.BUY_MAP:
@@ -119,9 +139,9 @@ public class Controller {
 
 			{
 
-				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), AccountCheckRequest.class);
+				GeneralRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
 
-				ResponseModel responseModel = model.GetWorker(accountCheck.username, accountCheck.password);
+				ResponseModel responseModel = model.GetWorker(accountCheck.mUserName, accountCheck.mPassword);
 
 		    	ResponseController responseController = new ResponseController(API.GET_WORKER, responseModel);
 
@@ -137,9 +157,9 @@ public class Controller {
 
 			{
 
-				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), AccountCheckRequest.class);
+				GeneralRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
 
-				ResponseModel responseModel = model.GetWorker(accountCheck.username, accountCheck.password);
+				ResponseModel responseModel = model.GetWorker(accountCheck.mUserName, accountCheck.mPassword);
 				
 				ResponseController responseController;
 

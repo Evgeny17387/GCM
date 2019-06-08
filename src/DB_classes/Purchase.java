@@ -16,4 +16,12 @@ public class Purchase {
 		return ("UserName: " + this.mUserName + " ; " + "CityName: " + this.mCityName + " ; " + "Type: " + this.mType);
 	}
 
+	public boolean equals(Purchase purchase) {
+		return (
+				this.mUserName.equals(purchase.mUserName) &&
+				this.mCityName.equals(purchase.mCityName) &&
+				this.mType.equals(purchase.mType)
+				);
+	}
+	
 }

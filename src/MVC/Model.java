@@ -22,6 +22,8 @@ import DB_classes.AccountWorker;
 
 import Responses.ResponseModel;
 
+import Utils.TimeAndDateUtils;
+
 public class Model {
 
 	static private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -176,8 +178,9 @@ public class Model {
 					String email = rs.getString("Email");
 					String phoneNumber = rs.getString("PhoneNumber");
 					String creditCard = rs.getString("CreditCard");
+					String subscription = rs.getString("Subscription");
 
-					responseModel.mObject = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, GetUserPurchases(userName));
+					responseModel.mObject = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, GetUserPurchases(userName), subscription);
 
 					System.out.println(responseModel.mObject.toString());
 
@@ -291,6 +294,82 @@ public class Model {
 		} catch (Exception e) {
 
 			responseModel.mErrorCode = ErrorCodes.FAILURE;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+		return responseModel;
+
+	}
+
+	// Buy Subscription
+
+	public ResponseModel BuySubscription(String aUserName) {
+
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+		String sql;
+
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			sql = "UPDATE `Users` SET `Subscription`=? WHERE `UserName`=?";
+
+			prep_stmt = conn.prepareStatement(sql);
+
+			String subscription = TimeAndDateUtils.GetCurrentDate();
+			
+			prep_stmt.setString(1, subscription);
+			prep_stmt.setString(2, aUserName);
+
+			prep_stmt.executeUpdate();
+
+			if (conn != null)
+				conn.close();
+			if (prep_stmt != null)
+				prep_stmt.close();
+			
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
+			responseModel.mObject = subscription;
+				
+		} catch (SQLException se) {
+
+			responseModel.mErrorCode = se.getErrorCode();
+			
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
 
 			e.printStackTrace();
 	

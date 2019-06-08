@@ -10,6 +10,10 @@ public class API {
 
 	// Purchases
 
+	public static final String BUY_SUBSCRITION = "BuySubscription";
+
+	// Purchases
+
 	public static final String BUY_MAP = "BuyMap";
 
 	// Workers

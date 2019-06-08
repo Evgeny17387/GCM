@@ -16,4 +16,14 @@ public class AccountBase {
 		this.mPhoneNumber = aPhoneNumber;
 	}
 
+	public boolean equals(AccountBase accountBase) {
+		return (
+				this.mFirstName.equals(accountBase.mFirstName) &&
+				this.mLastName.equals(accountBase.mLastName) &&
+				this.mPassword.equals(accountBase.mPassword) &&
+				this.mEmail.equals(accountBase.mEmail) &&
+				this.mPhoneNumber.equals(accountBase.mPhoneNumber)
+				);
+	}
+
 }

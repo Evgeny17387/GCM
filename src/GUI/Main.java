@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import GUI.UI_server_communicate;
 
 import Requests.Request;
-import Requests.AccountCheckRequest;
+import Requests.GeneralRequest;
 
 import MVC.View;
 
@@ -184,7 +184,7 @@ public class Main extends Application {
 
         signUp2.setOnAction(e->{
 
-        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText(), null);
+        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText());
         	Request request = new Request(API.ADD_USER, accountUser);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
@@ -210,7 +210,7 @@ public class Main extends Application {
        
         
         btn.setOnAction(e->{
-            	AccountCheckRequest accountCheck = new AccountCheckRequest(name.getText(), password.getText());
+            	GeneralRequest accountCheck = new GeneralRequest(name.getText(), password.getText());
             	Request request = new Request(API.GET_USER, accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
@@ -225,7 +225,7 @@ public class Main extends Application {
 
         nextW.setOnAction(e->{
            
-        	AccountCheckRequest accountCheck = new AccountCheckRequest(nameW.getText(), passwordW.getText());
+        	GeneralRequest accountCheck = new GeneralRequest(nameW.getText(), passwordW.getText());
             	Request request = new Request(API.GET_WORKER, accountCheck);
 //            	Request request = new Request(API.GET_USER_PURCHASES, accountCheck);
             	String jsonString = gson.toJson(request);
