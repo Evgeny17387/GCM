@@ -18,6 +18,22 @@ import DB_classes.AccountUser;
 class ModelTest {
 
 	@Test
+	void testWorkers() {
+
+		Model operations = new Model();
+
+		String firstName = "1";
+		String password = "1";
+
+		// GetUserHistory
+
+		AccountCheckResponse accountCheckResponse = operations.GetUsersPurchases();
+
+	}
+
+	/*
+
+	@Test
 	void testUsers() {
 
 		Model operations = new Model();
@@ -131,5 +147,7 @@ class ModelTest {
 		Assert.assertTrue(operations.ClearTable("Users") == ErrorCodes.SUCCESS);
 
 	}
+
+	*/
 
 }

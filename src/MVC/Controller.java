@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import DB_classes.AccountUser;
+import DB_classes.AccountWorker;
 import DB_classes.Map;
 
 import MVC.Model;
@@ -14,6 +15,8 @@ import Requests.AccountCheckRequest;
 
 import Responses.Response;
 import Responses.AccountCheckResponse;
+
+import Utils.ErrorCodes;
 
 public class Controller {
 
@@ -28,9 +31,13 @@ public class Controller {
 	  	String jsonString = "";
 
 	  	switch (request.type) {
+	  	
+	  	// Users
 
 		case "AddUser":
-			
+
+			System.out.println("AddUser");
+
 			{
 				
 				AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
@@ -46,6 +53,8 @@ public class Controller {
 			break;
 
 		case "GetUser":
+
+			System.out.println("GetUser");
 			
 		{
 
@@ -62,7 +71,9 @@ public class Controller {
 		break;
 
 		case "UpdateUser":
-			
+
+			System.out.println("UpdateUser");
+
 		{
 			
 			AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
@@ -78,7 +89,11 @@ public class Controller {
 
 		break;
 
-		case "WorkerCheck":
+	  	// Workers
+
+		case "GetWorker":
+
+			System.out.println("GetWorker");
 
 			{
 
@@ -86,7 +101,41 @@ public class Controller {
 
 				AccountCheckResponse accountCheckResponse = operations.GetWorker(accountCheck.username, accountCheck.password);
 
-		    	Response response = new Response("WorkerCheck", accountCheckResponse);
+		    	Response response = new Response("GetWorker", accountCheckResponse);
+
+		    	jsonString = gson.toJson(response);
+
+			}
+
+			break;
+
+		case "GetUsersPurchases":
+
+			System.out.println("GetUsersPurchases");
+
+			{
+
+				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
+
+				AccountCheckResponse accountCheckResponse = operations.GetWorker(accountCheck.username, accountCheck.password);
+				
+				Response response;
+
+				if (accountCheckResponse.mErrorCode == ErrorCodes.SUCCESS) {
+
+					if ( ((AccountWorker)accountCheckResponse.mAccount).mType.equals("Manager") || ((AccountWorker)accountCheckResponse.mAccount).mType.equals("ManagerContent") ) {
+
+						accountCheckResponse = operations.GetUsersPurchases();
+
+					} else {
+
+						accountCheckResponse.mErrorCode = ErrorCodes.WORKER_NOT_MANAGER;
+
+					}
+										
+				}
+
+		    	response = new Response("GetUsersPurchases", accountCheckResponse);
 
 		    	jsonString = gson.toJson(response);
 
@@ -95,6 +144,8 @@ public class Controller {
 			break;
 
 		case "MapSearch_city_key":
+
+			System.out.println("MapSearch_city_key");
 
 			String cityName = gson.fromJson(gson.toJson(request.object), String.class);
 
@@ -108,6 +159,8 @@ public class Controller {
 
 		case "MapSearch_place_key":
 
+			System.out.println("MapSearch_place_key");
+
 			String placeName = gson.fromJson(gson.toJson(request.object), String.class);
 
 			List<Map> mapsListPlaceName = operations.MapsByPlace(placeName);
@@ -119,6 +172,8 @@ public class Controller {
 			break;
 
 		default:
+
+			System.out.println("Invalid Request");
 
 			jsonString = "Invalid Request";
 

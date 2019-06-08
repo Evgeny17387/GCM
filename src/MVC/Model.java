@@ -12,12 +12,11 @@ import java.util.ArrayList;
 
 import DB_classes.Map;
 import DB_classes.Place;
+import DB_classes.Purchase;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
 import Responses.AccountCheckResponse;
-
-import Utils.PasswordUtils;
 import Utils.ErrorCodes;
 
 public class Model {
@@ -326,6 +325,13 @@ public class Model {
 
 	public AccountCheckResponse GetWorker(String aFirstName, String aPassword) {
 
+		if (
+				aFirstName.isEmpty() ||
+				aPassword.isEmpty()
+			) {
+			return new AccountCheckResponse(ErrorCodes.USER_DETAILS_MISSING, null);
+		}
+
 		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.USER_NOT_FOUND, null);
 
 		String sql;
@@ -349,10 +355,9 @@ public class Model {
 			while (rs.next()) {
 
 				String firstName = rs.getString("FirstName");
-				String encryptedPassword = rs.getString("Password");
-				String salt = rs.getString("Salt");
+				String password = rs.getString("Password");
 
-				if (firstName.compareTo(aFirstName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
+				if (firstName.compareTo(aFirstName) == 0 && password.compareTo(aPassword) == 0) {
 
 					accountCheckResponse.mErrorCode = ErrorCodes.SUCCESS;
 
@@ -362,9 +367,9 @@ public class Model {
 					String phoneNumber = rs.getString("PhoneNumber");
 					String type = rs.getString("Type");
 
-					accountCheckResponse.mAccount = new AccountWorker(firstName, lastName, encryptedPassword, email, phoneNumber, id, type);
+					accountCheckResponse.mAccount = new AccountWorker(firstName, lastName, password, email, phoneNumber, id, type);
 
-					System.out.format("%s - %s - %s - %s - %s - %d - %s\n", firstName, lastName, encryptedPassword, email, phoneNumber, id, type);
+					System.out.format("%s - %s - %s - %s - %s - %d - %s\n", firstName, lastName, password, email, phoneNumber, id, type);
 					
 				}
 
@@ -385,6 +390,95 @@ public class Model {
 	
 		} catch (Exception e) {
 	
+			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+
+		}
+		
+		return accountCheckResponse;
+	
+	}
+
+	public AccountCheckResponse GetUsersPurchases() {
+
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+
+		List<Purchase> purchaseList = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM Purchases";
+
+			rs = stmt.executeQuery(sql);
+
+			purchaseList = new ArrayList<Purchase>();
+
+			while (rs.next()) {
+
+				String userName = rs.getString("UserName");
+				String mapName = rs.getString("MapName");
+
+				Purchase purchase = new Purchase(userName, mapName);
+				
+				purchaseList.add(purchase);
+
+				System.out.println(purchase.toString());
+
+			}
+			
+			accountCheckResponse.mAccount = purchaseList;
+
+			rs.close();
+			stmt.close();
+			conn.close();
+
+		} catch (SQLException se) {
+
+			accountCheckResponse.mErrorCode = se.getErrorCode();
+
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
 			e.printStackTrace();
 	
 		} finally {

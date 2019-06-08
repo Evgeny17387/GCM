@@ -223,7 +223,8 @@ public class Main extends Application {
         nextW.setOnAction(e->{
            
         	AccountCheckRequest accountCheck = new AccountCheckRequest(nameW.getText(), passwordW.getText());
-            	Request request = new Request("WorkerCheck", accountCheck);
+            	Request request = new Request("GetWorker", accountCheck);
+//            	Request request = new Request("GetUsersPurchases", accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
 
