@@ -9,7 +9,7 @@ public class Purchase {
 	public Purchase(String aUserName, String aCityName, String aType) {
 		this.mUserName = aUserName;
 		this.mCityName = aCityName;
-		this.mType = aCityName;
+		this.mType = aType;
 	}
 
 	public String toString() {

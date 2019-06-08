@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 
 class ControllerModelTest {
 
-	// Tests: users add, add - no duplicate username, get, update
+	// Tests: users add, add - no duplicate username, get, update, buy maps, show all maps
 
 	@Test
 	void testScenario1() {
@@ -29,7 +29,7 @@ class ControllerModelTest {
 		String phoneNumber;
 		String userName;
 		String creditCard;
-		
+
 		String jsonTest;
 		String jsonRequest;
     	String jsonController;
@@ -37,6 +37,11 @@ class ControllerModelTest {
 		AccountUser accountUser;
 
 		Request request;
+		AccountCheckRequest accountCheckRequest;
+		BuyMapRequest buyMapRequest;
+
+		String cityName;
+		String type;
 
 		Controller controller = new Controller();
 		Model model = new Model();
@@ -85,7 +90,7 @@ class ControllerModelTest {
 
 	    jsonTest = "{\"type\":\"GetUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":[],\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
 
-    	AccountCheckRequest accountCheckRequest = new AccountCheckRequest(userName, password);
+    	accountCheckRequest = new AccountCheckRequest(userName, password);
 
     	request = new Request(API.GET_USER, accountCheckRequest);
 
@@ -121,45 +126,14 @@ class ControllerModelTest {
 
 	    Assert.assertTrue(jsonController.equals(jsonTest));
 
-	}
-
-	// Tests: buy map, manager worker sees all purchases
-
-	@Test
-	void testScenario2() {
-
-		String firstName = "1";
-		String password = "1";
-
-		String userName;
-		String cityName;
-		String type;
-
-		String jsonTest;
-		String jsonRequest;
-    	String jsonController;
-
-    	AccountCheckRequest accountCheckRequest;
-
-		Request request;
-
-		Controller controller = new Controller();
-		Model model = new Model();
-		Gson gson = new Gson();
-
-		// ClearTable
-
-		Assert.assertTrue(model.ClearTable("Purchases") == ErrorCodes.SUCCESS);
-
 		// By map
 
-	    jsonTest = "";
+	    jsonTest = "{\"type\":\"BuyMap\",\"object\":{\"mErrorCode\":0}}";
 
-		userName = "1";
 		cityName = "1";
 		type = PurchaseType.ONE_TIME;
 
-	    BuyMapRequest buyMapRequest = new BuyMapRequest(userName, cityName, type);
+	    buyMapRequest = new BuyMapRequest(userName, cityName, type);
 
     	request = new Request(API.BUY_MAP, buyMapRequest);
 
@@ -167,15 +141,50 @@ class ControllerModelTest {
 
     	jsonController = controller.Run(jsonRequest);
 
-//	    Assert.assertTrue(jsonController.equals(jsonTest));
+	    System.out.println(jsonController);
+
+	    Assert.assertTrue(jsonController.equals(jsonTest));
+
+		// By map
+
+	    jsonTest = "{\"type\":\"BuyMap\",\"object\":{\"mErrorCode\":0}}";
+
+		cityName = "2";
+		type = PurchaseType.SUBSCRIPTION;
+
+	    buyMapRequest = new BuyMapRequest(userName, cityName, type);
+
+    	request = new Request(API.BUY_MAP, buyMapRequest);
+
+    	jsonRequest = gson.toJson(request);
+
+    	jsonController = controller.Run(jsonRequest);
 
 	    System.out.println(jsonController);
 
+	    Assert.assertTrue(jsonController.equals(jsonTest));
+
+		// GetUser
+
+	    jsonTest = "{\"type\":\"GetUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard1\",\"mPurchases\":[{\"mUserName\":\"userName\",\"mCityName\":\"1\",\"mType\":\"1\"},{\"mUserName\":\"userName\",\"mCityName\":\"2\",\"mType\":\"2\"}],\"mFirstName\":\"firstName1\",\"mLastName\":\"lastName1\",\"mPassword\":\"password1\",\"mEmail\":\"email1\",\"mPhoneNumber\":\"phoneNumber1\"}}}";
+
+    	accountCheckRequest = new AccountCheckRequest(userName, password);
+
+    	request = new Request(API.GET_USER, accountCheckRequest);
+
+    	jsonRequest = gson.toJson(request);
+
+    	jsonController = controller.Run(jsonRequest);
+
+	    System.out.println(jsonController);
+
+	    Assert.assertTrue(jsonController.equals(jsonTest));
+
 		// Show all purchases
 
-	    jsonTest = "";
+	    jsonTest = "{\"type\":\"GetUsersPurchases\",\"object\":{\"mErrorCode\":0,\"mAccount\":[{\"mUserName\":\"userName\",\"mCityName\":\"1\",\"mType\":\"1\"},{\"mUserName\":\"userName\",\"mCityName\":\"2\",\"mType\":\"2\"}]}}";
 
-	    accountCheckRequest = new AccountCheckRequest(firstName, password);
+	    accountCheckRequest = new AccountCheckRequest("1", "1");
 
     	request = new Request(API.GET_USER_PURCHASES, accountCheckRequest);
 
@@ -183,9 +192,9 @@ class ControllerModelTest {
 
     	jsonController = controller.Run(jsonRequest);
 
-//	    Assert.assertTrue(jsonController.equals(jsonTest));
-
 	    System.out.println(jsonController);
+
+	    Assert.assertTrue(jsonController.equals(jsonTest));
 
 	}
 
