@@ -262,34 +262,6 @@ public class Main extends Application {
         guestBtn.setTranslateY(-200);
         root.getChildren().add(signUp);
         signUp.setTranslateY(-150);
-
-        /***** Evgeny's Test*****/
-
-        Button Evgeny_Test = new Button();
-        Evgeny_Test.setText("Evgeny_Test");
-        Evgeny_Test.setOnAction(e->{
-        	
-        	String string = "";
-        	
-    	    System.out.println(string.isEmpty());
-
-//			AccountCheckRequest accountCheck = new AccountCheckRequest(nameW.getText(), passwordW.getText());
-
-//			Request request = new Request("WorkerCheck", accountCheck);
-
-//			String jsonString = gson.toJson(request);
-
-//			chat.SendToServer(jsonString);
-
-//			communicate.ask_server();
-
-        });
-
-        root.getChildren().add(Evgeny_Test);
-        Evgeny_Test.setTranslateY(-50);
-
-        /***** Evgeny's Test*****/
-
         menu=new Scene(root,1280,720);
         primaryStage.setScene(menu);
         primaryStage.show();
