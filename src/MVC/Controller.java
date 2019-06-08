@@ -32,7 +32,7 @@ public class Controller {
 
 	  	String jsonString = "";
 
-	  	switch (request.type) {
+	  	switch (request.mType) {
 	  	
 	  	// Users
 	  	
@@ -42,7 +42,7 @@ public class Controller {
 
 			{
 				
-				AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
+				AccountUser accountUser = gson.fromJson(gson.toJson(request.mObject), AccountUser.class);
 				
 				ResponseModel responseModel = model.AddUser(accountUser);
 		
@@ -60,7 +60,7 @@ public class Controller {
 				
 			{
 	
-				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
+				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), AccountCheckRequest.class);
 	
 				ResponseModel responseModel = model.GetUser(accountCheck.username, accountCheck.password);
 	
@@ -78,10 +78,9 @@ public class Controller {
 
 			{
 				
-				AccountUser accountUser = gson.fromJson(gson.toJson(request.object), AccountUser.class);
+				AccountUser accountUser = gson.fromJson(gson.toJson(request.mObject), AccountUser.class);
 				
 				ResponseModel responseModel = model.UpdateUser(accountUser);
-	
 				
 				ResponseController responseController = new ResponseController(API.UPDATE_USER, responseModel);
 		
@@ -99,7 +98,7 @@ public class Controller {
 
 			{
 
-				BuyMapRequest buyMapRequest = gson.fromJson(gson.toJson(request.object), BuyMapRequest.class);
+				BuyMapRequest buyMapRequest = gson.fromJson(gson.toJson(request.mObject), BuyMapRequest.class);
 
 				ResponseModel responseModel = model.BuyMap(buyMapRequest.mUserName, buyMapRequest.mCityName, buyMapRequest.mType);
 
@@ -120,7 +119,7 @@ public class Controller {
 
 			{
 
-				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
+				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), AccountCheckRequest.class);
 
 				ResponseModel responseModel = model.GetWorker(accountCheck.username, accountCheck.password);
 
@@ -138,7 +137,7 @@ public class Controller {
 
 			{
 
-				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.object), AccountCheckRequest.class);
+				AccountCheckRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), AccountCheckRequest.class);
 
 				ResponseModel responseModel = model.GetWorker(accountCheck.username, accountCheck.password);
 				
@@ -174,7 +173,7 @@ public class Controller {
 
 			{
 
-				String cityName = gson.fromJson(gson.toJson(request.object), String.class);
+				String cityName = gson.fromJson(gson.toJson(request.mObject), String.class);
 
 				List<Map> mapsListCityName = model.MapsByCity(cityName);
 		
@@ -192,7 +191,7 @@ public class Controller {
 
 			{
 				
-				String placeName = gson.fromJson(gson.toJson(request.object), String.class);
+				String placeName = gson.fromJson(gson.toJson(request.mObject), String.class);
 		
 				List<Map> mapsListPlaceName = model.MapsByPlace(placeName);
 		

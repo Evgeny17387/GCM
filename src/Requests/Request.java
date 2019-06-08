@@ -2,12 +2,12 @@ package Requests;
 
 public class Request {
 
-    public String type;
-    public Object object;
+    public String mType;
+    public Object mObject;
 
-    public Request(String type, Object object){
-    	this.type = type;
-    	this.object = object;
+    public Request(String aType, Object aObject){
+    	this.mType = aType;
+    	this.mObject = aObject;
     }
     
 }
