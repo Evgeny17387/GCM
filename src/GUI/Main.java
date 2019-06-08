@@ -184,7 +184,7 @@ public class Main extends Application {
 
         signUp2.setOnAction(e->{
 
-        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText());
+        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText(), null);
         	Request request = new Request(API.ADD_USER, accountUser);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);

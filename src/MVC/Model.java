@@ -165,12 +165,8 @@ public class Model {
 			while (rs.next()) {
 
 				String userName = rs.getString("UserName");
-//				String encryptedPassword = rs.getString("Password");
 				String password = rs.getString("Password");
 
-//				String salt = rs.getString("Salt");
-
-//				if (userName.compareTo(aUserName) == 0 && PasswordUtils.verifyUserPassword(aPassword, encryptedPassword, salt)) {
 				if (userName.compareTo(aUserName) == 0 && password.compareTo(aPassword) == 0) {
 
 					accountCheckResponse.mErrorCode = ErrorCodes.SUCCESS;
@@ -180,16 +176,15 @@ public class Model {
 					String email = rs.getString("Email");
 					String phoneNumber = rs.getString("PhoneNumber");
 					String creditCard = rs.getString("CreditCard");
-					int purchases = rs.getInt("Purchases");
 
-					accountCheckResponse.mAccount = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, purchases);
+					accountCheckResponse.mAccount = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, GetUserPurchases(userName));
 
-					System.out.format("%s - %s - %s - %s - %s - %s - %s - %d\n", firstName, lastName, password, email, phoneNumber, userName, creditCard, purchases);
-					
+					System.out.println(accountCheckResponse.mAccount.toString());
+
 				}
 
 			}
-			
+
 			rs.close();
 			stmt.close();
 			conn.close();
@@ -326,6 +321,94 @@ public class Model {
 
 	// Purchases
 
+	public AccountCheckResponse GetUsersPurchases() {
+
+		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+
+		List<Purchase> purchaseList = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM Purchases";
+
+			rs = stmt.executeQuery(sql);
+
+			purchaseList = new ArrayList<Purchase>();
+
+			while (rs.next()) {
+
+				String userName = rs.getString("UserName");
+				String cityName = rs.getString("CityName");
+				String type = rs.getString("Type");
+
+				Purchase purchase = new Purchase(userName, cityName, type);
+				
+				purchaseList.add(purchase);
+
+				System.out.println(purchase.toString());
+
+			}
+			
+			accountCheckResponse.mAccount = purchaseList;
+
+			rs.close();
+			stmt.close();
+			conn.close();
+
+		} catch (SQLException se) {
+
+			accountCheckResponse.mErrorCode = se.getErrorCode();
+
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+
+		}
+		
+		return accountCheckResponse;
+	
+	}
+	
 	public AccountCheckResponse BuyMap(String aUserName, String aCityName, String aType) {
 
 		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
@@ -508,9 +591,7 @@ public class Model {
 	
 	}
 
-	public AccountCheckResponse GetUsersPurchases() {
-
-		AccountCheckResponse accountCheckResponse = new AccountCheckResponse(ErrorCodes.SUCCESS, null);
+	private List<Purchase> GetUserPurchases(String aUserName) {
 
 		List<Purchase> purchaseList = null;
 
@@ -528,7 +609,7 @@ public class Model {
 
 			stmt = conn.createStatement();
 
-			sql = "SELECT * FROM Purchases";
+			sql = "SELECT `UserName`, `CityName`, `Type` FROM `Purchases` WHERE `UserName`=" + aUserName;
 
 			rs = stmt.executeQuery(sql);
 
@@ -547,8 +628,6 @@ public class Model {
 				System.out.println(purchase.toString());
 
 			}
-			
-			accountCheckResponse.mAccount = purchaseList;
 
 			rs.close();
 			stmt.close();
@@ -556,16 +635,12 @@ public class Model {
 
 		} catch (SQLException se) {
 
-			accountCheckResponse.mErrorCode = se.getErrorCode();
-
 			se.printStackTrace();
 			System.out.println("SQLException: " + se.getMessage());
 	        System.out.println("SQLState: " + se.getSQLState());
 	        System.out.println("VendorError: " + se.getErrorCode());
 	
 		} catch (Exception e) {
-	
-			accountCheckResponse.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
 
 			e.printStackTrace();
 	
@@ -592,7 +667,7 @@ public class Model {
 
 		}
 		
-		return accountCheckResponse;
+		return purchaseList;
 	
 	}
 

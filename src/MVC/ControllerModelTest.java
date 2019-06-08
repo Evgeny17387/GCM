@@ -45,10 +45,11 @@ class ControllerModelTest {
 		// ClearTable
 
 		Assert.assertTrue(model.ClearTable("Users") == ErrorCodes.SUCCESS);
+		Assert.assertTrue(model.ClearTable("Purchases") == ErrorCodes.SUCCESS);
 
 		// AddUser
 
-	    jsonTest = "{\"type\":\"AddUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":0,\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
+	    jsonTest = "{\"type\":\"AddUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":[],\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
 
 		firstName = "firstName";
 		lastName = "lastName";
@@ -58,7 +59,7 @@ class ControllerModelTest {
 		userName = "userName";
 		creditCard = "creditCard";
 
-		accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard);
+		accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, null);
 
 		request = new Request(API.ADD_USER, accountUser);
 
@@ -66,9 +67,9 @@ class ControllerModelTest {
 
     	jsonController = controller.Run(jsonRequest);
 
-	    Assert.assertTrue(jsonController.equals(jsonTest));
-
 	    System.out.println(jsonController);
+
+	    Assert.assertTrue(jsonController.equals(jsonTest));
 
 		// AddUser - already registered - should fail
 
@@ -76,13 +77,13 @@ class ControllerModelTest {
 	    
     	jsonController = controller.Run(jsonRequest);
 
-	    Assert.assertTrue(jsonController.equals(jsonTest));
-
 	    System.out.println(jsonController);
+
+	    Assert.assertTrue(jsonController.equals(jsonTest));
 
 		// GetUser
 
-	    jsonTest = "{\"type\":\"GetUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":0,\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
+	    jsonTest = "{\"type\":\"GetUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard\",\"mPurchases\":[],\"mFirstName\":\"firstName\",\"mLastName\":\"lastName\",\"mPassword\":\"password\",\"mEmail\":\"email\",\"mPhoneNumber\":\"phoneNumber\"}}}";
 
     	AccountCheckRequest accountCheckRequest = new AccountCheckRequest(userName, password);
 
@@ -92,13 +93,13 @@ class ControllerModelTest {
 
     	jsonController = controller.Run(jsonRequest);
 
-	    Assert.assertTrue(jsonController.equals(jsonTest));
-
 	    System.out.println(jsonController);
+
+	    Assert.assertTrue(jsonController.equals(jsonTest));
 
 		// UpdateUser
 
-	    jsonTest = "{\"type\":\"UpdateUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard1\",\"mPurchases\":0,\"mFirstName\":\"firstName1\",\"mLastName\":\"lastName1\",\"mPassword\":\"password1\",\"mEmail\":\"email1\",\"mPhoneNumber\":\"phoneNumber1\"}}}";
+	    jsonTest = "{\"type\":\"UpdateUser\",\"object\":{\"mErrorCode\":0,\"mAccount\":{\"mUserName\":\"userName\",\"mCreditCard\":\"creditCard1\",\"mPurchases\":[],\"mFirstName\":\"firstName1\",\"mLastName\":\"lastName1\",\"mPassword\":\"password1\",\"mEmail\":\"email1\",\"mPhoneNumber\":\"phoneNumber1\"}}}";
 
 		firstName = "firstName1";
 		lastName = "lastName1";
@@ -108,7 +109,7 @@ class ControllerModelTest {
 		userName = "userName";
 		creditCard = "creditCard1";
 
-		accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard);
+		accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, null);
 
 		request = new Request(API.UPDATE_USER, accountUser);
 
@@ -116,9 +117,9 @@ class ControllerModelTest {
 
     	jsonController = controller.Run(jsonRequest);
 
-	    Assert.assertTrue(jsonController.equals(jsonTest));
-
 	    System.out.println(jsonController);
+
+	    Assert.assertTrue(jsonController.equals(jsonTest));
 
 	}
 

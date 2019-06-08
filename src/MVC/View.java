@@ -49,7 +49,7 @@ public class View {
 
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
-						System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName, accountUser.mPurchases);
+						System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName);
 
 		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
 		    			
@@ -79,7 +79,7 @@ public class View {
 		    			
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
-						System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName, accountUser.mPurchases);
+						System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName);
 
 		    		} else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
 
@@ -109,7 +109,7 @@ public class View {
 
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(accountCheckResponse.mAccount), AccountUser.class);
 
-						System.out.format("%s - %s - %s - %s - %s - %s - %d\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName, accountUser.mPurchases);
+						System.out.format("%s - %s - %s - %s - %s - %s\n", accountUser.mFirstName, accountUser.mLastName, accountUser.mPassword, accountUser.mEmail, accountUser.mPhoneNumber, accountUser.mUserName);
 
 		    		}else if (accountCheckResponse.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
 	    			

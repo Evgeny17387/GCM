@@ -32,7 +32,7 @@ class ModelTest {
 		String userName = "userName";
 		String creditCard = "creditCard";
 
-		AccountUser accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard);
+		AccountUser accountUser = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, null);
 
 		AccountCheckResponse accountCheckResponse = model.AddUser(accountUser);
 
