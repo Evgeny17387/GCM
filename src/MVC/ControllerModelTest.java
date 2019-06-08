@@ -19,10 +19,10 @@ import com.google.gson.Gson;
 
 class ControllerModelTest {
 
-	// Scenario: AddUser, BuySubscription, GetUser
+	// Scenario: AddUser, BuySubscription, GetUser, DeleteSubscription, GetUser
 
 	@Test
-	void testScenario2() {
+	void testScenario1() {
 
 		String firstName;
 		String lastName;
@@ -95,6 +95,40 @@ class ControllerModelTest {
     	Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
 
     	subscription = (String)responseModel.mObject;
+		accountUser.mSubscription = subscription;
+
+	    // GetUser
+
+		generalRequest = new GeneralRequest(userName, password);
+    	request = new Request(API.GET_USER, generalRequest);
+    	jsonRequest = gson.toJson(request);
+    	jsonController = controller.Run(jsonRequest);
+
+    	responseController = gson.fromJson(jsonController, ResponseController.class);
+		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+
+    	Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
+
+		accountUserResponse = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
+
+    	Assert.assertTrue(accountUserResponse.equals(accountUser));
+
+	    // Delete Subscription
+
+	    generalRequest = new GeneralRequest(userName, password);
+		request = new Request(API.DELETE_SUBSCRITION, generalRequest);
+		jsonRequest = gson.toJson(request);
+    	jsonController = controller.Run(jsonRequest);
+
+    	responseController = gson.fromJson(jsonController, ResponseController.class);
+		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+
+    	Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
+
+    	subscription = "NO";
+
+    	Assert.assertTrue(((String)responseModel.mObject).equals(subscription));
+
 		accountUser.mSubscription = subscription;
 
 	    // GetUser

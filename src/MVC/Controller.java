@@ -109,7 +109,25 @@ public class Controller {
 			}
 
 			break;
-			
+
+		case API.DELETE_SUBSCRITION:
+
+			System.out.println(API.DELETE_SUBSCRITION);
+
+			{
+
+				GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
+
+				ResponseModel responseModel = model.DeleteSubscription(generalRequest.mUserName);
+
+				ResponseController responseController = new ResponseController(API.DELETE_SUBSCRITION, responseModel);
+
+				jsonString = gson.toJson(responseController);
+
+			}
+
+			break;
+
 		// Purchases
 			
 		case API.BUY_MAP:

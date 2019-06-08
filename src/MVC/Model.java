@@ -398,6 +398,80 @@ public class Model {
 
 	}
 
+	public ResponseModel DeleteSubscription(String aUserName) {
+
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+		String sql;
+
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			sql = "UPDATE `Users` SET `Subscription`=? WHERE `UserName`=?";
+
+			prep_stmt = conn.prepareStatement(sql);
+
+			String subscription = "NO";
+			
+			prep_stmt.setString(1, subscription);
+			prep_stmt.setString(2, aUserName);
+
+			prep_stmt.executeUpdate();
+
+			if (conn != null)
+				conn.close();
+			if (prep_stmt != null)
+				prep_stmt.close();
+			
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
+			responseModel.mObject = subscription;
+				
+		} catch (SQLException se) {
+
+			responseModel.mErrorCode = se.getErrorCode();
+			
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+		return responseModel;
+
+	}
+
 	// Purchases
 
 	public ResponseModel GetUsersPurchases() {

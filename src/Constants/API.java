@@ -11,6 +11,7 @@ public class API {
 	// Purchases
 
 	public static final String BUY_SUBSCRITION = "BuySubscription";
+	public static final String DELETE_SUBSCRITION = "DeleteSubscription";
 
 	// Purchases
 
