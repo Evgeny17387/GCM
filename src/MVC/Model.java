@@ -852,7 +852,7 @@ public class Model {
 
 		    	place = new Place(rs.getString("Name"), rs.getString("Classification"));
 
-				System.out.format("%s - %s\n", rs.getString("Name"), rs.getString("Classification"));
+				System.out.format(place.toString());
 
 		    }
 
@@ -992,16 +992,17 @@ public class Model {
 
 		    while (rs.next()) {
 
-		    	String Name = rs.getString("Name");
-				String City = rs.getString("City");
-				int Version = rs.getInt("Version");
-				String Description = rs.getString("Description");
+		    	String name = rs.getString("Name");
+				String city = rs.getString("City");
+				int version = rs.getInt("Version");
+				String description = rs.getString("Description");
+				int price = rs.getInt("Price");
 				
-				System.out.format("%s - %s - %d - %s\n", Name, City, Version, Description);
+				List<Place> places = GetPlacesByMap(name);
+				
+				map = new Map(name, version, city, description, places, price);
 
-				List<Place> Places = GetPlacesByMap(Name);
-				
-				map = new Map(Name, Version, City, Description, Places);
+				System.out.format(map.toString());
 
 			}
 

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import Constants.API;
 import Constants.ErrorCodes;
-import Constants.PurchaseType;
 
 import DB_classes.AccountUser;
 
@@ -13,7 +12,6 @@ import Requests.Request;
 import Responses.ResponseController;
 import Responses.ResponseModel;
 import Requests.GeneralRequest;
-import Requests.BuyMapRequest;
 
 import com.google.gson.Gson;
 

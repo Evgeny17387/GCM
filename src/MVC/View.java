@@ -220,10 +220,7 @@ public class View {
 		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
 		    	    for (int i = 0; i < mapList.size(); i++) {
 		    	    	Map map = mapList.get(i);
-						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
-						for (Place place : map.mPlaces) {
-							System.out.format("%s - %s\n", place.mName, place.mClassification);
-						}
+						System.out.println(map.toString());
 		    	    }
 		    		
 		    	}
@@ -240,10 +237,7 @@ public class View {
 		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
 		    	    for (int i = 0; i < mapList.size(); i++) {
 		    	    	Map map = mapList.get(i);
-						System.out.format("%s - %s - %d - %s\n", map.mName, map.mCity, map.mVersion, map.mDescription);
-						for (Place place : map.mPlaces) {
-							System.out.format("%s - %s\n", place.mName, place.mClassification);
-						}
+						System.out.println(map.toString());
 		    	    }
 
 	    	    }

@@ -11,13 +11,28 @@ public class Map {
 	public String mCity;
 	public String mDescription;
 	public List<Place> mPlaces;
+	public int mPrice;
 	
-	public Map(String aName, int aVersion, String aCity, String aDescription, List<Place> aPlaces){
+	public Map(String aName, int aVersion, String aCity, String aDescription, List<Place> aPlaces, int aPrice){
     	this.mName = aName;
     	this.mVersion = aVersion;
     	this.mCity = aCity;
     	this.mDescription = aDescription;
     	this.mPlaces = aPlaces;
+    	this.mPrice = aPrice;
 	}
 
+	public String toString() {
+
+		return (
+				"Name:" + this.mName + " ; " +
+				"Version:" + this.mVersion + " ; " +
+				"City:" + this.mCity + " ; " +
+				"Description:" + this.mDescription + " ; " +
+				"Places:" + this.mPlaces.toString() + " ; " +
+				"Price:" + this.mPrice
+				);
+
+	}
+	
 }

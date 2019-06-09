@@ -9,5 +9,14 @@ public class Place {
 		this.mName = aName;
 		this.mClassification = aClassification;
 	}
-	
+
+	public String toString() {
+
+		return (
+				"Name:" + this.mName + " ; " +
+				"Classification:" + this.mClassification
+				);
+
+	}
+
 }
