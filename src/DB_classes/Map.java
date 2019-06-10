@@ -12,14 +12,16 @@ public class Map {
 	public String mDescription;
 	public List<Place> mPlaces;
 	public int mPrice;
+	public String mURL;
 	
-	public Map(String aName, int aVersion, String aCity, String aDescription, List<Place> aPlaces, int aPrice){
+	public Map(String aName, int aVersion, String aCity, String aDescription, List<Place> aPlaces, int aPrice, String aURL){
     	this.mName = aName;
     	this.mVersion = aVersion;
     	this.mCity = aCity;
     	this.mDescription = aDescription;
     	this.mPlaces = aPlaces;
     	this.mPrice = aPrice;
+    	this.mURL = aURL;
 	}
 
 	public String toString() {
@@ -30,7 +32,8 @@ public class Map {
 				"City:" + this.mCity + " ; " +
 				"Description:" + this.mDescription + " ; " +
 				"Places:" + this.mPlaces.toString() + " ; " +
-				"Price:" + this.mPrice
+				"Price:" + this.mPrice + " ; " +
+				"URL:" + this.mURL
 				);
 
 	}

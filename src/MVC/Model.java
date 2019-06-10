@@ -1061,10 +1061,11 @@ public class Model {
 				int version = rs.getInt("Version");
 				String description = rs.getString("Description");
 				int price = rs.getInt("Price");
+				String url = rs.getString("URL");
 				
 				List<Place> places = GetPlacesByMap(name);
 				
-				map = new Map(name, version, city, description, places, price);
+				map = new Map(name, version, city, description, places, price, url);
 
 				System.out.format(map.toString());
 

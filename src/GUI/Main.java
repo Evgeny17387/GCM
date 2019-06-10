@@ -17,6 +17,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class Main extends Application {
     static int my_flag=-1;
     public static List<Map> myMapList;
     
-    
+
     
     
     
@@ -467,33 +468,42 @@ public class Main extends Application {
         memberZone.getChildren().add(btn);
         btn.setTranslateY(100);
         signIn = new Scene(memberZone,1280,720);
-    
+        
         StackPane _result=new StackPane();
         _result.setBackground(new Background(myBIc));
         mapShow.setMaxWidth(500);
-        mapShow.setTranslateY(-100);
+        mapShow.setTranslateY(0);
   	   _result.getChildren().add(mapShow);
   	   _result.getChildren().add(nextM);
   	   _result.getChildren().add(pervM);
   	   _result.getChildren().add(chooseM);
   	   _result.getChildren().add(getBack11);
   	   nextM.setTranslateX(100);
-  	   nextM.setTranslateY(-50);
-  	   chooseM.setTranslateY(-50);
-  	   pervM.setTranslateY(-50);
+  	   nextM.setTranslateY(50);
+  	   chooseM.setTranslateY(50);
+  	   pervM.setTranslateY(50);
   	   chooseM.setTranslateX(0);
-  	   getBack11.setTranslateY(0);
+  	   getBack11.setTranslateY(100);
   	   pervM.setTranslateX(-100);
-        result=new Scene(_result,1280,720);
+
+  	   ImageView imageView = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));
+       imageView.setTranslateX(-100);
+       imageView.setTranslateY(-150);
+       imageView.setFitHeight(200);
+       imageView.setFitWidth(350);
+       imageView.setPreserveRatio(true);
+       _result.getChildren().add(imageView);
+
+  	   result=new Scene(_result,1280,720);
   	
         
         nextM.setOnAction(e->{
         	if(counter!=myMapList.size()-1)counter++;
-        	setMap();
+        	setMap(imageView);
         });
         pervM.setOnAction(e->{
         	if(counter!=0)counter--;
-        	setMap();
+        	setMap(imageView);
         });
         
         
@@ -517,7 +527,7 @@ public class Main extends Application {
         	chat.SendToServer(jsonString);
 
         	communicate.ask_server();
-        	setMap();
+        	setMap(imageView);
 
 
         });
@@ -527,10 +537,13 @@ public class Main extends Application {
     	my_flag=flag;
     }
     
-    public void setMap() {
+    public void setMap(ImageView aImageView) {
     if (counter<0||counter>myMapList.size()) return;
     Map map = myMapList.get(counter);
 	System.out.println("good" +map.toString());
+	aImageView.setImage(new Image(map.mURL));
 	mapShow.setText(map.toString());
     window.setScene(result);}
+    
+    
     }
