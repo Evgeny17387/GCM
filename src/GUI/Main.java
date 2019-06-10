@@ -37,6 +37,7 @@ public class Main extends Application {
 	/****Scenes declare****/
 
 	Stage window;
+	Scene memPage;
 	Scene wrongUser;
 	Scene missingU;
 	Scene alreadyExists;
@@ -251,8 +252,8 @@ public class Main extends Application {
             	communicate.ask_server();
             	communicate.ask_server();
             	if (my_flag==0) { window.setScene(wrongUser);my_flag=-1;}
-            	if(my_flag==1) { window.setScene(missingU);my_flag=-1;}
-
+            	else if(my_flag==1) { window.setScene(missingU);my_flag=-1;}
+            	else if(my_flag==2) {window.setScene(memPage);my_flag=-1;}
             });
             
 
@@ -315,6 +316,12 @@ public class Main extends Application {
         client.setBackground(new Background(myBIz));
         clientZone=new Scene(client,1280,720);
 
+        StackPane _memPage=new StackPane();
+        _memPage.setBackground(new Background(myBI));
+        memPage=new Scene(_memPage,1280,720);
+        
+        
+        
         
         StackPane verifyS=new StackPane();
         verifyS.getChildren().add(verifySerial);
