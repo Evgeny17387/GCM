@@ -1449,7 +1449,7 @@ public class Model {
 
 		    while (rs.next()) {
 
-		    	place = new Place(rs.getString("Name"), rs.getString("Classification"));
+		    	place = new Place(rs.getString("Name"), rs.getString("Classification"), rs.getString("URL"));
 
 				System.out.println(place.toString());
 

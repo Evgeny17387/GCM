@@ -34,6 +34,7 @@ import Communication.ClientConsole;
 
 import DB_classes.AccountUser;
 import DB_classes.Map;
+import DB_classes.Place;
 import Constants.API;
 
 public class Main extends Application {
@@ -85,6 +86,7 @@ public class Main extends Application {
     static int counter=0;
     static int my_flag=-1;
     public static List<Map> myMapList;
+    static int counterPlace=0;
     
 
     
@@ -216,7 +218,7 @@ public class Main extends Application {
         
         
         
-        
+
         
         /****Buttons actions****/
 
@@ -486,24 +488,56 @@ public class Main extends Application {
   	   getBack11.setTranslateY(100);
   	   pervM.setTranslateX(-100);
 
-  	   ImageView imageView = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));
-       imageView.setTranslateX(-100);
-       imageView.setTranslateY(-150);
-       imageView.setFitHeight(200);
-       imageView.setFitWidth(350);
-       imageView.setPreserveRatio(true);
-       _result.getChildren().add(imageView);
+  	   ImageView imageViewMap = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));	
+  	   imageViewMap.setTranslateX(-100);
+  	   imageViewMap.setTranslateY(-150);
+  	   imageViewMap.setFitHeight(200);
+  	   imageViewMap.setFitWidth(350);
+  	   imageViewMap.setPreserveRatio(true);
+       _result.getChildren().add(imageViewMap);
 
-  	   result=new Scene(_result,1280,720);
+  	   ImageView imageViewPlace = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));
+  	   imageViewPlace.setTranslateX(150);
+  	   imageViewPlace.setTranslateY(-150);
+  	   imageViewPlace.setFitHeight(100);
+  	   imageViewPlace.setFitWidth(150);
+  	   imageViewPlace.setPreserveRatio(true);
+       _result.getChildren().add(imageViewPlace);
+
+       Button nextPlace = new Button();
+       nextPlace.setText("Next");
+       nextPlace.setTranslateY(-50);
+       nextPlace.setTranslateX(200);
+  	   _result.getChildren().add(nextPlace);
+       nextPlace.setOnAction(e->{
+    	   if(counterPlace != myMapList.get(counter).mPlaces.size()-1) {
+    		   counterPlace++;
+    	   }
+    	   setPlace(imageViewPlace);
+       });
+
+       Button prevPlace = new Button();
+       prevPlace.setText("Previos");
+       prevPlace.setTranslateY(-50);
+       prevPlace.setTranslateX(100);
+  	   _result.getChildren().add(prevPlace);
+  	   prevPlace.setOnAction(e->{
+    	   if(counterPlace != 0) {
+    		   counterPlace--;
+    	   }
+    	   setPlace(imageViewPlace);
+       });
+
+  	   result = new Scene(_result,1280,720);
   	
         
         nextM.setOnAction(e->{
         	if(counter!=myMapList.size()-1)counter++;
-        	setMap(imageView);
+        	setMap(imageViewMap);
         });
         pervM.setOnAction(e->{
         	if(counter!=0)counter--;
-        	setMap(imageView);
+        	setMap(imageViewMap);
         });
         
         
@@ -527,16 +561,16 @@ public class Main extends Application {
         	chat.SendToServer(jsonString);
 
         	communicate.ask_server();
-        	setMap(imageView);
+        	setMap(imageViewMap);
 
 
         });
     }
-    
+
     public static void setFlag(int flag) {
     	my_flag=flag;
     }
-    
+
     public void setMap(ImageView aImageView) {
     if (counter<0||counter>myMapList.size()) return;
     Map map = myMapList.get(counter);
@@ -544,6 +578,14 @@ public class Main extends Application {
 	aImageView.setImage(new Image(map.mURL));
 	mapShow.setText(map.toString());
     window.setScene(result);}
-    
-    
+
+    public void setPlace(ImageView aImageView) {
+    	Map map = myMapList.get(counter);
+    	if (counterPlace < 0 || counterPlace >= map.mPlaces.size()) {
+    		return;
+    	}
+    	Place place = map.mPlaces.get(counterPlace);
+		aImageView.setImage(new Image(place.mURL));
     }
+
+}
