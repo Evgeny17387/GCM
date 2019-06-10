@@ -10,11 +10,13 @@ import Constants.API;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 import DB_classes.Map;
-
+import DB_classes.Place;
+import DB_classes.Route;
 import MVC.Model;
 
 import Requests.Request;
 import Requests.GeneralRequest;
+import Requests.GetRoutesRequest;
 import Requests.ProposeNewPriceRequest;
 import Requests.BuyMapRequest;
 
@@ -281,6 +283,26 @@ public class Controller {
 		
 		    	jsonString = gson.toJson(responseController);
 				
+			}
+
+			break;
+
+		// Routes
+
+		case API.GET_ROUTES:
+
+			System.out.println(API.GET_ROUTES);
+
+			{
+
+				GetRoutesRequest getRoutesRequest = gson.fromJson(gson.toJson(request.mObject), GetRoutesRequest.class);
+
+				List<Route> routes = model.GetRoutes(getRoutesRequest.mCityName);
+		
+		    	ResponseController responseController = new ResponseController(API.GET_ROUTES, routes);
+		
+		    	jsonString = gson.toJson(responseController);
+
 			}
 
 			break;

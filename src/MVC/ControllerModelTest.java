@@ -1,5 +1,8 @@
 package MVC;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -7,16 +10,66 @@ import Constants.API;
 import Constants.ErrorCodes;
 
 import DB_classes.AccountUser;
-
+import DB_classes.Map;
+import DB_classes.Route;
 import Requests.Request;
 import Responses.ResponseController;
 import Responses.ResponseModel;
 import Requests.GeneralRequest;
+import Requests.GetRoutesRequest;
 import Requests.ProposeNewPriceRequest;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 class ControllerModelTest {
+
+	// Scenario: GetRoutes
+
+	@Test
+	void testScenario3() {
+
+		String routeName;
+		
+		String jsonRequest;
+    	String jsonController;
+
+		ResponseController responseController;
+		ResponseModel responseModel;	
+
+		Request request;
+		GetRoutesRequest getRoutesRequest;
+
+		List<Route> routes;
+		
+		Controller controller = new Controller();
+//		Model model = new Model();
+		Gson gson = new Gson();
+
+		// ClearTable
+
+//		Assert.assertTrue(model.ClearTable("PriceChange") == ErrorCodes.SUCCESS);
+
+		// GetRoutes
+		
+		routeName = "1";
+
+		getRoutesRequest = new GetRoutesRequest(routeName);
+		request = new Request(API.GET_ROUTES, getRoutesRequest);
+		jsonRequest = gson.toJson(request);
+
+    	jsonController = controller.Run(jsonRequest);
+    	
+    	responseController = gson.fromJson(jsonController, ResponseController.class);
+//		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+	    Type type = new TypeToken<List<Route>>(){}.getType();
+    	routes = gson.fromJson(gson.toJson(responseController.mObject), type);
+
+    	System.out.println(routes);
+    	
+//		Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
+
+	}
 
 	// Scenario: ChangePrice, ApprovePrice
 

@@ -24,4 +24,10 @@ public class API {
 	public static final String PROPOSE_NEW_PRICE = "ProposeNewPrice";
 	public static final String APPROVE_PROPOSED_PRICE = "ApproveProposePrice";
 
+	// Maps, Routes and Places
+	
+	public static final String GET_ROUTES = "GetRoutes";
+	
+	
+	
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import DB_classes.Map;
 import DB_classes.Place;
 import DB_classes.Purchase;
+import DB_classes.Route;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
@@ -750,9 +751,7 @@ public class Model {
 		String sql;
 
 		Connection conn = null;
-		Statement stmt = null;
 		ResultSet rs = null;
-
 		PreparedStatement prep_stmt = null;
 
 		try {
@@ -760,8 +759,6 @@ public class Model {
 			Class.forName(JDBC_DRIVER);
 
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			stmt = conn.createStatement();
 
 			sql = "SELECT `UserName`, `CityName`, `Type` FROM `Purchases` WHERE `UserName` = ?";
 
@@ -788,7 +785,6 @@ public class Model {
 			}
 
 			rs.close();
-			stmt.close();
 			conn.close();
 
 		} catch (SQLException se) {
@@ -808,8 +804,6 @@ public class Model {
 	
 				if (rs != null)
 					rs.close();
-				if (stmt != null)
-					stmt.close();
 				if (conn != null)
 					conn.close();
 	
@@ -963,74 +957,6 @@ public class Model {
 	}
 
 	// Maps
-
-	public Place GetPlace(String aName) {
-
-		Place place = null;
-
-		String sql;
-
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			Class.forName(JDBC_DRIVER);
-
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			stmt = conn.createStatement();
-
-			sql = "SELECT * FROM Places WHERE Name='" + aName + "'";
-
-			rs = stmt.executeQuery(sql);
-
-		    while (rs.next()) {
-
-		    	place = new Place(rs.getString("Name"), rs.getString("Classification"));
-
-				System.out.format(place.toString());
-
-		    }
-
-		    rs.close();
-			stmt.close();
-			conn.close();
-	
-		} catch (SQLException se) {
-	
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-	
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (conn != null)
-					conn.close();
-	
-			} catch (SQLException se) {
-	
-				se.printStackTrace();
-	
-			}
-	
-		}
-		
-		return place;
-	
-	}
 
 	public List<Place> GetPlacesByMap(String aName) {
 
@@ -1328,6 +1254,241 @@ public class Model {
 		}
 		
 		return mapsList;
+	
+	}
+
+	// Routes
+
+	public List<Route> GetRoutes(String aCity){
+
+		List<Route> routes = null;
+
+		String sql;
+
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			sql = "SELECT * FROM Routes WHERE City = ?";
+			
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.setString(1, aCity);
+
+			rs = prep_stmt.executeQuery();
+			
+			routes = new ArrayList<Route>();
+
+		    while (rs.next()) {
+
+		    	String routeName = rs.getString("Name");
+		    	String decription = rs.getString("Description");
+				
+				List<Place> places = GetPlacesByRoute(routeName);
+				
+				System.out.println(places.toString());
+
+				Route route = new Route(routeName, aCity, decription, places);
+				
+				System.out.println(route.toString());
+				
+				routes.add(route);
+
+			}
+
+			if (rs != null)
+				rs.close();
+			if (prep_stmt != null)
+				prep_stmt.close();
+			if (conn != null)
+				conn.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return routes;
+		
+	}
+
+	private List<Place> GetPlacesByRoute(String aRoute){
+
+		List<Place> places = null;
+
+		String sql;
+
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			sql = "SELECT Place FROM PLacesRoutes WHERE Route = ?";
+			
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.setString(1, aRoute);
+
+			rs = prep_stmt.executeQuery();
+			
+			places = new ArrayList<Place>();
+
+		    while (rs.next()) {
+
+		    	String placeName = rs.getString("Place");
+				
+				Place place = GetPlace(placeName);
+				
+				System.out.println(place.toString());
+
+				places.add(place);
+
+			}
+
+			if (rs != null)
+				rs.close();
+			if (prep_stmt != null)
+				prep_stmt.close();
+			if (conn != null)
+				conn.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return places;
+		
+	}
+
+	// Places
+
+	private Place GetPlace(String aName) {
+
+		Place place = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM Places WHERE Name='" + aName + "'";
+
+			rs = stmt.executeQuery(sql);
+
+		    while (rs.next()) {
+
+		    	place = new Place(rs.getString("Name"), rs.getString("Classification"));
+
+				System.out.println(place.toString());
+
+		    }
+
+		    rs.close();
+			stmt.close();
+			conn.close();
+	
+		} catch (SQLException se) {
+	
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return place;
 	
 	}
 
