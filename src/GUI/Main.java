@@ -1,6 +1,7 @@
 package GUI;
 
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.Background;
@@ -13,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
@@ -36,7 +38,9 @@ import Constants.API;
 public class Main extends Application {
 	String request_string;
 	static int memLvl=0;
-	
+	Label searchTool=new Label("Search tool");
+	Group group =new Group(searchTool);
+	Scene tmp=new Scene(group,1280,720);
 	/****Scenes declare****/
 
 	Stage window;
@@ -59,7 +63,7 @@ public class Main extends Application {
 	
     /****Textfields declare****/
 
-	TextField mapShow;
+	TextField mapShow=new TextField();
     TextField searchTF=new TextField("Type map to search");
     TextField searchTF2=new TextField("Type map to search");
     TextField name = new TextField("Please enter username");
@@ -77,7 +81,7 @@ public class Main extends Application {
 	/**** ****/
     
   
-    	
+    static int counter=0;
     static int my_flag=-1;
     public static List<Map> myMapList;
     
@@ -101,6 +105,8 @@ public class Main extends Application {
     	     email.setText("Please enter your email addres");
     	     verifySerial.setText("Please enter the serial we sent to you.");
     }
+    
+    
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -120,6 +126,7 @@ public class Main extends Application {
 
         /****Textfields edit****/
         searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         searchTF2.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         phone_number.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -148,6 +155,9 @@ public class Main extends Application {
 
         
         /****Buttons declare****/
+        Button chooseM=new Button();
+        Button nextM=new Button();
+        Button pervM=new Button();
         Button next = new Button();
         Button getBackU=new Button();
         Button toCatalog=new Button();
@@ -168,11 +178,15 @@ public class Main extends Application {
         Button getBack8=new Button();
         Button getBack9=new Button();
         Button getBack10=new Button();
+        Button getBack11=new Button();
         Button search_btn=new Button();
         Button search_btn2=new Button();
         Button workers_zone=new Button();
         
         /**** Buttons Text ****/
+        chooseM.setText("Choose this map");
+        nextM.setText("Next map");
+        pervM.setText("Pervious map");
         next.setText("Next");
         nextW.setText("Next");
         toCatalog.setText("To catalog");
@@ -190,6 +204,7 @@ public class Main extends Application {
         getBack8.setText("Go back");
         getBack9.setText("Go back");
         getBack10.setText("Go back");
+        getBack11.setText("Go back");
         getBack.setText("Go back");
         search.setText("Search");
         getBackU.setText("Go back");
@@ -204,36 +219,7 @@ public class Main extends Application {
         
         /****Buttons actions****/
 
-        search_btn.setOnAction(e->{
-
-        	if((Search_by_city.isSelected()&&Search_by_inplace.isSelected())||(Search_by_city.isSelected()&&Search_by_general_description.isSelected())||Search_by_inplace.isSelected()&&Search_by_general_description.isSelected())
-        		return;
-
-        	String searchKey = searchTF.getText();
-
-        	if(Search_by_city.isSelected())
-        		request_string = "MapSearch_city_key";
-        	else if(Search_by_inplace.isSelected())
-        		request_string = "MapSearch_place_key";
-        	else if(Search_by_general_description.isSelected())
-        		request_string = "MapSearch_desc_key";
-
-        	Request request = new Request(request_string, searchKey);
-        	String jsonString = gson.toJson(request);
-
-        	chat.SendToServer(jsonString);
-
-        	communicate.ask_server();
-        	   for (int i = 0; i < myMapList.size(); i++) {
-       	    	Map map = myMapList.get(i);
-       	    	//mapShow.setText(map.toString());
-       			System.out.println(map.toString());
-       	    }
-        	window.setScene(result);
-        	
-        	
-
-        });
+   
 
 
         signUp2.setOnAction(e->{
@@ -242,7 +228,6 @@ public class Main extends Application {
         	Request request = new Request(API.ADD_USER, accountUser);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
-        	communicate.ask_server();
         	communicate.ask_server();
         	System.out.println("its the flag " + my_flag);
         	if (my_flag==0) { window.setScene(alreadyExists);my_flag=-1;}
@@ -268,6 +253,7 @@ public class Main extends Application {
         getBack8.setOnAction(e->{window.setScene(signUpS);});
         getBack9.setOnAction(e->{window.setScene(signIn);});
         getBack10.setOnAction(e->{window.setScene(signIn);});
+        getBack11.setOnAction(e->{window.setScene(menu);clean_tf();});
 
 
         workers_zone.setOnAction(e->{window.setScene(signInR);clean_tf();});
@@ -279,7 +265,6 @@ public class Main extends Application {
             	Request request = new Request(API.GET_USER, accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
-            	communicate.ask_server();
             	communicate.ask_server();
             	if (my_flag==0) { window.setScene(wrongUser);my_flag=-1;}
             	else if(my_flag==1) { window.setScene(missingU);my_flag=-1;}
@@ -352,10 +337,7 @@ public class Main extends Application {
         toCatalog.setTranslateY(-200);
         memPage=new Scene(_memPage,1280,720);
         
-        StackPane _result=new StackPane();
-        _result.setBackground(new Background(myBIc));
-        _result.getChildren().add(mapShow);
-        result=new Scene(_result,1280,720);
+      
         
         
         StackPane _catalog = new StackPane();
@@ -392,8 +374,7 @@ public class Main extends Application {
         searchTF.setMaxWidth(300);
         guestZone.getChildren().add(searchTF);
         guestZone.getChildren().add(search_btn);
-        if(memLvl==0) guestZone.getChildren().add(getBack2);
-        else if(memLvl==1) guestZone.getChildren().add(getBackU);
+        guestZone.getChildren().add(getBack2);
         guestZone.getChildren().add(Search_by_city);
         guestZone.getChildren().add(Search_by_inplace);
         guestZone.getChildren().add(Search_by_general_description);
@@ -403,7 +384,6 @@ public class Main extends Application {
         Search_by_general_description.setTranslateY(-150);
         searchTF.setTranslateY(-100);
         getBack2.setTranslateX(-100);
-        getBackU.setTranslateX(-100);
         guestScene=new Scene(guestZone,1280,720);
 
         
@@ -476,28 +456,81 @@ public class Main extends Application {
 
         StackPane memberZone = new StackPane();
         memberZone.setBackground(new Background(myBIW)); 
-
         name.setMaxWidth(400);
         name.setTranslateY(-50);
         memberZone.getChildren().add(name);
-
         password.setMaxWidth(400);
         memberZone.getChildren().add(password);
-
         memberZone.getChildren().add(getBack);
         getBack.setTranslateY(100);
         getBack.setTranslateX(-100);
-
         memberZone.getChildren().add(btn);
         btn.setTranslateY(100);
-
         signIn = new Scene(memberZone,1280,720);
+    
+        StackPane _result=new StackPane();
+        _result.setBackground(new Background(myBIc));
+        mapShow.setMaxWidth(500);
+        mapShow.setTranslateY(-100);
+  	   _result.getChildren().add(mapShow);
+  	   _result.getChildren().add(nextM);
+  	   _result.getChildren().add(pervM);
+  	   _result.getChildren().add(chooseM);
+  	   _result.getChildren().add(getBack11);
+  	   nextM.setTranslateX(100);
+  	   nextM.setTranslateY(-50);
+  	   chooseM.setTranslateY(-50);
+  	   pervM.setTranslateY(-50);
+  	   chooseM.setTranslateX(0);
+  	   getBack11.setTranslateY(0);
+  	   pervM.setTranslateX(-100);
+        result=new Scene(_result,1280,720);
+  	
+        
+        nextM.setOnAction(e->{
+        	if(counter!=myMapList.size()-1)counter++;
+        	setMap();
+        });
+        pervM.setOnAction(e->{
+        	if(counter!=0)counter--;
+        	setMap();
+        });
+        
+        
+        search_btn.setOnAction(e->{
 
+        	if((Search_by_city.isSelected()&&Search_by_inplace.isSelected())||(Search_by_city.isSelected()&&Search_by_general_description.isSelected())||Search_by_inplace.isSelected()&&Search_by_general_description.isSelected())
+        		return;
+
+        	String searchKey = searchTF.getText();
+
+        	if(Search_by_city.isSelected())
+        		request_string = "MapSearch_city_key";
+        	else if(Search_by_inplace.isSelected())
+        		request_string = "MapSearch_place_key";
+        	else if(Search_by_general_description.isSelected())
+        		request_string = "MapSearch_desc_key";
+
+        	Request request = new Request(request_string, searchKey);
+        	String jsonString = gson.toJson(request);
+
+        	chat.SendToServer(jsonString);
+
+        	communicate.ask_server();
+        	setMap();
+
+
+        });
     }
     
     public static void setFlag(int flag) {
     	my_flag=flag;
     }
     
-    
+    public void setMap() {
+    if (counter<0||counter>myMapList.size()) return;
+    Map map = myMapList.get(counter);
+	System.out.println("good" +map.toString());
+	mapShow.setText(map.toString());
+    window.setScene(result);}
     }

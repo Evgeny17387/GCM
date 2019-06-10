@@ -226,7 +226,7 @@ public class View {
 	    	    break;
 
 	    	case "MapSearch_city_key":
-
+	    		
 	    	    System.out.println("MapSearch_city_key");
 
 		    	{
@@ -237,6 +237,8 @@ public class View {
 		    	    	Map map = mapList.get(i);
 						System.out.println(map.toString());
 		    	    }
+			    	   GUI.Main.myMapList=mapList;
+
 		    		
 		    	}
 
@@ -256,9 +258,8 @@ public class View {
 		    	    	Map map = mapList.get(i);
 						System.out.println(map.toString());
 		    	    }
-		    	   GUI.Main.myMapList=mapList;
 		    	    
-
+		    	
 	    	    }
 
 	    	    UI_server_communicate.mResposeFromserver = true;
