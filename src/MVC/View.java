@@ -61,6 +61,8 @@ public class View {
 
 		    	}
 
+			    UI_server_communicate.mResposeFromserver = true;
+
     	    	break;
 
 	    	case API.GET_USER:
@@ -96,6 +98,8 @@ public class View {
 			    		
 		    	}
 
+			    UI_server_communicate.mResposeFromserver = true;
+
 	    	    break;
 
 	    	case API.UPDATE_USER:
@@ -122,6 +126,8 @@ public class View {
 
 		    	}
 
+			    UI_server_communicate.mResposeFromserver = true;
+
     	    	break;
 
         	// Purchases
@@ -147,6 +153,8 @@ public class View {
 			    	}
 
 		    	}
+
+			    UI_server_communicate.mResposeFromserver = true;
 
 	    	    break;
 
@@ -175,6 +183,8 @@ public class View {
 		    		}
 
 		    	}
+
+			    UI_server_communicate.mResposeFromserver = true;
 
 	    	    break;
 
@@ -211,6 +221,8 @@ public class View {
 
 		    	}
 
+			    UI_server_communicate.mResposeFromserver = true;
+
 	    	    break;
 
 	    	case "MapSearch_city_key":
@@ -227,6 +239,8 @@ public class View {
 		    	    }
 		    		
 		    	}
+
+			    UI_server_communicate.mResposeFromserver = true;
 
 	    		break;
 
@@ -247,6 +261,8 @@ public class View {
 
 	    	    }
 
+	    	    UI_server_communicate.mResposeFromserver = true;
+
 	    		break;
 
 			default:
@@ -260,9 +276,6 @@ public class View {
 		    System.out.println(message + " - Not a JSON");
 
 		}
-
-	    UI_server_communicate.mResposeFromserver = true;
-
 
 	}
 	
