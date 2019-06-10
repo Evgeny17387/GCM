@@ -78,14 +78,19 @@ public class View {
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
 
 						System.out.println(accountUser.toString());
+		    			GUI.Main.setFlag(2);
 
 		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
 
 		    			System.out.println("User not found");
+		    			GUI.Main.setFlag(0);
+
 		    			
 		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
 		    			
 		    			System.out.println("UserName or Password are missing");
+		    			GUI.Main.setFlag(1);
+
 	    			
 		    		}
 			    		

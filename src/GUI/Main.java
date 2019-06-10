@@ -37,6 +37,8 @@ public class Main extends Application {
 	/****Scenes declare****/
 
 	Stage window;
+	Scene wrongUser;
+	Scene missingU;
 	Scene alreadyExists;
 	Scene missingDetail;
 	Scene welcomeR;
@@ -146,6 +148,8 @@ public class Main extends Application {
         Button getBack6=new Button();
         Button getBack7=new Button();
         Button getBack8=new Button();
+        Button getBack9=new Button();
+        Button getBack10=new Button();
         Button search_btn=new Button();
         Button workers_zone=new Button();
         
@@ -154,7 +158,7 @@ public class Main extends Application {
         nextW.setText("Next");
         workers_zone.setText("Workers zone");
         search_btn.setText("Search");
-        signUp.setText("Sign up as our customer");
+        signUp.setText("Sign up");
         signUp2.setText("Sign up");
         getBack5.setText("Go to Main");
         getBack4.setText("Go back");
@@ -163,10 +167,12 @@ public class Main extends Application {
         getBack6.setText("Go back");
         getBack7.setText("Go back");
         getBack8.setText("Go back");
+        getBack9.setText("Go back");
+        getBack10.setText("Go back");
         getBack.setText("Go back");
         search.setText("Search");
-        memBtn.setText("I am a member");
-        guestBtn.setText("I am not a member");
+        memBtn.setText("Sign in");
+        guestBtn.setText("Free zone");
         btn.setText("Next");
         
         
@@ -209,7 +215,6 @@ public class Main extends Application {
         	chat.SendToServer(jsonString);
         	communicate.ask_server();
         	communicate.ask_server();
-        	communicate.ask_server();
         	System.out.println("its the flag " + my_flag);
         	if (my_flag==0) { window.setScene(alreadyExists);my_flag=-1;}
         	else if (my_flag==1) { window.setScene(welcomeR);my_flag=-1;}
@@ -230,6 +235,10 @@ public class Main extends Application {
         getBack6.setOnAction(e->{window.setScene(menu);clean_tf();});
         getBack7.setOnAction(e->{window.setScene(menu);clean_tf();});
         getBack8.setOnAction(e->{window.setScene(signUpS);});
+        getBack9.setOnAction(e->{window.setScene(signIn);});
+        getBack10.setOnAction(e->{window.setScene(signIn);});
+
+
         workers_zone.setOnAction(e->{window.setScene(signInR);clean_tf();});
 
        
@@ -239,10 +248,10 @@ public class Main extends Application {
             	Request request = new Request(API.GET_USER, accountCheck);
             	String jsonString = gson.toJson(request);
             	chat.SendToServer(jsonString);
-
             	communicate.ask_server();
-
-//            	if(communicate.ask_server())window.setScene(clientZone);
+            	communicate.ask_server();
+            	if (my_flag==0) { window.setScene(wrongUser);my_flag=-1;}
+            	if(my_flag==1) { window.setScene(missingU);my_flag=-1;}
 
             });
             
@@ -318,7 +327,15 @@ public class Main extends Application {
         verifyScene=new Scene(verifyS,300,300);
 
         
+        StackPane _wrongUser=new StackPane();
+        _wrongUser.setBackground(new Background(myBIWr));
+        _wrongUser.getChildren().add(getBack9);
+        wrongUser=new Scene(_wrongUser,1280,720);
         
+        StackPane _missingU=new StackPane();
+        _missingU.setBackground(new Background(myBIm));
+        _missingU.getChildren().add(getBack10);
+        missingU=new Scene(_missingU,1280,720);
         
         
         StackPane guestZone = new StackPane();
