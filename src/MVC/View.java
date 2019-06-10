@@ -242,6 +242,8 @@ public class View {
 		    	    	Map map = mapList.get(i);
 						System.out.println(map.toString());
 		    	    }
+		    	   GUI.Main.myMapList=mapList;
+		    	    
 
 	    	    }
 

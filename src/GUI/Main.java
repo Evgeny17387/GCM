@@ -16,6 +16,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
+import java.util.List;
+
 import com.google.gson.Gson;
 
 import GUI.UI_server_communicate;
@@ -28,15 +30,17 @@ import MVC.View;
 import Communication.ClientConsole;
 
 import DB_classes.AccountUser;
-
+import DB_classes.Map;
 import Constants.API;
 
 public class Main extends Application {
 	String request_string;
+	static int memLvl=0;
 	
 	/****Scenes declare****/
 
 	Stage window;
+	Scene result;
 	Scene memPage;
 	Scene wrongUser;
 	Scene missingU;
@@ -51,11 +55,13 @@ public class Main extends Application {
 	Scene verifyScene;
 	Scene welcome;
 	Scene clientZone;
+	Scene catalogScene;
 	
     /****Textfields declare****/
 
-	
+	TextField mapShow;
     TextField searchTF=new TextField("Type map to search");
+    TextField searchTF2=new TextField("Type map to search");
     TextField name = new TextField("Please enter username");
     TextField phone_number = new TextField("Please enter your phone number");
     TextField password = new TextField("Please enter password");
@@ -73,7 +79,8 @@ public class Main extends Application {
   
     	
     static int my_flag=-1;
-
+    public static List<Map> myMapList;
+    
     
     
     
@@ -84,6 +91,7 @@ public class Main extends Application {
     public  void clean_tf() {
     	     phone_number.setText("Please enter your phone number");
     	     searchTF.setText("Type map to search");
+    	     searchTF2.setText("Type map to search");
     	     name.setText("Please enter username");
     	     password.setText("Please enter password");
     	     command.setText("Please enter command");
@@ -112,6 +120,7 @@ public class Main extends Application {
 
         /****Textfields edit****/
         searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        searchTF2.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         phone_number.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -130,10 +139,18 @@ public class Main extends Application {
         Search_by_city.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         Search_by_inplace.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         Search_by_general_description.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        CheckBox Search_by_city2= new CheckBox("Search by city");
+        CheckBox Search_by_inplace2= new CheckBox("Search by interested place");
+        CheckBox Search_by_general_description2= new CheckBox("Search by general description");
+        Search_by_city2.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        Search_by_inplace2.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        Search_by_general_description2.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
 
         
         /****Buttons declare****/
         Button next = new Button();
+        Button getBackU=new Button();
+        Button toCatalog=new Button();
         Button nextW = new Button();
         Button btn = new Button();
         Button memBtn = new Button();
@@ -152,13 +169,16 @@ public class Main extends Application {
         Button getBack9=new Button();
         Button getBack10=new Button();
         Button search_btn=new Button();
+        Button search_btn2=new Button();
         Button workers_zone=new Button();
         
         /**** Buttons Text ****/
         next.setText("Next");
         nextW.setText("Next");
+        toCatalog.setText("To catalog");
         workers_zone.setText("Workers zone");
         search_btn.setText("Search");
+        search_btn2.setText("Search");
         signUp.setText("Sign up");
         signUp2.setText("Sign up");
         getBack5.setText("Go to Main");
@@ -172,6 +192,7 @@ public class Main extends Application {
         getBack10.setText("Go back");
         getBack.setText("Go back");
         search.setText("Search");
+        getBackU.setText("Go back");
         memBtn.setText("Sign in");
         guestBtn.setText("Free zone");
         btn.setText("Next");
@@ -203,6 +224,13 @@ public class Main extends Application {
         	chat.SendToServer(jsonString);
 
         	communicate.ask_server();
+        	   for (int i = 0; i < myMapList.size(); i++) {
+       	    	Map map = myMapList.get(i);
+       	    	//mapShow.setText(map.toString());
+       			System.out.println(map.toString());
+       	    }
+        	window.setScene(result);
+        	
         	
 
         });
@@ -228,6 +256,8 @@ public class Main extends Application {
         signUp.setOnAction(e->window.setScene(signUpS));
         memBtn.setOnAction(e->window.setScene(signIn));
         guestBtn.setOnAction(e->window.setScene(guestScene));
+        toCatalog.setOnAction(e->window.setScene(catalogScene));
+        getBackU.setOnAction(e->{window.setScene(memPage);clean_tf();});
         getBack.setOnAction(e->{window.setScene(menu);clean_tf();});
         getBack2.setOnAction(e->{window.setScene(menu);clean_tf();});
         getBack3.setOnAction(e->{window.setScene(menu);clean_tf();});
@@ -318,20 +348,32 @@ public class Main extends Application {
 
         StackPane _memPage=new StackPane();
         _memPage.setBackground(new Background(myBI));
+        _memPage.getChildren().add(toCatalog);
+        toCatalog.setTranslateY(-200);
         memPage=new Scene(_memPage,1280,720);
         
+        StackPane _result=new StackPane();
+        _result.setBackground(new Background(myBIc));
+        _result.getChildren().add(mapShow);
+        result=new Scene(_result,1280,720);
         
         
-        
-        StackPane verifyS=new StackPane();
-        verifyS.getChildren().add(verifySerial);
-        verifySerial.setTranslateY(-50);
-        verifyS.getChildren().add(next);
-        next.setTranslateY(0);
-        verifyS.getChildren().add(getBack4);
-        getBack4.setTranslateY(0);
-        getBack4.setTranslateX(100);
-        verifyScene=new Scene(verifyS,300,300);
+        StackPane _catalog = new StackPane();
+        _catalog.setBackground(new Background(myBIc));
+        searchTF2.setMaxWidth(300);
+        _catalog.getChildren().add(searchTF2);
+        _catalog.getChildren().add(search_btn2);
+        _catalog.getChildren().add(getBackU);
+        _catalog.getChildren().add(Search_by_city2);
+        _catalog.getChildren().add(Search_by_inplace2);
+        _catalog.getChildren().add(Search_by_general_description2);
+        Search_by_city2.setTranslateY(-250);
+        Search_by_city2.setTranslateX(-63);
+        Search_by_inplace2.setTranslateY(-200);
+        Search_by_general_description2.setTranslateY(-150);
+        searchTF2.setTranslateY(-100);
+        getBackU.setTranslateX(-100);
+        catalogScene=new Scene(_catalog,1280,720);
 
         
         StackPane _wrongUser=new StackPane();
@@ -350,7 +392,8 @@ public class Main extends Application {
         searchTF.setMaxWidth(300);
         guestZone.getChildren().add(searchTF);
         guestZone.getChildren().add(search_btn);
-        guestZone.getChildren().add(getBack2);
+        if(memLvl==0) guestZone.getChildren().add(getBack2);
+        else if(memLvl==1) guestZone.getChildren().add(getBackU);
         guestZone.getChildren().add(Search_by_city);
         guestZone.getChildren().add(Search_by_inplace);
         guestZone.getChildren().add(Search_by_general_description);
@@ -360,6 +403,7 @@ public class Main extends Application {
         Search_by_general_description.setTranslateY(-150);
         searchTF.setTranslateY(-100);
         getBack2.setTranslateX(-100);
+        getBackU.setTranslateX(-100);
         guestScene=new Scene(guestZone,1280,720);
 
         
