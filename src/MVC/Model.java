@@ -753,6 +753,8 @@ public class Model {
 		Statement stmt = null;
 		ResultSet rs = null;
 
+		PreparedStatement prep_stmt = null;
+
 		try {
 
 			Class.forName(JDBC_DRIVER);
@@ -761,9 +763,13 @@ public class Model {
 
 			stmt = conn.createStatement();
 
-			sql = "SELECT `UserName`, `CityName`, `Type` FROM `Purchases` WHERE `UserName`=" + aUserName;
+			sql = "SELECT `UserName`, `CityName`, `Type` FROM `Purchases` WHERE `UserName` = ?";
 
-			rs = stmt.executeQuery(sql);
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.setString(1, aUserName);
+
+			rs = prep_stmt.executeQuery();
 
 			purchaseList = new ArrayList<Purchase>();
 
