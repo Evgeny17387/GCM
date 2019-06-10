@@ -43,10 +43,10 @@ class ControllerModelTest {
 
 		Assert.assertTrue(model.ClearTable("PriceChange") == ErrorCodes.SUCCESS);
 
-		// ChangePrice
+		// ProposeNewPrice
 		
 		mapName = "1";
-		proposedPrice = 1;
+		proposedPrice = 4;
 
 		proposedNewPriceRequest = new ProposeNewPriceRequest(mapName, proposedPrice);
 		request = new Request(API.PROPOSE_NEW_PRICE, proposedNewPriceRequest);
@@ -54,8 +54,24 @@ class ControllerModelTest {
 
     	jsonController = controller.Run(jsonRequest);
     	
-    	System.out.println(jsonController);
-		
+    	responseController = gson.fromJson(jsonController, ResponseController.class);
+		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+
+		Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
+
+		// ProposeNewPrice
+
+		proposedNewPriceRequest = new ProposeNewPriceRequest(mapName, proposedPrice);
+		request = new Request(API.APPROVE_PROPOSED_PRICE, proposedNewPriceRequest);
+		jsonRequest = gson.toJson(request);
+
+    	jsonController = controller.Run(jsonRequest);
+    	
+    	responseController = gson.fromJson(jsonController, ResponseController.class);
+		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+
+		Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
+
 	}
 
 	// Scenario: AddUser, BuySubscription, GetUser, DeleteSubscription, GetUser

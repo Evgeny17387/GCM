@@ -846,11 +846,79 @@ public class Model {
 			prep_stmt.setInt(2, aProposedPrice);
 
 			prep_stmt.executeUpdate();
-
-			responseModel.mErrorCode = ErrorCodes.SUCCESS;
 			
 			prep_stmt.close();
 			conn.close();
+
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
+
+		} catch (SQLException se) {
+
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (prep_stmt != null)
+					prep_stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+
+		}
+		
+		return responseModel;
+	
+	}
+
+	public ResponseModel ApproveProposePrice(String aMapName, int aProposedPrice) {
+
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+		String sql;
+
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+		
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			sql = "DELETE FROM `PriceChange` WHERE `MapName`=?";
+			prep_stmt = conn.prepareStatement(sql);
+			prep_stmt.setString(1, aMapName);
+			prep_stmt.executeUpdate();
+			prep_stmt.close();
+
+			sql = "UPDATE `Maps` SET `Price`=? WHERE `Name`=?";
+			prep_stmt = conn.prepareStatement(sql);
+			prep_stmt.setInt(1, aProposedPrice);
+			prep_stmt.setString(2, aMapName);
+			prep_stmt.executeUpdate();
+			
+			prep_stmt.close();
+			conn.close();
+
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
 
 		} catch (SQLException se) {
 

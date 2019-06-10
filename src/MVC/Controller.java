@@ -225,6 +225,28 @@ public class Controller {
 
 			break;
 
+			// Approve proposed price
+
+			case API.APPROVE_PROPOSED_PRICE:
+
+				System.out.println(API.APPROVE_PROPOSED_PRICE);
+
+				{
+
+					ProposeNewPriceRequest proposeNewPriceRequest = gson.fromJson(gson.toJson(request.mObject), ProposeNewPriceRequest.class);
+
+					ResponseModel responseModel = model.ApproveProposePrice(proposeNewPriceRequest.mMapName, proposeNewPriceRequest.mProposedPrice);
+					
+					ResponseController responseController;
+
+					responseController = new ResponseController(API.APPROVE_PROPOSED_PRICE, responseModel);
+
+			    	jsonString = gson.toJson(responseController);
+
+				}
+
+				break;
+
 		// Maps search
 
 		case "MapSearch_city_key":
