@@ -12,10 +12,51 @@ import Requests.Request;
 import Responses.ResponseController;
 import Responses.ResponseModel;
 import Requests.GeneralRequest;
+import Requests.ProposeNewPriceRequest;
 
 import com.google.gson.Gson;
 
 class ControllerModelTest {
+
+	// Scenario: ChangePrice, ApprovePrice
+
+	@Test
+	void testScenario2() {
+
+		String mapName;
+		int proposedPrice;
+		
+		String jsonRequest;
+    	String jsonController;
+
+		ResponseController responseController;
+		ResponseModel responseModel;	
+
+		Request request;
+		ProposeNewPriceRequest proposedNewPriceRequest;
+
+		Controller controller = new Controller();
+		Model model = new Model();
+		Gson gson = new Gson();
+
+		// ClearTable
+
+		Assert.assertTrue(model.ClearTable("PriceChange") == ErrorCodes.SUCCESS);
+
+		// ChangePrice
+		
+		mapName = "1";
+		proposedPrice = 1;
+
+		proposedNewPriceRequest = new ProposeNewPriceRequest(mapName, proposedPrice);
+		request = new Request(API.PROPOSE_NEW_PRICE, proposedNewPriceRequest);
+		jsonRequest = gson.toJson(request);
+
+    	jsonController = controller.Run(jsonRequest);
+    	
+    	System.out.println(jsonController);
+		
+	}
 
 	// Scenario: AddUser, BuySubscription, GetUser, DeleteSubscription, GetUser
 

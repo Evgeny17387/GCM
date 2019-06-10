@@ -21,5 +21,6 @@ public class API {
 
 	public static final String GET_WORKER = "GetWorker";
 	public static final String GET_USER_PURCHASES = "GetUsersPurchases";
+	public static final String PROPOSE_NEW_PRICE = "ProposeNewPrice";
 
 }
