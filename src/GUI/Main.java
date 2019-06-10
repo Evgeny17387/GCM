@@ -37,6 +37,8 @@ public class Main extends Application {
 	/****Scenes declare****/
 
 	Stage window;
+	Scene alreadyExists;
+	Scene missingDetail;
 	Scene welcomeR;
 	Scene signIn;
 	Scene signInR;
@@ -52,6 +54,7 @@ public class Main extends Application {
 	
     TextField searchTF=new TextField("Type map to search");
     TextField name = new TextField("Please enter username");
+    TextField phone_number = new TextField("Please enter your phone number");
     TextField password = new TextField("Please enter password");
     TextField nameW = new TextField("Please enter worker name");
     TextField passwordW = new TextField("Please enter worker password");
@@ -64,9 +67,19 @@ public class Main extends Application {
     
 	/**** ****/
     
+  
+    	
+    static int my_flag=-1;
+
+    
+    
+    
+    
+    
     /***Clean all  textfields function***/
     
     public  void clean_tf() {
+    	     phone_number.setText("Please enter your phone number");
     	     searchTF.setText("Type map to search");
     	     name.setText("Please enter username");
     	     password.setText("Please enter password");
@@ -96,6 +109,7 @@ public class Main extends Application {
 
         /****Textfields edit****/
         searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        phone_number.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         nameW.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -130,6 +144,8 @@ public class Main extends Application {
         Button getBack4=new Button();
         Button getBack5=new Button();
         Button getBack6=new Button();
+        Button getBack7=new Button();
+        Button getBack8=new Button();
         Button search_btn=new Button();
         Button workers_zone=new Button();
         
@@ -145,6 +161,8 @@ public class Main extends Application {
         getBack3.setText("Go back");
         getBack2.setText("Go back");
         getBack6.setText("Go back");
+        getBack7.setText("Go back");
+        getBack8.setText("Go back");
         getBack.setText("Go back");
         search.setText("Search");
         memBtn.setText("I am a member");
@@ -178,21 +196,26 @@ public class Main extends Application {
         	chat.SendToServer(jsonString);
 
         	communicate.ask_server();
+        	
 
         });
 
 
         signUp2.setOnAction(e->{
 
-        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), "PhoneNumber", nameR.getText(), creditCard.getText());
+        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), phone_number.getText(), nameR.getText(), creditCard.getText());
         	Request request = new Request(API.ADD_USER, accountUser);
         	String jsonString = gson.toJson(request);
         	chat.SendToServer(jsonString);
-
         	communicate.ask_server();
-
-        	window.setScene(welcomeR);
+        	communicate.ask_server();
+        	communicate.ask_server();
+        	System.out.println("its the flag " + my_flag);
+        	if (my_flag==0) { window.setScene(alreadyExists);my_flag=-1;}
+        	else if (my_flag==1) { window.setScene(welcomeR);my_flag=-1;}
+        	else if (my_flag==2) { window.setScene(missingDetail);my_flag=-1;}
         	
+        	System.out.println("this is the after "+ my_flag);
         });
         
         
@@ -205,6 +228,8 @@ public class Main extends Application {
         getBack4.setOnAction(e->{window.setScene(menu);clean_tf();});
         getBack5.setOnAction(e->{window.setScene(menu);clean_tf();});
         getBack6.setOnAction(e->{window.setScene(menu);clean_tf();});
+        getBack7.setOnAction(e->{window.setScene(menu);clean_tf();});
+        getBack8.setOnAction(e->{window.setScene(signUpS);});
         workers_zone.setOnAction(e->{window.setScene(signInR);clean_tf();});
 
        
@@ -236,6 +261,8 @@ public class Main extends Application {
         });
 
         
+        
+        
         /****background zone****/
         
         BackgroundImage myBI= new BackgroundImage(new Image("Images\\Background.png"),
@@ -252,6 +279,11 @@ public class Main extends Application {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         BackgroundImage myBIz= new BackgroundImage(new Image("Images\\clientZone.png"),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        BackgroundImage myBIm= new BackgroundImage(new Image("Images\\missingD.png"),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        BackgroundImage myBIa= new BackgroundImage(new Image("Images\\alreadyE.png"),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        
         
         
         /****Scene declare****/
@@ -328,11 +360,14 @@ public class Main extends Application {
         sign_Up.getChildren().add(creditCard);
         email.setMaxWidth(300);
         email.setTranslateY(50);
+        sign_Up.getChildren().add(phone_number);
+        phone_number.setMaxWidth(300);
+        phone_number.setTranslateY(100);
         sign_Up.getChildren().add(email);
         sign_Up.getChildren().add(signUp2);
-        signUp2.setTranslateY(100);
+        signUp2.setTranslateY(150);
         sign_Up.getChildren().add(getBack3);
-        getBack3.setTranslateY(100);
+        getBack3.setTranslateY(150);
         getBack3.setTranslateX(-100);
         signUpS=new Scene(sign_Up,1280,720);
         
@@ -353,6 +388,22 @@ public class Main extends Application {
         
 
 
+        StackPane _alreadyExists=new StackPane();
+        _alreadyExists.setBackground(new Background(myBIa));
+        _alreadyExists.getChildren().add(getBack7);
+        alreadyExists=new Scene(_alreadyExists,1280,720);
+        
+        
+        StackPane _missingDeatil=new StackPane();
+        _missingDeatil.setBackground(new Background(myBIm));
+        _missingDeatil.getChildren().add(getBack8);
+        missingDetail=new Scene(_missingDeatil,1280,720);
+
+        
+        
+        
+        
+        
         // Members zone sign in
 
         StackPane memberZone = new StackPane();
@@ -375,4 +426,10 @@ public class Main extends Application {
         signIn = new Scene(memberZone,1280,720);
 
     }
+    
+    public static void setFlag(int flag) {
+    	my_flag=flag;
+    }
+    
+    
     }

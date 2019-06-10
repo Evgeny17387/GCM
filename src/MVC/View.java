@@ -1,4 +1,5 @@
 package MVC;
+import GUI.Main;
 
 import java.util.List;
 
@@ -9,7 +10,6 @@ import com.google.gson.reflect.TypeToken;
 
 import Constants.ErrorCodes;
 import Constants.API;
-
 import DB_classes.Map;
 import DB_classes.Place;
 import DB_classes.Purchase;
@@ -22,7 +22,7 @@ import Responses.ResponseModel;
 import GUI.UI_server_communicate;
 
 public class View {
-
+	public  int valid_flag=-1;
 	public void Run(String message) {
 
 	    try {
@@ -48,16 +48,14 @@ public class View {
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
-
 						System.out.format(accountUser.toString());
-
+		    			GUI.Main.setFlag(1);
 		    		}else if (responseModel.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
-		    			
+		    			GUI.Main.setFlag(0);
 			    	    System.out.println("User with this userName already exists");
-
 		    		}else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
-	    			
 		    			System.out.println("One or more registration details are missing");
+		    			GUI.Main.setFlag(2);
 	    			
 		    		}
 
@@ -258,6 +256,8 @@ public class View {
 
 	    UI_server_communicate.mResposeFromserver = true;
 
+
 	}
+	
 
 }
