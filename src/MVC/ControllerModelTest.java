@@ -12,10 +12,67 @@ import Requests.Request;
 import Responses.ResponseController;
 import Responses.ResponseModel;
 import Requests.GeneralRequest;
+import Requests.ProposeNewPriceRequest;
 
 import com.google.gson.Gson;
 
 class ControllerModelTest {
+
+	// Scenario: ChangePrice, ApprovePrice
+
+	@Test
+	void testScenario2() {
+
+		String mapName;
+		int proposedPrice;
+		
+		String jsonRequest;
+    	String jsonController;
+
+		ResponseController responseController;
+		ResponseModel responseModel;	
+
+		Request request;
+		ProposeNewPriceRequest proposedNewPriceRequest;
+
+		Controller controller = new Controller();
+		Model model = new Model();
+		Gson gson = new Gson();
+
+		// ClearTable
+
+		Assert.assertTrue(model.ClearTable("PriceChange") == ErrorCodes.SUCCESS);
+
+		// ProposeNewPrice
+		
+		mapName = "1";
+		proposedPrice = 4;
+
+		proposedNewPriceRequest = new ProposeNewPriceRequest(mapName, proposedPrice);
+		request = new Request(API.PROPOSE_NEW_PRICE, proposedNewPriceRequest);
+		jsonRequest = gson.toJson(request);
+
+    	jsonController = controller.Run(jsonRequest);
+    	
+    	responseController = gson.fromJson(jsonController, ResponseController.class);
+		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+
+		Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
+
+		// ProposeNewPrice
+
+		proposedNewPriceRequest = new ProposeNewPriceRequest(mapName, proposedPrice);
+		request = new Request(API.APPROVE_PROPOSED_PRICE, proposedNewPriceRequest);
+		jsonRequest = gson.toJson(request);
+
+    	jsonController = controller.Run(jsonRequest);
+    	
+    	responseController = gson.fromJson(jsonController, ResponseController.class);
+		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+
+		Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
+
+	}
 
 	// Scenario: AddUser, BuySubscription, GetUser, DeleteSubscription, GetUser
 

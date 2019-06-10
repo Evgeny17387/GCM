@@ -15,6 +15,7 @@ import MVC.Model;
 
 import Requests.Request;
 import Requests.GeneralRequest;
+import Requests.ProposeNewPriceRequest;
 import Requests.BuyMapRequest;
 
 import Responses.ResponseController;
@@ -147,7 +148,6 @@ public class Controller {
 			}
 
 			break;
-			
 
 	  	// Workers
 
@@ -202,6 +202,50 @@ public class Controller {
 			}
 
 			break;
+			
+		// Propose New price for a map
+
+		case API.PROPOSE_NEW_PRICE:
+
+			System.out.println(API.PROPOSE_NEW_PRICE);
+
+			{
+
+				ProposeNewPriceRequest proposeNewPriceRequest = gson.fromJson(gson.toJson(request.mObject), ProposeNewPriceRequest.class);
+
+				ResponseModel responseModel = model.ProposeNewPrice(proposeNewPriceRequest.mMapName, proposeNewPriceRequest.mProposedPrice);
+				
+				ResponseController responseController;
+
+				responseController = new ResponseController(API.PROPOSE_NEW_PRICE, responseModel);
+
+		    	jsonString = gson.toJson(responseController);
+
+			}
+
+			break;
+
+			// Approve proposed price
+
+			case API.APPROVE_PROPOSED_PRICE:
+
+				System.out.println(API.APPROVE_PROPOSED_PRICE);
+
+				{
+
+					ProposeNewPriceRequest proposeNewPriceRequest = gson.fromJson(gson.toJson(request.mObject), ProposeNewPriceRequest.class);
+
+					ResponseModel responseModel = model.ApproveProposePrice(proposeNewPriceRequest.mMapName, proposeNewPriceRequest.mProposedPrice);
+					
+					ResponseController responseController;
+
+					responseController = new ResponseController(API.APPROVE_PROPOSED_PRICE, responseModel);
+
+			    	jsonString = gson.toJson(responseController);
+
+				}
+
+				break;
 
 		// Maps search
 
