@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import Communication.ClientConsole;
 import Constants.API;
+import Constants.MemLvl;
 import Constants.SceneName;
 import Requests.GeneralRequest;
 import Requests.Request;
@@ -23,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import GUI.MainView;
 
 public class SignInView extends BaseView {
 
@@ -83,11 +85,11 @@ public class SignInView extends BaseView {
         		alert.setHeaderText("Welcome Back !!!");
         		alert.setContentText("O.k.");
         		alert.showAndWait();
-        		
+        		Main.memberlevel=MemLvl.MEMBER;   
         		Main.my_flag = -1;
-
         		clean_tf();
-
+        		MainView.changeScene();
+        		
         		stage.setScene(Main.getScenes().get(SceneName.MAIN));
 
         	}
@@ -100,13 +102,10 @@ public class SignInView extends BaseView {
         getBack.setTranslateY(100);
         getBack.setTranslateX(-100);
         btn.setTranslateY(100);
-
         StackPane memberZone = new StackPane();
         memberZone.setBackground(new Background(myBIW)); 
         memberZone.getChildren().addAll(name, password, getBack, btn);
-
         Scene scene = new Scene(memberZone, 1280,720);
-		
 		return scene;
 	}
 
