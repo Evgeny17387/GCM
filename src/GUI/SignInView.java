@@ -99,8 +99,9 @@ public class SignInView {
         		
         		Main.my_flag = -1;
 
-//        		clean_tf();
-//        		stage.setScene(Main.getScenes().get(SceneName.CATALOG));
+        		clean_tf();
+
+        		stage.setScene(Main.getScenes().get(SceneName.MAIN));
 
         	}
         	

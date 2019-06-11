@@ -1,7 +1,6 @@
 package GUI;
 
 import Constants.SceneName;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -33,8 +32,7 @@ public class MainView {
         signUp.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_UP)));
         memBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_IN)));
         workers_zone.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.WORKER_ZONE)));
-
-//        guestBtn.setOnAction(e->window.setScene(guestScene));
+        guestBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SEARCH_MAP)));
 
         StackPane root = new StackPane();
         root.setBackground(new Background(myBI));

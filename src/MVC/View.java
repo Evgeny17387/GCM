@@ -48,13 +48,13 @@ public class View {
 
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
 						System.out.format(accountUser.toString());
-		    			GUI.Main.setFlag(1);
+		    			GUI.Main.my_flag = 1;
 		    		}else if (responseModel.mErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
-		    			GUI.Main.setFlag(0);
+		    			GUI.Main.my_flag = 0;
 			    	    System.out.println("User with this userName already exists");
 		    		}else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
 		    			System.out.println("One or more registration details are missing");
-		    			GUI.Main.setFlag(2);
+		    			GUI.Main.my_flag = 2;
 	    			
 		    		}
 
@@ -79,18 +79,18 @@ public class View {
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
 
 						System.out.println(accountUser.toString());
-		    			GUI.Main.setFlag(2);
+		    			GUI.Main.my_flag = 2;
 
 		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
 
 		    			System.out.println("User not found");
-		    			GUI.Main.setFlag(0);
+		    			GUI.Main.my_flag = 0;
 
 		    			
 		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
 		    			
 		    			System.out.println("UserName or Password are missing");
-		    			GUI.Main.setFlag(1);
+		    			GUI.Main.my_flag = 1;
 
 	    			
 		    		}

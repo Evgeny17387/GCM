@@ -1,7 +1,6 @@
 package GUI;
 
 import com.google.gson.Gson;
-
 import Communication.ClientConsole;
 import Constants.API;
 import Constants.SceneName;
