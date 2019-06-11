@@ -26,8 +26,8 @@ import javafx.stage.Stage;
 
 public class SignInView extends BaseView {
 
-    TextField name = new TextField("Please enter username");
-    TextField password = new TextField("Please enter password");
+    TextField name = new TextField();
+    TextField password = new TextField();
 
 	public SignInView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
 		super(stage, aChat, aCommunicate);
@@ -39,21 +39,15 @@ public class SignInView extends BaseView {
 
     	Gson gson = new Gson();
 
-        StackPane memberZone = new StackPane();
-
-		// TODO: duplication, should be removed
         BackgroundImage myBIW= new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-
-        memberZone.setBackground(new Background(myBIW)); 
 
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        Button btn = new Button("Next");
         Button getBack = new Button("Go back");
-
         getBack.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
 
+        Button btn = new Button("Next");
         btn.setOnAction(e->{
         	
         	GeneralRequest accountCheck = new GeneralRequest(name.getText(), password.getText());
@@ -107,6 +101,8 @@ public class SignInView extends BaseView {
         getBack.setTranslateX(-100);
         btn.setTranslateY(100);
 
+        StackPane memberZone = new StackPane();
+        memberZone.setBackground(new Background(myBIW)); 
         memberZone.getChildren().addAll(name, password, getBack, btn);
 
         Scene scene = new Scene(memberZone, 1280,720);
@@ -115,10 +111,8 @@ public class SignInView extends BaseView {
 	}
 
     public  void clean_tf() {
-
 	     name.setText("Please enter username");
 	     password.setText("Please enter password");
-
     }
 
 }

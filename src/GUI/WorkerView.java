@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 
 public class WorkerView extends BaseView {
 
-    TextField nameW = new TextField("Please enter worker name");
-    TextField passwordW = new TextField("Please enter worker password");
+    TextField nameW = new TextField();
+    TextField passwordW = new TextField();
 
 	public WorkerView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
 		super(stage, aChat, aCommunicate);
@@ -36,28 +36,15 @@ public class WorkerView extends BaseView {
 
     	Gson gson = new Gson();
 
-        StackPane workersZone = new StackPane();
-
-        BackgroundImage myBIW= new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-
-        workersZone.setBackground(new Background(myBIW));
+        BackgroundImage myBIW = new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
         nameW.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         passwordW.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        nameW.setTranslateY(-50);
-        nameW.setMaxWidth(400);
-
-        passwordW.setMaxWidth(400);
-
         Button getBack6 = new Button("Go back");
         getBack6.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
 
-        getBack6.setTranslateY(100);
-        getBack6.setTranslateX(-100);
-
         Button nextW = new Button("Next");
-        nextW.setTranslateY(100);
         nextW.setOnAction(e->{
             
         	GeneralRequest accountCheck = new GeneralRequest(nameW.getText(), passwordW.getText());
@@ -71,6 +58,15 @@ public class WorkerView extends BaseView {
 
         });
 
+        nameW.setTranslateY(-50);
+        nameW.setMaxWidth(400);
+        passwordW.setMaxWidth(400);
+        getBack6.setTranslateY(100);
+        getBack6.setTranslateX(-100);
+        nextW.setTranslateY(100);
+
+        StackPane workersZone = new StackPane();
+        workersZone.setBackground(new Background(myBIW));
         workersZone.getChildren().addAll(nameW, passwordW, nextW ,getBack6);
 
         Scene scene = new Scene(workersZone, 1280,720);
@@ -79,10 +75,8 @@ public class WorkerView extends BaseView {
 	}
 
     public  void clean_tf() {
-
         nameW.setText("Please enter worker name");
         passwordW.setText("Please enter worker password");
-
     }
 
 }

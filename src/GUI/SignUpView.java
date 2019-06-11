@@ -41,34 +41,18 @@ public class SignUpView extends BaseView {
 
     	Gson gson = new Gson();
 
+        BackgroundImage myBIs = new BackgroundImage(new Image("Images\\sign_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
         nameR.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         phone_number.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         passwordR.setFont(Font.font("Verdana", FontWeight.BOLD, 12));;
         creditCard.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         email.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        BackgroundImage myBIs = new BackgroundImage(new Image("Images\\sign_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-
-        StackPane sign_Up = new StackPane();
-        sign_Up.setBackground(new Background(myBIs));
-
-        nameR.setTranslateY(-100);
-        nameR.setMaxWidth(300);
-
-        passwordR.setMaxWidth(300);
-        passwordR.setTranslateY(-50);
-
-        creditCard.setMaxWidth(300);
-        creditCard.setTranslateY(0);
-
-        email.setMaxWidth(300);
-        email.setTranslateY(50);
-
-        phone_number.setMaxWidth(300);
-        phone_number.setTranslateY(100);
+        Button getBack3 = new Button("Go back");
+        getBack3.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
 
         Button signUp2 = new Button("Sign up");
-        signUp2.setTranslateY(150);
         signUp2.setOnAction(e->{
 
         	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), phone_number.getText(), nameR.getText(), creditCard.getText());
@@ -119,11 +103,22 @@ public class SignUpView extends BaseView {
 
         });
 
-        Button getBack3 = new Button("Go back");
+        nameR.setTranslateY(-100);
+        nameR.setMaxWidth(300);
+        passwordR.setMaxWidth(300);
+        passwordR.setTranslateY(-50);
+        creditCard.setMaxWidth(300);
+        creditCard.setTranslateY(0);
+        email.setMaxWidth(300);
+        email.setTranslateY(50);
+        phone_number.setMaxWidth(300);
+        phone_number.setTranslateY(100);
         getBack3.setTranslateY(150);
         getBack3.setTranslateX(-100);
-        getBack3.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        signUp2.setTranslateY(150);
 
+        StackPane sign_Up = new StackPane();
+        sign_Up.setBackground(new Background(myBIs));
         sign_Up.getChildren().addAll(nameR, passwordR, creditCard, phone_number, email, signUp2, getBack3);
 
         Scene scene = new Scene(sign_Up, 1280,720);
@@ -132,13 +127,11 @@ public class SignUpView extends BaseView {
 	}
 
     public  void clean_tf() {
-
     	nameR.setText("Please enter username");
 	     passwordR.setText("Please enter password");
 	     creditCard.setText("Please enter credit card");
 	     email.setText("Please enter your email addres");
 	     phone_number.setText("Please enter your phone number");
-
     }
 
 }

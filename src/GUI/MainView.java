@@ -24,31 +24,26 @@ public class MainView extends BaseView {
 		
         BackgroundImage myBI = new BackgroundImage(new Image("Images\\Background.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
-		Button workers_zone = new Button("Workers zone");
-        Button signUp = new Button("Sign up");
-        Button guestBtn = new Button("Free zone");
         Button memBtn = new Button("Sign in");
+        Button guestBtn = new Button("Free zone");
+        Button signUp = new Button("Sign up");
+        Button workers_zone = new Button("Workers zone");
 
-        signUp.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_UP)));
         memBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_IN)));
-        workers_zone.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.WORKER_ZONE)));
         guestBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SEARCH_MAP)));
-
-        StackPane root = new StackPane();
-        root.setBackground(new Background(myBI));
+        signUp.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_UP)));
+        workers_zone.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.WORKER_ZONE)));
 
         memBtn.setTranslateY(-250);
         guestBtn.setTranslateY(-200);
         signUp.setTranslateY(-150);
         workers_zone.setTranslateY(-100);
 
-        root.getChildren().add(guestBtn);
-        root.getChildren().add(signUp);
-        root.getChildren().add(memBtn);
+        StackPane root = new StackPane();
+        root.setBackground(new Background(myBI));
+        root.getChildren().addAll(memBtn, guestBtn, signUp, workers_zone);
 
-        root.getChildren().add(workers_zone);
-
-        Scene scene = new Scene(root,1280,720);
+        Scene scene = new Scene(root, 1280, 720);
 		
 		return scene;
 	}
