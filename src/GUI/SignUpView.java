@@ -23,12 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class SignUpView {
-
-	private Stage stage;
-
-	ClientConsole mChat;
-	UI_server_communicate mCommunicate;
+public class SignUpView extends BaseView {
 
     TextField nameR 		= new TextField();
 	TextField passwordR		= new TextField();
@@ -37,9 +32,7 @@ public class SignUpView {
     TextField phone_number 	= new TextField();
 
 	public SignUpView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		this.stage = stage;
-		this.mChat = aChat;
-		this.mCommunicate = aCommunicate;
+		super(stage, aChat, aCommunicate);
 	}
 
 	public Scene getScene() {

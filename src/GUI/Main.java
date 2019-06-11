@@ -27,13 +27,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
 
     	View view = new View();
-
     	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
-
     	UI_server_communicate communicate = new UI_server_communicate();
-        primaryStage.setTitle("GCM");
 
-        scenes.put(SceneName.MAIN, new MainView(primaryStage).getScene());
+    	primaryStage.setTitle("GCM");
+
+        scenes.put(SceneName.MAIN, new MainView(primaryStage, chat, communicate).getScene());
         scenes.put(SceneName.SIGN_UP, new SignUpView(primaryStage, chat, communicate).getScene());
         scenes.put(SceneName.SIGN_IN, new SignInView(primaryStage, chat, communicate).getScene());
         scenes.put(SceneName.WORKER_ZONE, new WorkerView(primaryStage, chat, communicate).getScene());

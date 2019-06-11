@@ -21,20 +21,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class WorkerView {
-
-	private Stage stage;
-
-	ClientConsole mChat;
-	UI_server_communicate mCommunicate;
+public class WorkerView extends BaseView {
 
     TextField nameW = new TextField("Please enter worker name");
     TextField passwordW = new TextField("Please enter worker password");
 
 	public WorkerView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		this.stage = stage;
-		this.mChat = aChat;
-		this.mCommunicate = aCommunicate;
+		super(stage, aChat, aCommunicate);
 	}
 
 	public Scene getScene() {

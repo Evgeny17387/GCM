@@ -20,12 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class ShowMapView {
-
-	private Stage stage;
-
-	private ClientConsole mChat;
-	private UI_server_communicate mCommunicate;
+public class ShowMapView extends BaseView {
 
 	String request_string;
 
@@ -35,9 +30,7 @@ public class ShowMapView {
 	TextField mapShow = new TextField();
 
 	public ShowMapView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		this.stage = stage;
-		this.mChat = aChat;
-		this.mCommunicate = aCommunicate;
+		super(stage, aChat, aCommunicate);
 	}
 
 	public Scene getScene() {

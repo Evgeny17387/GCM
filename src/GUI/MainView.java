@@ -1,6 +1,8 @@
 package GUI;
 
+import Communication.ClientConsole;
 import Constants.SceneName;
+import Utils.UI_server_communicate;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -12,12 +14,10 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class MainView {
+public class MainView extends BaseView {
 	
-	private Stage stage;
-	
-	public MainView(Stage stage) {
-		this.stage = stage;
+	public MainView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
+		super(stage, aChat, aCommunicate);
 	}
 
 	public Scene getScene() {

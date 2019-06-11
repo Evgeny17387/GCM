@@ -24,20 +24,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class SignInView {
-
-	private Stage stage;
-
-	ClientConsole mChat;
-	UI_server_communicate mCommunicate;
+public class SignInView extends BaseView {
 
     TextField name = new TextField("Please enter username");
     TextField password = new TextField("Please enter password");
 
 	public SignInView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		this.stage = stage;
-		this.mChat = aChat;
-		this.mCommunicate = aCommunicate;
+		super(stage, aChat, aCommunicate);
 	}
 
 	public Scene getScene() {

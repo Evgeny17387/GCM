@@ -21,21 +21,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class SearchMapView {
+public class SearchMapView extends BaseView {
 
-	private Stage stage;
-
-	ClientConsole mChat;
-	UI_server_communicate mCommunicate;
-
-    TextField searchTF=new TextField("Type map to search");
+    TextField searchTF = new TextField("Type map to search");
 
 	String request_string;
 
 	public SearchMapView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		this.stage = stage;
-		this.mChat = aChat;
-		this.mCommunicate = aCommunicate;
+		super(stage, aChat, aCommunicate);
 	}
 
 	public Scene getScene() {
