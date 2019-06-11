@@ -12,10 +12,13 @@ import Communication.ClientConsole;
 import DB_classes.CityMap;
 import Constants.ErrorCodes;
 import Constants.SceneName;
+import Constants.MemLvl;
 
 public class Main extends Application {
-	
+
 	private static Map<SceneName, Scene> scenes = new HashMap<>();
+
+	public static MemLvl memberlevel = MemLvl.FREE_USER;
 
 	public static int mServerResponseErrorCode = ErrorCodes.RESET;
 
