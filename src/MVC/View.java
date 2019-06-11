@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import Constants.ErrorCodes;
 import Constants.API;
-import DB_classes.Map;
+import DB_classes.CityMap;
 import DB_classes.Place;
 import DB_classes.Purchase;
 import DB_classes.AccountUser;
@@ -18,8 +18,7 @@ import DB_classes.AccountWorker;
 
 import Responses.ResponseController;
 import Responses.ResponseModel;
-
-import GUI.UI_server_communicate;
+import Utils.UI_server_communicate;
 
 public class View {
 	public  int valid_flag=-1;
@@ -231,10 +230,10 @@ public class View {
 
 		    	{
 		    		
-		    	    Type typeMap = new TypeToken<List<Map>>(){}.getType();
-		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
+		    	    Type typeMap = new TypeToken<List<CityMap>>(){}.getType();
+		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
 		    	    for (int i = 0; i < mapList.size(); i++) {
-		    	    	Map map = mapList.get(i);
+		    	    	CityMap map = mapList.get(i);
 						System.out.println(map.toString());
 		    	    }
 			    	   GUI.Main.myMapList=mapList;
@@ -252,10 +251,10 @@ public class View {
 	    	    
 	    	    {
 
-		    	    Type typeMap = new TypeToken<List<Map>>(){}.getType();
-		    	    List<Map> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
+		    	    Type typeMap = new TypeToken<List<CityMap>>(){}.getType();
+		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
 		    	    for (int i = 0; i < mapList.size(); i++) {
-		    	    	Map map = mapList.get(i);
+		    	    	CityMap map = mapList.get(i);
 						System.out.println(map.toString());
 		    	    }
 		    	    

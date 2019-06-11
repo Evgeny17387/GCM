@@ -4,7 +4,7 @@ import java.util.List;
 
 import DB_classes.Place;
 
-public class Map {
+public class CityMap {
 
 	public String mName;
 	public int mVersion;
@@ -14,7 +14,7 @@ public class Map {
 	public int mPrice;
 	public String mURL;
 	
-	public Map(String aName, int aVersion, String aCity, String aDescription, List<Place> aPlaces, int aPrice, String aURL){
+	public CityMap(String aName, int aVersion, String aCity, String aDescription, List<Place> aPlaces, int aPrice, String aURL){
     	this.mName = aName;
     	this.mVersion = aVersion;
     	this.mCity = aCity;

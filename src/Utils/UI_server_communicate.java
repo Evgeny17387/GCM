@@ -1,4 +1,4 @@
-package GUI;
+package Utils;
 
 
 public class  UI_server_communicate {

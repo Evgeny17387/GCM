@@ -13,7 +13,7 @@ import Constants.ErrorCodes;
 
 import java.util.ArrayList;
 
-import DB_classes.Map;
+import DB_classes.CityMap;
 import DB_classes.Place;
 import DB_classes.Purchase;
 import DB_classes.Route;
@@ -1032,9 +1032,9 @@ public class Model {
 	
 	}
 
-	public Map GetMap(String aName) {
+	public CityMap GetMap(String aName) {
 
-		Map map = null;
+		CityMap map = null;
 
 		String sql;
 
@@ -1065,7 +1065,7 @@ public class Model {
 				
 				List<Place> places = GetPlacesByMap(name);
 				
-				map = new Map(name, version, city, description, places, price, url);
+				map = new CityMap(name, version, city, description, places, price, url);
 
 				System.out.format(map.toString());
 
@@ -1109,9 +1109,9 @@ public class Model {
 	
 	}
 
-	public List<Map> MapsByCity(String aName) {
+	public List<CityMap> MapsByCity(String aName) {
 
-		List<Map> mapsList = null;
+		List<CityMap> mapsList = null;
 
 		String sql;
 
@@ -1131,13 +1131,13 @@ public class Model {
 
 			rs = stmt.executeQuery(sql);
 
-		    mapsList = new ArrayList<Map>();
+		    mapsList = new ArrayList<CityMap>();
 
 		    while (rs.next()) {
 
 		    	String MapName = rs.getString("Name");
 
-		    	Map map = GetMap(MapName);
+		    	CityMap map = GetMap(MapName);
 		    	
 				mapsList.add(map);
 
@@ -1181,9 +1181,9 @@ public class Model {
 	
 	}
 
-	public List<Map> MapsByPlace(String aName) {
+	public List<CityMap> MapsByPlace(String aName) {
 
-		List<Map> mapsList = null;
+		List<CityMap> mapsList = null;
 
 		String sql;
 
@@ -1203,7 +1203,7 @@ public class Model {
 	
 			rs = stmt.executeQuery(sql);
 
-			mapsList = new ArrayList<Map>();
+			mapsList = new ArrayList<CityMap>();
 
 		    while (rs.next()) {
 
@@ -1211,7 +1211,7 @@ public class Model {
 
 				System.out.format("%s\n", MapName);
 				
-				Map map = GetMap(MapName);
+				CityMap map = GetMap(MapName);
 
 				mapsList.add(map);
 

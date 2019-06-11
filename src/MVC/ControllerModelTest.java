@@ -10,7 +10,7 @@ import Constants.API;
 import Constants.ErrorCodes;
 
 import DB_classes.AccountUser;
-import DB_classes.Map;
+import DB_classes.CityMap;
 import DB_classes.Route;
 import Requests.Request;
 import Responses.ResponseController;

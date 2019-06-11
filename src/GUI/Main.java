@@ -1,7 +1,6 @@
 package GUI;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.Background;
@@ -14,53 +13,39 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
-import GUI.UI_server_communicate;
-
 import Requests.Request;
-import Requests.GeneralRequest;
+import Utils.UI_server_communicate;
 
 import MVC.View;
 
 import Communication.ClientConsole;
 
-import DB_classes.AccountUser;
-import DB_classes.Map;
+import DB_classes.CityMap;
 import DB_classes.Place;
-import Constants.API;
+
+import Constants.SceneName;
 
 public class Main extends Application {
+	
+	private static Map<SceneName, Scene> scenes = new HashMap<>();
+
 	String request_string;
-	static int memLvl=0;
-	Label searchTool=new Label("Search tool");
-	Group group =new Group(searchTool);
-	Scene tmp=new Scene(group,1280,720);
+
 	/****Scenes declare****/
 
 	Stage window;
 	Scene result;
-	Scene memPage;
-	Scene wrongUser;
-	Scene missingU;
-	Scene alreadyExists;
-	Scene missingDetail;
-	Scene welcomeR;
-	Scene signIn;
-	Scene signInR;
-	Scene signUpS;
-	Scene menu;
 	Scene guestScene;
-	Scene verifyScene;
-	Scene welcome;
-	Scene clientZone;
 	Scene catalogScene;
 	
     /****Textfields declare****/
@@ -68,49 +53,22 @@ public class Main extends Application {
 	TextField mapShow=new TextField();
     TextField searchTF=new TextField("Type map to search");
     TextField searchTF2=new TextField("Type map to search");
-    TextField name = new TextField("Please enter username");
-    TextField phone_number = new TextField("Please enter your phone number");
-    TextField password = new TextField("Please enter password");
-    TextField nameW = new TextField("Please enter worker name");
-    TextField passwordW = new TextField("Please enter worker password");
-    TextField command = new TextField("Please enter command");
-    TextField nameR =new TextField("Please enter username");
-    TextField passwordR = new TextField("Please enter password");
-    TextField creditCard = new TextField("Please enter credit card");
-    TextField email= new TextField("Please enter your email addres");
-    TextField verifySerial=new TextField("Please enter the serial we sent to you.");
     
 	/**** ****/
-    
-  
-    static int counter=0;
-    static int my_flag=-1;
-    public static List<Map> myMapList;
-    static int counterPlace=0;
-    
 
-    
-    
-    
-    
+    static int my_flag = -1;
+    public static List<CityMap> myMapList;
+
+    static int counter = 0;
+    static int counterPlace = 0;
+
     /***Clean all  textfields function***/
     
     public  void clean_tf() {
-    	     phone_number.setText("Please enter your phone number");
     	     searchTF.setText("Type map to search");
     	     searchTF2.setText("Type map to search");
-    	     name.setText("Please enter username");
-    	     password.setText("Please enter password");
-    	     command.setText("Please enter command");
-    	     nameR.setText("Please enter username");
-    	     passwordR.setText("Please enter password");
-    	     creditCard.setText("Please enter credit card");
-    	     email.setText("Please enter your email addres");
-    	     verifySerial.setText("Please enter the serial we sent to you.");
     }
-    
-    
-	
+    	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -118,29 +76,36 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+    	// Initiation
+
     	Gson gson = new Gson();
 
-    	window = primaryStage;
-    	UI_server_communicate communicate= new UI_server_communicate();
-        View view = new View();
+    	View view = new View();
+
     	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
+
+    	UI_server_communicate communicate = new UI_server_communicate();
+
+    	// UI stuff
+
         primaryStage.setTitle("GCM");
 
+    	window = primaryStage;
+
+        scenes.put(SceneName.MAIN, new MainView(primaryStage).getScene());
+        scenes.put(SceneName.SIGN_UP, new SignUpView(primaryStage, chat, communicate).getScene());
+        scenes.put(SceneName.SIGN_IN, new SignInView(primaryStage, chat, communicate).getScene());
+        scenes.put(SceneName.WORKER_ZONE, new WorkerView(primaryStage, chat, communicate).getScene());
+
+        primaryStage.setScene(scenes.get(SceneName.MAIN));
+
+        primaryStage.show();
 
         /****Textfields edit****/
         searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         searchTF2.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        phone_number.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        nameW.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        passwordW.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        nameR.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        passwordR.setFont(Font.font("Verdana", FontWeight.BOLD, 12));;
-        creditCard.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        email.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        verifySerial.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+
+        mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         /****Checkboxs declare ***/
         CheckBox Search_by_city= new CheckBox("Search by city");
@@ -149,13 +114,13 @@ public class Main extends Application {
         Search_by_city.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         Search_by_inplace.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         Search_by_general_description.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+
         CheckBox Search_by_city2= new CheckBox("Search by city");
         CheckBox Search_by_inplace2= new CheckBox("Search by interested place");
         CheckBox Search_by_general_description2= new CheckBox("Search by general description");
         Search_by_city2.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         Search_by_inplace2.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         Search_by_general_description2.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-
         
         /****Buttons declare****/
         Button chooseM=new Button();
@@ -163,186 +128,40 @@ public class Main extends Application {
         Button pervM=new Button();
         Button next = new Button();
         Button getBackU=new Button();
-        Button toCatalog=new Button();
-        Button nextW = new Button();
-        Button btn = new Button();
-        Button memBtn = new Button();
-        Button guestBtn = new Button();
-        Button signUp = new Button();
-        Button signUp2 = new Button();
         Button search = new Button();
-        Button getBack = new Button();
         Button getBack2=new Button();
-        Button getBack3=new Button();
         Button getBack4=new Button();
-        Button getBack5=new Button();
-        Button getBack6=new Button();
-        Button getBack7=new Button();
-        Button getBack8=new Button();
-        Button getBack9=new Button();
-        Button getBack10=new Button();
         Button getBack11=new Button();
         Button search_btn=new Button();
         Button search_btn2=new Button();
-        Button workers_zone=new Button();
         
         /**** Buttons Text ****/
         chooseM.setText("Choose this map");
         nextM.setText("Next map");
         pervM.setText("Pervious map");
         next.setText("Next");
-        nextW.setText("Next");
-        toCatalog.setText("To catalog");
-        workers_zone.setText("Workers zone");
         search_btn.setText("Search");
         search_btn2.setText("Search");
-        signUp.setText("Sign up");
-        signUp2.setText("Sign up");
-        getBack5.setText("Go to Main");
         getBack4.setText("Go back");
-        getBack3.setText("Go back");
         getBack2.setText("Go back");
-        getBack6.setText("Go back");
-        getBack7.setText("Go back");
-        getBack8.setText("Go back");
-        getBack9.setText("Go back");
-        getBack10.setText("Go back");
         getBack11.setText("Go back");
-        getBack.setText("Go back");
         search.setText("Search");
         getBackU.setText("Go back");
-        memBtn.setText("Sign in");
-        guestBtn.setText("Free zone");
-        btn.setText("Next");
-        
-        
-        
-        
 
-        
         /****Buttons actions****/
 
-   
+        getBackU.setOnAction(e->{window.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        getBack2.setOnAction(e->{window.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        getBack4.setOnAction(e->{window.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        getBack11.setOnAction(e->{window.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
 
-
-        signUp2.setOnAction(e->{
-
-        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), phone_number.getText(), nameR.getText(), creditCard.getText());
-        	Request request = new Request(API.ADD_USER, accountUser);
-        	String jsonString = gson.toJson(request);
-        	chat.SendToServer(jsonString);
-        	communicate.ask_server();
-        	System.out.println("its the flag " + my_flag);
-        	if (my_flag==0) { window.setScene(alreadyExists);my_flag=-1;}
-        	else if (my_flag==1) { window.setScene(welcomeR);my_flag=-1;}
-        	else if (my_flag==2) { window.setScene(missingDetail);my_flag=-1;}
-        	
-        	System.out.println("this is the after "+ my_flag);
-        });
-        
-        
-        signUp.setOnAction(e->window.setScene(signUpS));
-        memBtn.setOnAction(e->window.setScene(signIn));
-        guestBtn.setOnAction(e->window.setScene(guestScene));
-        toCatalog.setOnAction(e->window.setScene(catalogScene));
-        getBackU.setOnAction(e->{window.setScene(memPage);clean_tf();});
-        getBack.setOnAction(e->{window.setScene(menu);clean_tf();});
-        getBack2.setOnAction(e->{window.setScene(menu);clean_tf();});
-        getBack3.setOnAction(e->{window.setScene(menu);clean_tf();});
-        getBack4.setOnAction(e->{window.setScene(menu);clean_tf();});
-        getBack5.setOnAction(e->{window.setScene(menu);clean_tf();});
-        getBack6.setOnAction(e->{window.setScene(menu);clean_tf();});
-        getBack7.setOnAction(e->{window.setScene(menu);clean_tf();});
-        getBack8.setOnAction(e->{window.setScene(signUpS);});
-        getBack9.setOnAction(e->{window.setScene(signIn);});
-        getBack10.setOnAction(e->{window.setScene(signIn);});
-        getBack11.setOnAction(e->{window.setScene(menu);clean_tf();});
-
-
-        workers_zone.setOnAction(e->{window.setScene(signInR);clean_tf();});
-
-       
-        
-        btn.setOnAction(e->{
-            	GeneralRequest accountCheck = new GeneralRequest(name.getText(), password.getText());
-            	Request request = new Request(API.GET_USER, accountCheck);
-            	String jsonString = gson.toJson(request);
-            	chat.SendToServer(jsonString);
-            	communicate.ask_server();
-            	if (my_flag==0) { window.setScene(wrongUser);my_flag=-1;}
-            	else if(my_flag==1) { window.setScene(missingU);my_flag=-1;}
-            	else if(my_flag==2) {window.setScene(memPage);my_flag=-1;}
-            });
-            
-
-
-        nextW.setOnAction(e->{
-           
-        	GeneralRequest accountCheck = new GeneralRequest(nameW.getText(), passwordW.getText());
-            	Request request = new Request(API.GET_WORKER, accountCheck);
-//            	Request request = new Request(API.GET_USER_PURCHASES, accountCheck);
-            	String jsonString = gson.toJson(request);
-            	chat.SendToServer(jsonString);
-
-            	communicate.ask_server();
-
-        });
-
-        
-        
-        
         /****background zone****/
-        
-        BackgroundImage myBI= new BackgroundImage(new Image("Images\\Background.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIwe= new BackgroundImage(new Image("Images\\Welcome.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIs= new BackgroundImage(new Image("Images\\sign_up.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIW= new BackgroundImage(new Image("Images\\signInIm.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIWr= new BackgroundImage(new Image("Images\\Wrong.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIc= new BackgroundImage(new Image("Images\\catalog_up.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIz= new BackgroundImage(new Image("Images\\clientZone.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIm= new BackgroundImage(new Image("Images\\missingD.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        BackgroundImage myBIa= new BackgroundImage(new Image("Images\\alreadyE.png"),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        
-        
-        
-        /****Scene declare****/
 
-        StackPane root = new StackPane();
-        root.setBackground(new Background(myBI));
-        root.getChildren().add(workers_zone);
-        workers_zone.setTranslateY(-100);
-        root.getChildren().add(memBtn);
-        memBtn.setTranslateY(-250);
-        root.getChildren().add(guestBtn);
-        guestBtn.setTranslateY(-200);
-        root.getChildren().add(signUp);
-        signUp.setTranslateY(-150);
-        menu=new Scene(root,1280,720);
-        primaryStage.setScene(menu);
-        primaryStage.show();
+        BackgroundImage myBIc = new BackgroundImage(new Image("Images\\catalog_up.png"),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         
-        StackPane client=new StackPane();
-        client.setBackground(new Background(myBIz));
-        clientZone=new Scene(client,1280,720);
-
-        StackPane _memPage=new StackPane();
-        _memPage.setBackground(new Background(myBI));
-        _memPage.getChildren().add(toCatalog);
-        toCatalog.setTranslateY(-200);
-        memPage=new Scene(_memPage,1280,720);
-        
+        /****Scene declare***/
       
-        
-        
         StackPane _catalog = new StackPane();
         _catalog.setBackground(new Background(myBIc));
         searchTF2.setMaxWidth(300);
@@ -360,18 +179,6 @@ public class Main extends Application {
         getBackU.setTranslateX(-100);
         catalogScene=new Scene(_catalog,1280,720);
 
-        
-        StackPane _wrongUser=new StackPane();
-        _wrongUser.setBackground(new Background(myBIWr));
-        _wrongUser.getChildren().add(getBack9);
-        wrongUser=new Scene(_wrongUser,1280,720);
-        
-        StackPane _missingU=new StackPane();
-        _missingU.setBackground(new Background(myBIm));
-        _missingU.getChildren().add(getBack10);
-        missingU=new Scene(_missingU,1280,720);
-        
-        
         StackPane guestZone = new StackPane();
         guestZone.setBackground(new Background(myBIc));
         searchTF.setMaxWidth(300);
@@ -389,88 +196,6 @@ public class Main extends Application {
         getBack2.setTranslateX(-100);
         guestScene=new Scene(guestZone,1280,720);
 
-        
-        StackPane welcomeRs=new StackPane();
-        welcomeRs.setBackground(new Background(myBIwe));
-        welcomeRs.getChildren().add(getBack5);
-        welcomeR=new Scene(welcomeRs,1280,720);
-
-
-        
-        
-        StackPane sign_Up = new StackPane();
-        sign_Up.setBackground(new Background(myBIs));
-        nameR.setTranslateY(-100);
-        nameR.setMaxWidth(300);
-        sign_Up.getChildren().add(nameR);
-        passwordR.setMaxWidth(300);
-        passwordR.setTranslateY(-50);
-        sign_Up.getChildren().add(passwordR);
-        creditCard.setMaxWidth(300);
-        creditCard.setTranslateY(0);
-        sign_Up.getChildren().add(creditCard);
-        email.setMaxWidth(300);
-        email.setTranslateY(50);
-        sign_Up.getChildren().add(phone_number);
-        phone_number.setMaxWidth(300);
-        phone_number.setTranslateY(100);
-        sign_Up.getChildren().add(email);
-        sign_Up.getChildren().add(signUp2);
-        signUp2.setTranslateY(150);
-        sign_Up.getChildren().add(getBack3);
-        getBack3.setTranslateY(150);
-        getBack3.setTranslateX(-100);
-        signUpS=new Scene(sign_Up,1280,720);
-        
-        
-        StackPane workersZone = new StackPane();
-        workersZone.setBackground(new Background(myBIW));
-        nameW.setTranslateY(-50);
-        nameW.setMaxWidth(400);
-        workersZone.getChildren().add(nameW);
-        passwordW.setMaxWidth(400);
-        workersZone.getChildren().add(passwordW);
-        workersZone.getChildren().add(getBack6);
-        getBack6.setTranslateY(100);
-        getBack6.setTranslateX(-100);
-        workersZone.getChildren().add(nextW);
-        nextW.setTranslateY(100);
-        signInR=new Scene(workersZone,1280,720);
-        
-
-
-        StackPane _alreadyExists=new StackPane();
-        _alreadyExists.setBackground(new Background(myBIa));
-        _alreadyExists.getChildren().add(getBack7);
-        alreadyExists=new Scene(_alreadyExists,1280,720);
-        
-        
-        StackPane _missingDeatil=new StackPane();
-        _missingDeatil.setBackground(new Background(myBIm));
-        _missingDeatil.getChildren().add(getBack8);
-        missingDetail=new Scene(_missingDeatil,1280,720);
-
-        
-        
-        
-        
-        
-        // Members zone sign in
-
-        StackPane memberZone = new StackPane();
-        memberZone.setBackground(new Background(myBIW)); 
-        name.setMaxWidth(400);
-        name.setTranslateY(-50);
-        memberZone.getChildren().add(name);
-        password.setMaxWidth(400);
-        memberZone.getChildren().add(password);
-        memberZone.getChildren().add(getBack);
-        getBack.setTranslateY(100);
-        getBack.setTranslateX(-100);
-        memberZone.getChildren().add(btn);
-        btn.setTranslateY(100);
-        signIn = new Scene(memberZone,1280,720);
-        
         StackPane _result=new StackPane();
         _result.setBackground(new Background(myBIc));
         mapShow.setMaxWidth(500);
@@ -529,7 +254,6 @@ public class Main extends Application {
        });
 
   	   result = new Scene(_result,1280,720);
-  	
         
         nextM.setOnAction(e->{
         	if(counter!=myMapList.size()-1)counter++;
@@ -573,19 +297,23 @@ public class Main extends Application {
 
     public void setMap(ImageView aImageView) {
     if (counter<0||counter>myMapList.size()) return;
-    Map map = myMapList.get(counter);
+    CityMap map = myMapList.get(counter);
 	System.out.println("good" +map.toString());
 	aImageView.setImage(new Image(map.mURL));
 	mapShow.setText(map.toString());
     window.setScene(result);}
 
     public void setPlace(ImageView aImageView) {
-    	Map map = myMapList.get(counter);
+    	CityMap map = myMapList.get(counter);
     	if (counterPlace < 0 || counterPlace >= map.mPlaces.size()) {
     		return;
     	}
     	Place place = map.mPlaces.get(counterPlace);
 		aImageView.setImage(new Image(place.mURL));
     }
+
+	public static Map<SceneName, Scene> getScenes() {
+		return scenes;
+	}
 
 }

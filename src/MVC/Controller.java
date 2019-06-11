@@ -9,7 +9,7 @@ import Constants.API;
 
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
-import DB_classes.Map;
+import DB_classes.CityMap;
 import DB_classes.Place;
 import DB_classes.Route;
 import MVC.Model;
@@ -259,7 +259,7 @@ public class Controller {
 
 				String cityName = gson.fromJson(gson.toJson(request.mObject), String.class);
 
-				List<Map> mapsListCityName = model.MapsByCity(cityName);
+				List<CityMap> mapsListCityName = model.MapsByCity(cityName);
 		
 		    	ResponseController responseController = new ResponseController("MapSearch_city_key", mapsListCityName);
 		
@@ -277,7 +277,7 @@ public class Controller {
 				
 				String placeName = gson.fromJson(gson.toJson(request.mObject), String.class);
 		
-				List<Map> mapsListPlaceName = model.MapsByPlace(placeName);
+				List<CityMap> mapsListPlaceName = model.MapsByPlace(placeName);
 		
 		    	ResponseController responseController = new ResponseController("MapSearch_place_key", mapsListPlaceName);
 		
