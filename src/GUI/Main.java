@@ -10,14 +10,16 @@ import Utils.UI_server_communicate;
 import MVC.View;
 import Communication.ClientConsole;
 import DB_classes.CityMap;
+import Constants.ErrorCodes;
 import Constants.SceneName;
 
 public class Main extends Application {
 	
 	private static Map<SceneName, Scene> scenes = new HashMap<>();
 
-	public static int my_flag = -1;
-    public static List<CityMap> myMapList;
+	public static int mServerResponseErrorCode = ErrorCodes.RESET;
+
+	public static List<CityMap> myMapList;
 
 	public static void main(String[] args) {
 		launch(args);

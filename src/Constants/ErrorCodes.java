@@ -15,4 +15,6 @@ public class ErrorCodes{
 	
 	public static final int PURCHASE_DETAILS_MISSING = 6;
 
+	public static final int RESET = -1;
+
 }

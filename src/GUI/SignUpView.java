@@ -3,6 +3,7 @@ package GUI;
 import com.google.gson.Gson;
 import Communication.ClientConsole;
 import Constants.API;
+import Constants.ErrorCodes;
 import Constants.SceneName;
 import DB_classes.AccountUser;
 import Requests.Request;
@@ -55,52 +56,57 @@ public class SignUpView extends BaseView {
         Button signUp2 = new Button("Sign up");
         signUp2.setOnAction(e->{
 
-        	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), phone_number.getText(), nameR.getText(), creditCard.getText());
-        	Request request = new Request(API.ADD_USER, accountUser);
-        	String jsonString = gson.toJson(request);
+        	if (passwordR.getText().isEmpty() || email.getText().isEmpty() || phone_number.getText().isEmpty() || nameR.getText().isEmpty() || creditCard.getText().isEmpty()) {
 
-        	mChat.SendToServer(jsonString);
-        	mCommunicate.ask_server();
-        	System.out.println("its the flag " + Main.my_flag);
-
-        	if (Main.my_flag==0) {
-
-        		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Error Dialog");
-        		alert.setHeaderText("User already exists, please choose another username");
-        		alert.setContentText("Ooops, there was an error!");
-        		alert.showAndWait();
-
-        		Main.my_flag = -1;
-
-        	} else if (Main.my_flag==1) {
-
-        		Alert alert = new Alert(AlertType.CONFIRMATION);
-        		alert.setTitle("Confirmation Dialog");
-        		alert.setHeaderText("Congradulations !!! you have been successfuly singed in");
-        		alert.setContentText("O.K.");
-        		alert.showAndWait();
-
-        		Main.my_flag = -1;
-
-        		clean_tf();
-        		
-        		stage.setScene(Main.getScenes().get(SceneName.MAIN));
-
-        	} else if (Main.my_flag==2) {
-        		
         		Alert alert = new Alert(AlertType.ERROR);
         		alert.setTitle("Error Dialog");
         		alert.setHeaderText("Some fields are missing, please fill all fields");
         		alert.setContentText("Ooops, there was an error!");
         		alert.showAndWait();
         		
-        		Main.my_flag = -1;
+        	} else {
+
+            	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), phone_number.getText(), nameR.getText(), creditCard.getText());
+            	Request request = new Request(API.ADD_USER, accountUser);
+            	String jsonString = gson.toJson(request);
+
+            	mChat.SendToServer(jsonString);
+            	mCommunicate.ask_server();
+
+            	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+
+	        		Alert alert = new Alert(AlertType.CONFIRMATION);
+	        		alert.setTitle("Confirmation Dialog");
+	        		alert.setHeaderText("Congradulations !!! you have been successfuly singed in");
+	        		alert.setContentText("O.K.");
+	        		alert.showAndWait();
+	
+	        		clean_tf();
+	        		
+	        		stage.setScene(Main.getScenes().get(SceneName.MAIN));
+
+        		} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
+
+            		Alert alert = new Alert(AlertType.ERROR);
+            		alert.setTitle("Error Dialog");
+            		alert.setHeaderText("User already exists, please choose another username");
+            		alert.setContentText("Ooops, there was an error!");
+            		alert.showAndWait();
+
+        		} else {
+
+            		Alert alert = new Alert(AlertType.ERROR);
+            		alert.setTitle("Error Dialog");
+            		alert.setHeaderText("An unknown error has occurred, please try again");
+            		alert.setContentText("error!");
+            		alert.showAndWait();
+
+            	}
+
+        		Main.mServerResponseErrorCode = ErrorCodes.RESET;
 
         	}
         	
-        	System.out.println("this is the after "+ Main.my_flag);
-
         });
 
         nameR.setTranslateY(-100);
