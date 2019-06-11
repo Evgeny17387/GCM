@@ -32,8 +32,6 @@ public class MainView extends BaseView {
 		
         BackgroundImage myBI = new BackgroundImage(new Image("Images\\Background.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
-        
-
         memBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_IN)));
         outBtn.setOnAction(e->{Main.memberlevel=MemLvl.FREE_USER;changeScene();stage.setScene(Main.getScenes().get(SceneName.MAIN));});
         guestBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SEARCH_MAP)));

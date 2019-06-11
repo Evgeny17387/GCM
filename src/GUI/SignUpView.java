@@ -77,7 +77,7 @@ public class SignUpView extends BaseView {
 
 	        		Alert alert = new Alert(AlertType.CONFIRMATION);
 	        		alert.setTitle("Confirmation Dialog");
-	        		alert.setHeaderText("Congradulations !!! you have been successfuly singed in");
+	        		alert.setHeaderText("Congradulations, you have been successfuly Singed Up, please Sing In !!!");
 	        		alert.setContentText("O.K.");
 	        		alert.showAndWait();
 	

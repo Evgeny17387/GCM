@@ -42,12 +42,6 @@ public class View {
 
 		    		GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
 
-		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
-
-			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
-
-		    		}
-
 		    	}
 
 			    UI_server_communicate.mResposeFromserver = true;

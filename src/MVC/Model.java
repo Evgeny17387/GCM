@@ -36,7 +36,7 @@ public class Model {
 
 	public ResponseModel AddUser(AccountUser accountUser) {
 
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
 
 		if (
 				accountUser.mFirstName.isEmpty() || 
@@ -64,9 +64,6 @@ public class Model {
 			sql = "INSERT INTO `Users`(`FirstName`, `LastName`, `UserName`, `Password`, `Email`, `CreditCard`, `PhoneNumber`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 			prep_stmt = conn.prepareStatement(sql);
-
-//			String salt = PasswordUtils.getSalt();
-//			String encryptedPassword = PasswordUtils.generateSecurePassword(register.mPassword, salt);
 			
 			prep_stmt.setString(1, accountUser.mFirstName);
 			prep_stmt.setString(2, accountUser.mLastName);
@@ -75,38 +72,23 @@ public class Model {
 			prep_stmt.setString(5, accountUser.mEmail);
 			prep_stmt.setString(6, accountUser.mCreditCard);
 			prep_stmt.setString(7, accountUser.mPhoneNumber);
-
-//			prep_stmt.setString(8, salt);
 			
 			prep_stmt.executeUpdate();
-			
-			responseModel = GetUser(accountUser.mUserName, accountUser.mPassword);
-
-			if (conn != null)
-				conn.close();
-			if (prep_stmt != null)
-				prep_stmt.close();
 				
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
+			
 		} catch (SQLException se) {
 
 			responseModel.mErrorCode = se.getErrorCode();
 			
-			if (!(se.getErrorCode() == ErrorCodes.USER_ALREADY_EXISTS)) {
-
-				se.printStackTrace();
-				System.out.println("SQLException: " + se.getMessage());
-		        System.out.println("SQLState: " + se.getSQLState());
-		        System.out.println("VendorError: " + se.getErrorCode());
-
-			}else {
-				
-	    	    System.out.println("User with this userName already exists");
-
-			}
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
 	
 		} catch (Exception e) {
 
-			responseModel.mErrorCode = ErrorCodes.FAILURE;
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
 
 			e.printStackTrace();
 	
