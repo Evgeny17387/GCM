@@ -42,7 +42,7 @@ public class SearchMapView extends BaseView {
         Search_by_general_description.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        Button getBack2=new Button("Go back");
+        Button getBack2=new Button("Go Back");
         getBack2.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
 
         Button search_btn=new Button("Search");

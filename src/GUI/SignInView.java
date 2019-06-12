@@ -51,9 +51,9 @@ public class SignInView extends BaseView {
         	if (password.getText().isEmpty() || name.getText().isEmpty()) {
 
         		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Error Dialog");
-        		alert.setHeaderText("Some fields are missing, please fill all fields");
-        		alert.setContentText("Ooops, there was an error!");
+        		alert.setTitle("Error");
+        		alert.setHeaderText("Some fields are missing");
+        		alert.setContentText("Please fill all fields");
         		alert.showAndWait();
         		
         	} else {
@@ -79,7 +79,7 @@ public class SignInView extends BaseView {
 	        	} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_NOT_FOUND) {
 	        		
 	        		Alert alert = new Alert(AlertType.ERROR);
-	        		alert.setTitle("Error ");
+	        		alert.setTitle("Error");
 	        		alert.setHeaderText("User details are incorrect");
 	        		alert.setContentText("Please try again");
 	        		alert.showAndWait();
@@ -100,9 +100,10 @@ public class SignInView extends BaseView {
 
         });
 
-        name.setMaxWidth(400);
+        name.setMaxWidth(Dimensions.mSignInViewTextWidth);
+        password.setMaxWidth(Dimensions.mSignInViewTextWidth);
+
         name.setTranslateY(-50);
-        password.setMaxWidth(400);
         getBack.setTranslateY(100);
         getBack.setTranslateX(-100);
         btn.setTranslateY(100);

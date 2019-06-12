@@ -31,6 +31,8 @@ public class View {
 
     		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 
+			GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
+
     	    System.out.println(responseModel.mErrorCode);
 
 	      	switch (responseController.mType) {
@@ -58,15 +60,11 @@ public class View {
 
 		    	{
 
-	    			GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
-
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 		    			
 		    			AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
 		    			
 		    			Main.mAccountUser = accountUser;
-
-						System.out.format("View: " + accountUser.toString());
 
 		    		}
 
@@ -85,7 +83,7 @@ public class View {
 		    	{
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
-
+		    		
 		    		}
 
 		    	}
@@ -106,11 +104,9 @@ public class View {
 		    			
 		    			AccountWorker accountWorker = gson.fromJson(gson.toJson(responseModel.mObject), AccountWorker.class);
 
-						System.out.format(accountWorker.toString());
+		    			Main.mAccountWorker = accountWorker;
 
-		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
-
-		    			System.out.println("Worker not found");
+						System.out.println("View: " + accountWorker.toString());
 		    			
 		    		}
 

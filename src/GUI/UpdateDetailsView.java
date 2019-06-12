@@ -84,12 +84,16 @@ public class UpdateDetailsView extends BaseView {
         // Init Table
 
         TableColumn cityColumn = new TableColumn("City");
-        cityColumn.setMinWidth(300);
+        cityColumn.setMinWidth(140);
         cityColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("city"));
+
+        TableColumn dateColumn = new TableColumn("Date");
+        dateColumn.setMinWidth(140);
+        dateColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("date"));
 
         table = new TableView<PurchaseView>();
         table.setEditable(false);
-        table.getColumns().addAll(cityColumn);
+        table.getColumns().addAll(cityColumn, dateColumn);
         
         // OnClick
 
@@ -204,7 +208,7 @@ public class UpdateDetailsView extends BaseView {
 	    data = FXCollections.observableArrayList();
 
 	    for (Purchase purchase : Main.mAccountUser.mPurchases) {
-	        data.add(new PurchaseView(purchase.mCityName));
+	        data.add(new PurchaseView(purchase.mCityName, purchase.mDate));
 	    }
 
         table.setItems(data);

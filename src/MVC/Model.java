@@ -446,6 +446,10 @@ public class Model {
 	// Purchases
 
 	private List<Purchase> GetUserPurchases(String aUserName) {
+		
+		if (aUserName.isEmpty()) {
+			return null;
+		}
 
 		List<Purchase> purchaseList = null;
 
@@ -473,10 +477,7 @@ public class Model {
 
 			while (rs.next()) {
 
-				String userName = rs.getString("UserName");
-				String cityName = rs.getString("CityName");
-
-				Purchase purchase = new Purchase(userName, cityName);
+				Purchase purchase = new Purchase(rs.getString("UserName"), rs.getString("CityName"), rs.getString("Date"));
 				
 				purchaseList.add(purchase);
 
@@ -519,91 +520,6 @@ public class Model {
 		return purchaseList;
 	
 	}
-	
-	public ResponseModel GetUsersPurchases() {
-
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
-
-		List<Purchase> purchaseList = null;
-
-		String sql;
-
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			Class.forName(JDBC_DRIVER);
-
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			stmt = conn.createStatement();
-
-			sql = "SELECT * FROM Purchases";
-
-			rs = stmt.executeQuery(sql);
-
-			purchaseList = new ArrayList<Purchase>();
-
-			while (rs.next()) {
-
-				String userName = rs.getString("UserName");
-				String cityName = rs.getString("CityName");
-
-				Purchase purchase = new Purchase(userName, cityName);
-				
-				purchaseList.add(purchase);
-
-				System.out.println("Model: " + purchase.toString());
-
-			}
-			
-			responseModel.mObject = purchaseList;
-
-			responseModel.mErrorCode = ErrorCodes.SUCCESS;
-
-		} catch (SQLException se) {
-
-			responseModel.mErrorCode = se.getErrorCode();
-
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-	
-			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
-
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (conn != null)
-					conn.close();
-	
-			} catch (SQLException se) {
-	
-				se.printStackTrace();
-	
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-		
-			}
-
-		}
-		
-		return responseModel;
-	
-	}
 
 	public ResponseModel BuyMap(String aUserName, String aCityName) {
 
@@ -624,12 +540,13 @@ public class Model {
 	
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	
-			sql = "INSERT INTO `Purchases`(`UserName`, `CityName`) VALUES (?, ?)";
+			sql = "INSERT INTO `Purchases`(`UserName`, `CityName`, `Date`) VALUES (?, ?, ?)";
 
 			prep_stmt = conn.prepareStatement(sql);
 			
 			prep_stmt.setString(1, aUserName);
 			prep_stmt.setString(2, aCityName);
+			prep_stmt.setString(3, TimeAndDateUtils.GetCurrentDate());
 			
 			prep_stmt.executeUpdate();
 			
@@ -691,7 +608,7 @@ public class Model {
 		String sql;
 
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement prep_stmt = null;
 		ResultSet rs = null;
 
 		try {
@@ -700,38 +617,26 @@ public class Model {
 
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			stmt = conn.createStatement();
+			sql = "SELECT * FROM `Workers` WHERE `FirstName` = ? AND `Password` = ?";
 
-			sql = "SELECT * FROM Workers";
+			prep_stmt = conn.prepareStatement(sql);
 
-			rs = stmt.executeQuery(sql);
+			prep_stmt.setString(1, aFirstName);
+			prep_stmt.setString(2, aPassword);
 
-			while (rs.next()) {
+			rs = prep_stmt.executeQuery();
 
-				String firstName = rs.getString("FirstName");
-				String password = rs.getString("Password");
+			if (rs.next()) {
 
-				if (firstName.compareTo(aFirstName) == 0 && password.compareTo(aPassword) == 0) {
+				AccountWorker accountWorker = new AccountWorker(aFirstName, rs.getString("LastName"), aPassword, rs.getString("Email"), rs.getString("PhoneNumber"), rs.getInt("Id"), rs.getString("Type"));
+				
+				responseModel.mObject = accountWorker;
+				
+				responseModel.mErrorCode = ErrorCodes.SUCCESS;
 
-					responseModel.mErrorCode = ErrorCodes.SUCCESS;
-
-					int id = rs.getInt("Id");
-					String lastName = rs.getString("LastName");
-					String email = rs.getString("Email");
-					String phoneNumber = rs.getString("PhoneNumber");
-					String type = rs.getString("Type");
-
-					responseModel.mObject = new AccountWorker(firstName, lastName, password, email, phoneNumber, id, type);
-
-					System.out.format("%s - %s - %s - %s - %s - %d - %s\n", firstName, lastName, password, email, phoneNumber, id, type);
-					
-				}
+				System.out.println(accountWorker.toString());
 
 			}
-			
-			rs.close();
-			stmt.close();
-			conn.close();
 	
 		} catch (SQLException se) {
 
@@ -745,6 +650,88 @@ public class Model {
 		} catch (Exception e) {
 	
 			responseModel.mErrorCode = ErrorCodes.FAILURE;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+
+		}
+		
+		return responseModel;
+	
+	}
+
+	public ResponseModel GetUsersPurchases() {
+
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+		List<Purchase> purchaseList = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM Purchases";
+
+			rs = stmt.executeQuery(sql);
+
+			purchaseList = new ArrayList<Purchase>();
+
+			while (rs.next()) {
+
+				Purchase purchase = new Purchase(rs.getString("UserName"), rs.getString("CityName"), rs.getString("Date"));
+				
+				purchaseList.add(purchase);
+
+				System.out.println("Model: " + purchase.toString());
+
+			}
+			
+			responseModel.mObject = purchaseList;
+
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
+
+		} catch (SQLException se) {
+
+			responseModel.mErrorCode = se.getErrorCode();
+
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+	
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
 
 			e.printStackTrace();
 	

@@ -10,6 +10,7 @@ import Utils.UI_server_communicate;
 import MVC.View;
 import Communication.ClientConsole;
 import DB_classes.AccountUser;
+import DB_classes.AccountWorker;
 import DB_classes.CityMap;
 import Defines.ErrorCodes;
 import Defines.MemLvl;
@@ -31,6 +32,7 @@ public class Main extends Application {
     public static Stage mStage;
     
     public static AccountUser mAccountUser;
+    public static AccountWorker mAccountWorker;
     
     public static void main(String[] args) {
 		launch(args);
@@ -38,24 +40,24 @@ public class Main extends Application {
 
     @Override
 	public void start(Stage primaryStage) {
-    	
+
     	mStage = primaryStage;
-    	
+
     	memberlevel = MemLvl.FREE_USER;
     	
     	View view = new View();
     	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
     	UI_server_communicate communicate = new UI_server_communicate();
 
-    	primaryStage.setTitle("GCM");
         scenes.put(SceneName.MAIN, new MainView(chat, communicate));
         scenes.put(SceneName.SIGN_UP, new SignUpView(chat, communicate));
         scenes.put(SceneName.SIGN_IN, new SignInView(chat, communicate));
-        scenes.put(SceneName.WORKER_ZONE, new WorkerView(chat, communicate));
+        scenes.put(SceneName.UPDATE_DETAILS, new UpdateDetailsView(chat, communicate));
+        scenes.put(SceneName.WORKER_SIGN_IN, new WorkerView(chat, communicate));
+        scenes.put(SceneName.WORKER_ZONE, new WorkerReportsView(chat, communicate));
         scenes.put(SceneName.SEARCH_MAP, new SearchMapView(chat, communicate));
         scenes.put(SceneName.SHOW_MAP, new ShowMapView(chat, communicate));
         scenes.put(SceneName.BUY, new BuyView(chat, communicate));
-        scenes.put(SceneName.UPDATE_DETAILS, new UpdateDetailsView(chat, communicate));
 
         changeScene(SceneName.MAIN);
 
@@ -75,7 +77,7 @@ public class Main extends Application {
 			case SIGN_IN:
 				SignInView.refreshScene();
 				break;
-			case WORKER_ZONE:
+			case WORKER_SIGN_IN:
 				WorkerView.refreshScene();
 				break;
 			case SEARCH_MAP:

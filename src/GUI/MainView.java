@@ -20,13 +20,13 @@ public class MainView extends BaseView {
 
     static StackPane mStackPane;
 
-    static Button memBtn = new Button("Sign in");
-    static Button outBtn = new Button("Sign out");
-    static Button guestBtn = new Button("To catalog");
-    static Button signUp = new Button("Sign up");
-    static Button workers_zone = new Button("Workers zone");
-
+    static Button mSignUp = new Button("User Sign Up");
+    static Button mUserSignIn = new Button("Sign In");
     static Button mUpdateDetails;
+    static Button mSignOut = new Button("Sign Out");
+    static Button mCatalog = new Button("Catalog");
+    static Button mWorkerSignIn = new Button("Worker Sign In");
+    static Button mWorkersZone;
 
 	public MainView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
@@ -37,56 +37,65 @@ public class MainView extends BaseView {
 		mStackPane = new StackPane();
 		
 		mUpdateDetails = new Button("User Details");
+		mWorkersZone = new Button("Worker Zone");
 
         // OnClick
 
-        memBtn.setOnAction(e->
+        mSignUp.setOnAction(e->
+    		Main.changeScene(SceneName.SIGN_UP)
+        );
+
+		mUserSignIn.setOnAction(e->
         	Main.changeScene(SceneName.SIGN_IN)
         );
 
-        outBtn.setOnAction(e->{
+        mUpdateDetails.setOnAction(e->
+    		Main.changeScene(SceneName.UPDATE_DETAILS)
+        );
+
+        mSignOut.setOnAction(e->{
         	Main.memberlevel = MemLvl.FREE_USER;
         	Main.changeScene(SceneName.MAIN);
         });
 
-        guestBtn.setOnAction(e->
+		mCatalog.setOnAction(e->
         	Main.changeScene(SceneName.SEARCH_MAP)
         );
 
-        signUp.setOnAction(e->
-        	Main.changeScene(SceneName.SIGN_UP)
+        mWorkerSignIn.setOnAction(e->
+        	Main.changeScene(SceneName.WORKER_SIGN_IN)
         );
 
-        workers_zone.setOnAction(e->
-        	Main.changeScene(SceneName.WORKER_ZONE)
+        mWorkersZone.setOnAction(e->
+    		Main.changeScene(SceneName.WORKER_ZONE)
         );
-
-        mUpdateDetails.setOnAction(e->
-        	Main.changeScene(SceneName.UPDATE_DETAILS)
-        );
-
+        
         // UI position
 
-        outBtn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
-        guestBtn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
-        memBtn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
-        signUp.setMaxWidth(Dimensions.mMainViewButtonsWidth);
-        workers_zone.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        mSignOut.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        mCatalog.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        mUserSignIn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        mSignUp.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        mWorkerSignIn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
         mUpdateDetails.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        mWorkersZone.setMaxWidth(Dimensions.mMainViewButtonsWidth);
 
-        int top = -250;
+        int top = -100;
         int interval = 50;
         
-        outBtn.setTranslateY(top);
-        mUpdateDetails.setTranslateY(top + interval);
-        guestBtn.setTranslateY(top + 2*interval);
-        memBtn.setTranslateY(top + 3*interval);
-        signUp.setTranslateY(top + 4*interval);
-        workers_zone.setTranslateY(top + 5*interval);
+        mSignUp.setTranslateY(top);
+        mUserSignIn.setTranslateY(top + 1*interval);
+        mCatalog.setTranslateY(top + 2*interval);
+        mWorkerSignIn.setTranslateY(top + 3*interval);
+
+        mUpdateDetails.setTranslateY(top);
+        mSignOut.setTranslateY(top + 1*interval);
+        
+        mWorkersZone.setTranslateY(top);
 
         // Scene
 
-        mStackPane.getChildren().addAll(outBtn, guestBtn, memBtn, signUp, workers_zone, mUpdateDetails);
+        mStackPane.getChildren().addAll(mSignOut, mCatalog, mUserSignIn, mSignUp, mWorkerSignIn, mUpdateDetails, mWorkersZone);
         mStackPane.setBackground(new Background(myBI));
 
         mScene = new Scene(mStackPane, Dimensions.mWith, Dimensions.mheight);
@@ -96,26 +105,49 @@ public class MainView extends BaseView {
 
 		if (Main.memberlevel == MemLvl.FREE_USER) {
 
+	    	Main.mStage.setTitle("GCM - Free User");
+
 			mStackPane.setBackground(new Background(myBI));
 
-			outBtn.setVisible(false);
-			guestBtn.setVisible(true);
-			memBtn.setVisible(true);
-			signUp.setVisible(true);
-			workers_zone.setVisible(true);
+			mSignUp.setVisible(true);
+			mUserSignIn.setVisible(true);
+			mCatalog.setVisible(true);
+			mWorkerSignIn.setVisible(true);
+
 			mUpdateDetails.setVisible(false);
+			mSignOut.setVisible(false);
+			mWorkersZone.setVisible(false);
 
 		} else if (Main.memberlevel == MemLvl.MEMBER) {
 
+	    	Main.mStage.setTitle("GCM - Member");
+
 			mStackPane.setBackground(new Background(myBIs));
 
-			outBtn.setVisible(true);
-			guestBtn.setVisible(true);
-			memBtn.setVisible(false);
-			signUp.setVisible(false);
-			workers_zone.setVisible(false);
 			mUpdateDetails.setVisible(true);
+			mSignOut.setVisible(true);
+			mCatalog.setVisible(true);
 
+			mSignUp.setVisible(false);
+			mUserSignIn.setVisible(false);
+			mWorkerSignIn.setVisible(false);
+			mWorkersZone.setVisible(false);
+
+		} else if (Main.memberlevel == MemLvl.MANAGER || Main.memberlevel == MemLvl.EDITOR_MANAGER || Main.memberlevel == MemLvl.WORKER) {
+		
+			Main.mStage.setTitle("GCM - " + Main.mAccountWorker.mType);
+		
+			mStackPane.setBackground(new Background(myBIs));
+
+			mWorkersZone.setVisible(true);
+			mSignOut.setVisible(true);
+			mCatalog.setVisible(true);
+
+			mUpdateDetails.setVisible(false);
+			mSignUp.setVisible(false);
+			mUserSignIn.setVisible(false);
+			mWorkerSignIn.setVisible(false);
+		
 		}
 
 	}
