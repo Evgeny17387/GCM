@@ -31,8 +31,8 @@ public class BuyView extends BaseView{
 
 	BackgroundImage myBIc = new BackgroundImage(new Image("Images\\Buy.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
-    Button oneTime = new Button();
-    Button periodTime = new Button();
+    static Button oneTime = new Button();
+    static Button periodTime = new Button();
     Button goBack = new Button("Go back");
 
 	public BuyView(ClientConsole aChat, UI_server_communicate aCommunicate) {
@@ -46,9 +46,7 @@ public class BuyView extends BaseView{
 		oneTime.setTranslateY(-250);
 
 		goBack.setOnAction(e->{Main.changeScene(SceneName.SEARCH_MAP);});
-		oneTime.setText("One Time Pruchase- Price"+ GUI.Main.Price1+"$, Maps of "+myCity);
-		periodTime.setText("Pruchase for 6 months - Price"+GUI.Main.Price2+ "$,Maps of "+myCity);
-
+	
 		root.setBackground(new Background(myBIc));
 		root.getChildren().addAll(oneTime,periodTime,goBack);
 
@@ -57,6 +55,8 @@ public class BuyView extends BaseView{
 	}
 
 	public static void refreshScene() {
+		oneTime.setText("One Time Pruchase- Price"+ GUI.Main.Price1+"$, Maps of "+myCity);
+		periodTime.setText("Pruchase for 6 months - Price"+GUI.Main.Price2+ "$,Maps of "+myCity);
 
 	}
 
