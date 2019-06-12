@@ -8,7 +8,7 @@ public class  UI_server_communicate {
 
 	public static boolean mResposeFromserver = false;
 
-	public void ask_server() {
+	public static void ask_server() {
 
 		int Counter = 0;
 		

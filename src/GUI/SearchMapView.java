@@ -4,13 +4,16 @@ import com.google.gson.Gson;
 
 import Communication.ClientConsole;
 import Defines.Dimensions;
+import Defines.ErrorCodes;
 import Defines.SceneName;
 import Requests.Request;
 import Utils.UI_server_communicate;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -28,9 +31,9 @@ public class SearchMapView extends BaseView {
 
 	String request_string;
 
-	public SearchMapView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public SearchMapView(ClientConsole aChat) {
 
-		super(aChat, aCommunicate);
+		super(aChat);
 
         BackgroundImage myBIc = new BackgroundImage(new Image("Images\\catalog_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         
@@ -62,10 +65,24 @@ public class SearchMapView extends BaseView {
 
         	mChat.SendToServer(jsonString);
 
-        	mCommunicate.ask_server();
+        	UI_server_communicate.ask_server();
 
-        	Main.changeScene(SceneName.SHOW_MAP);
+        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
+            	Main.changeScene(SceneName.SHOW_MAP);
+
+    		} else {
+    			
+        		Alert alert = new Alert(AlertType.ERROR);
+        		alert.setTitle("Error");
+        		alert.setHeaderText("An unknown error has occurred, please try again");
+        		alert.setContentText("Please try again");
+        		alert.showAndWait();
+
+        	}
+
+    		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+    		
         });
 
         searchTF.setMaxWidth(300);

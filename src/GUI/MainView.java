@@ -38,9 +38,9 @@ public class MainView extends BaseView {
     static Button mWorkerSignIn = new Button("Worker Sign In");
     static Button mWorkersZone;
 
-	public MainView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public MainView(ClientConsole aChat) {
 
-		super(aChat, aCommunicate);
+		super(aChat);
 
         // Init
 
@@ -86,7 +86,7 @@ public class MainView extends BaseView {
 
             	mChat.SendToServer(jsonString);
 
-            	mCommunicate.ask_server();
+            	UI_server_communicate.ask_server();
 
             	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
@@ -101,6 +101,8 @@ public class MainView extends BaseView {
             		alert.showAndWait();
 
             	}
+            	
+        		Main.mServerResponseErrorCode = ErrorCodes.RESET;
 
         	} else {
         		

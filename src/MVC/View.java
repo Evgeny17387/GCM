@@ -45,8 +45,6 @@ public class View {
 	    	    System.out.println("View: " + API.ADD_USER);
 
 		    	{
-		
-		    		GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
 
 		    	}
 

@@ -50,17 +50,16 @@ public class Main extends Application {
     	
     	View view = new View();
     	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
-    	UI_server_communicate communicate = new UI_server_communicate();
 
-        scenes.put(SceneName.MAIN, new MainView(chat, communicate));
-        scenes.put(SceneName.SIGN_UP, new SignUpView(chat, communicate));
-        scenes.put(SceneName.SIGN_IN, new SignInView(chat, communicate));
-        scenes.put(SceneName.UPDATE_DETAILS, new UpdateDetailsView(chat, communicate));
-        scenes.put(SceneName.WORKER_SIGN_IN, new WorkerView(chat, communicate));
-        scenes.put(SceneName.WORKER_ZONE, new WorkerReportsView(chat, communicate));
-        scenes.put(SceneName.SEARCH_MAP, new SearchMapView(chat, communicate));
-        scenes.put(SceneName.SHOW_MAP, new ShowMapView(chat, communicate));
-        scenes.put(SceneName.BUY, new BuyView(chat, communicate));
+        scenes.put(SceneName.MAIN, new MainView(chat));
+        scenes.put(SceneName.SIGN_UP, new SignUpView(chat));
+        scenes.put(SceneName.SIGN_IN, new SignInView(chat));
+        scenes.put(SceneName.UPDATE_DETAILS, new UpdateDetailsView(chat));
+        scenes.put(SceneName.WORKER_SIGN_IN, new WorkerView(chat));
+        scenes.put(SceneName.WORKER_ZONE, new WorkerReportsView(chat));
+        scenes.put(SceneName.SEARCH_MAP, new SearchMapView(chat));
+        scenes.put(SceneName.SHOW_MAP, new ShowMapView(chat));
+        scenes.put(SceneName.BUY, new BuyView(chat));
 
         changeScene(SceneName.MAIN);
 

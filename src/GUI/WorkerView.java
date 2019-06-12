@@ -32,9 +32,9 @@ public class WorkerView extends BaseView {
     static TextField mName;
     static TextField mPassword;
 
-	public WorkerView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public WorkerView(ClientConsole aChat) {
 
-		super(aChat, aCommunicate);
+		super(aChat);
 
 		// Init
 
@@ -65,7 +65,7 @@ public class WorkerView extends BaseView {
 
             	mChat.SendToServer(jsonString);
 
-            	mCommunicate.ask_server();
+            	UI_server_communicate.ask_server();
 	
 	        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 	

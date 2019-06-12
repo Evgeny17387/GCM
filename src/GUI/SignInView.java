@@ -33,11 +33,9 @@ public class SignInView extends BaseView {
     static TextField name = new TextField("Please enter username");
     static TextField password = new TextField("Please enter password");
 
-	public SignInView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public SignInView(ClientConsole aChat) {
 
-		super(aChat, aCommunicate);
-
-        BackgroundImage myBIW = new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		super(aChat);
 
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -59,7 +57,8 @@ public class SignInView extends BaseView {
 	        	Request request = new Request(API.GET_USER, accountCheck);
 	        	String jsonString = mGson.toJson(request);
 	        	mChat.SendToServer(jsonString);
-	        	mCommunicate.ask_server();
+
+	        	UI_server_communicate.ask_server();
 	
 	        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 	

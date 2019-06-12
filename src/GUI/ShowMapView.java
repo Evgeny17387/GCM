@@ -42,9 +42,9 @@ public class ShowMapView extends BaseView {
     static Button nextPlace = new Button("Next");
     static Button prevPlace = new Button("Previos");
 
-	public ShowMapView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public ShowMapView(ClientConsole aChat) {
 
-		super(aChat, aCommunicate);
+		super(aChat);
 
         BackgroundImage myBIc = new BackgroundImage(new Image("Images\\catalog_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 

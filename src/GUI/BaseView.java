@@ -22,7 +22,6 @@ public class BaseView {
     static BackgroundImage myBIW = new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
     
 	static ClientConsole mChat;
-	static UI_server_communicate mCommunicate;
 	
 	static Gson mGson;
 	
@@ -30,10 +29,9 @@ public class BaseView {
 
 	static Button goBack;
 	
-	public BaseView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public BaseView(ClientConsole aChat) {
 
 		this.mChat = aChat;
-		this.mCommunicate = aCommunicate;
 
 	    mGson = new Gson();
 

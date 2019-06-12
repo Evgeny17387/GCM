@@ -34,9 +34,9 @@ public class SignUpView extends BaseView {
 	static TextField email;
 	static TextField phone_number;
 
-	public SignUpView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public SignUpView(ClientConsole aChat) {
 
-		super(aChat, aCommunicate);
+		super(aChat);
 
 	    nameR 		= new TextField();
 		passwordR		= new TextField();
@@ -70,7 +70,8 @@ public class SignUpView extends BaseView {
             	String jsonString = mGson.toJson(request);
 
             	mChat.SendToServer(jsonString);
-            	mCommunicate.ask_server();
+
+            	UI_server_communicate.ask_server();
 
             	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 

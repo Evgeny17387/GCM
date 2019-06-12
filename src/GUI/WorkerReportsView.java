@@ -31,9 +31,9 @@ public class WorkerReportsView extends BaseView {
 
     static ObservableList<PurchaseView> data;
 
-	public WorkerReportsView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public WorkerReportsView(ClientConsole aChat) {
 
-		super(aChat, aCommunicate);
+		super(aChat);
         
         // Init Table
 

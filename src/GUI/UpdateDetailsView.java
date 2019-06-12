@@ -44,9 +44,9 @@ public class UpdateDetailsView extends BaseView {
 
     static ObservableList<PurchaseView> data;
 
-	public UpdateDetailsView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+	public UpdateDetailsView(ClientConsole aChat) {
 
-		super(aChat, aCommunicate);
+		super(aChat);
 
 		// Init
 		
@@ -118,7 +118,8 @@ public class UpdateDetailsView extends BaseView {
             	String jsonString = mGson.toJson(request);
 
             	mChat.SendToServer(jsonString);
-            	mCommunicate.ask_server();
+
+            	UI_server_communicate.ask_server();
 
             	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
