@@ -196,7 +196,7 @@ public class UpdateDetailsView extends BaseView {
 	    mFirstName.setText(Main.mAccountUser.mFirstName);
 	    mLastName.setText(Main.mAccountUser.mLastName);
 	    mCreditCard.setText(Main.mAccountUser.mCreditCard);
-	    
+
 	    data = FXCollections.observableArrayList();
 
 	    for (Purchase purchase : Main.mAccountUser.mPurchases) {
@@ -204,7 +204,7 @@ public class UpdateDetailsView extends BaseView {
 	    }
 
         table.setItems(data);
-        
+
 	}
 
 }

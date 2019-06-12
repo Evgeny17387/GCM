@@ -131,10 +131,6 @@ public class View {
 			    	    Main.mPurchases = purchasesList;
 			    	    
 						System.out.println(purchasesList.toString());
-
-		    		} else if (responseModel.mErrorCode == ErrorCodes.WORKER_NOT_MANAGER) {
-
-		    			System.out.println("Worker is not a manager");
 		    			
 		    		}
 

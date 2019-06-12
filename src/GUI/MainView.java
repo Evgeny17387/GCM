@@ -1,12 +1,22 @@
 package GUI;
 
 import Communication.ClientConsole;
+import DB_classes.Purchase;
+import DB_classes.Purchases;
+import Defines.API;
 import Defines.Dimensions;
+import Defines.ErrorCodes;
 import Defines.MemLvl;
 import Defines.SceneName;
+import Requests.GeneralRequest;
+import Requests.Request;
 import Utils.UI_server_communicate;
+import ViewsItem.PurchaseView;
+import javafx.collections.FXCollections;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -66,9 +76,43 @@ public class MainView extends BaseView {
         	Main.changeScene(SceneName.WORKER_SIGN_IN)
         );
 
-        mWorkersZone.setOnAction(e->
-    		Main.changeScene(SceneName.WORKER_ZONE)
-        );
+        mWorkersZone.setOnAction(e->{
+
+        	if (Main.memberlevel == MemLvl.MANAGER || Main.memberlevel == MemLvl.EDITOR_MANAGER) {
+        		
+            	GeneralRequest accountCheck = new GeneralRequest(Main.mAccountWorker.mFirstName, Main.mAccountWorker.mPassword);
+            	Request request = new Request(API.GET_USERS_PURCHASES, accountCheck);
+            	String jsonString = mGson.toJson(request);
+
+            	mChat.SendToServer(jsonString);
+
+            	mCommunicate.ask_server();
+
+            	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+
+            		Main.changeScene(SceneName.WORKER_ZONE);
+
+        		} else {
+
+            		Alert alert = new Alert(AlertType.ERROR);
+            		alert.setTitle("Error");
+            		alert.setHeaderText("An unknown error has occurred");
+            		alert.setContentText("Please try again");
+            		alert.showAndWait();
+
+            	}
+
+        	} else {
+        		
+        		Alert alert = new Alert(AlertType.ERROR);
+        		alert.setTitle("Error");
+        		alert.setHeaderText("You are not authorized");
+        		alert.setContentText("You must be a Manger to watch reports");
+        		alert.showAndWait();
+
+        	}
+
+        });
         
         // UI position
 

@@ -17,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
@@ -34,6 +35,10 @@ public class WorkerReportsView extends BaseView {
 
 		super(aChat, aCommunicate);
 
+		// Init
+		
+        Button getBack = new Button("Go Back");
+        
         // Init Table
 
         TableColumn usernameColumn = new TableColumn("Username");
@@ -47,8 +52,12 @@ public class WorkerReportsView extends BaseView {
 
         table = new TableView<PurchaseView>();
         table.setEditable(false);
-        table.getColumns().addAll(cityColumn, dateColumn, usernameColumn);
+        table.getColumns().addAll(usernameColumn, cityColumn, dateColumn);
 
+        // OnClick
+        
+        getBack.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
+        
 		// Position in UI
 
         cityColumn.setMinWidth(145);
@@ -57,11 +66,13 @@ public class WorkerReportsView extends BaseView {
         table.setMaxWidth(Dimensions.mWorkerReportsViewTableWidth);
 		table.setMaxHeight(Dimensions.mWorkerReportsViewTableheight);
 
+        getBack.setTranslateY(300);
+
 		// Scene
 		
 	    StackPane stackPane = new StackPane();
 	    stackPane.setBackground(new Background(myBI));
-	    stackPane.getChildren().addAll(table);
+	    stackPane.getChildren().addAll(table, getBack);
 
         mScene = new Scene(stackPane, Dimensions.mWith, Dimensions.mheight);
 
@@ -69,43 +80,15 @@ public class WorkerReportsView extends BaseView {
 
 	public static void refreshScene() {
 
-    	GeneralRequest accountCheck = new GeneralRequest(Main.mAccountWorker.mFirstName, Main.mAccountWorker.mPassword);
-    	Request request = new Request(API.GET_USERS_PURCHASES, accountCheck);
-    	String jsonString = mGson.toJson(request);
+	    data = FXCollections.observableArrayList();
 
-    	mChat.SendToServer(jsonString);
+	    for (Purchases purchases : Main.mPurchases) {
+		    for (Purchase purchase : purchases.mPurchases) {
+		    	data.add(new PurchaseView(purchase.mCityName, purchase.mDate, purchase.mUserName));
+		    }
+	    }
 
-    	mCommunicate.ask_server();
-
-    	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
-    		
-    	    data = FXCollections.observableArrayList();
-
-    	    for (Purchases purchases : Main.mPurchases) {
-    		    for (Purchase purchase : purchases.mPurchases) {
-    		    	data.add(new PurchaseView(purchase.mCityName, purchase.mDate, purchase.mUserName));
-    		    }
-    	    }
-
-            table.setItems(data);
-
-    	} else if (Main.mServerResponseErrorCode == ErrorCodes.WORKER_NOT_MANAGER) {
-
-    		Alert alert = new Alert(AlertType.ERROR);
-    		alert.setTitle("Error");
-    		alert.setHeaderText("You are not authorized");
-    		alert.setContentText("You must be a Manger to watch reports");
-    		alert.showAndWait();
-
-		} else {
-
-    		Alert alert = new Alert(AlertType.ERROR);
-    		alert.setTitle("Error");
-    		alert.setHeaderText("An unknown error has occurred");
-    		alert.setContentText("Please try again");
-    		alert.showAndWait();
-
-    	}
+        table.setItems(data);
 
 	}
 
