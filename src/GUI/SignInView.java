@@ -42,10 +42,10 @@ public class SignInView extends BaseView {
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        Button getBack = new Button("Go back");
+        Button getBack = new Button("Go Back");
         getBack.setOnAction(e->Main.changeScene(SceneName.MAIN));
 
-        Button btn = new Button("Next");
+        Button btn = new Button("Sign In");
         btn.setOnAction(e->{
 
         	if (password.getText().isEmpty() || name.getText().isEmpty()) {

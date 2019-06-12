@@ -52,10 +52,10 @@ public class SignUpView extends BaseView {
         creditCard.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         email.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        Button getBack3 = new Button("Go back");
+        Button getBack3 = new Button("Go Back");
         getBack3.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
 
-        Button signUp2 = new Button("Sign up");
+        Button signUp2 = new Button("Sign Up");
         signUp2.setOnAction(e->{
 
         	if (passwordR.getText().isEmpty() || email.getText().isEmpty() || phone_number.getText().isEmpty() || nameR.getText().isEmpty() || creditCard.getText().isEmpty()) {

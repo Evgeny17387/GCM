@@ -7,14 +7,12 @@ public class AccountUser extends AccountBase {
 
 	public String mUserName;
 	public String mCreditCard;
-	public String mSubscription;
 
 	public List<Purchase> mPurchases;
 
-	public AccountUser(String aFirstName, String aLastName, String aPassword, String aEmail, String aPhoneNumber, String aUserName, String aCreditCard, List<Purchase> aPurchases, String aSubscription) {
+	public AccountUser(String aFirstName, String aLastName, String aPassword, String aEmail, String aPhoneNumber, String aUserName, String aCreditCard, List<Purchase> aPurchases) {
 		this(aFirstName, aLastName, aPassword, aEmail, aPhoneNumber, aUserName, aCreditCard);
 		this.mPurchases = aPurchases;
-		this.mSubscription = aSubscription;
 	}
 
 	public AccountUser(String aFirstName, String aLastName, String aPassword, String aEmail, String aPhoneNumber, String aUserName, String aCreditCard) {
@@ -33,8 +31,7 @@ public class AccountUser extends AccountBase {
 				"PhoneNumber: " + this.mPhoneNumber + " ; " +
 				"UserName: " + this.mUserName + " ; " +
 				"CreditCard: " + this.mCreditCard + " ; " +
-				"Purchases:" +  this.mPurchases.toString() + " ; " +
-				"Subscription: " + this.mSubscription
+				"Purchases:" +  this.mPurchases.toString()
 				);
 	}
 
@@ -43,8 +40,7 @@ public class AccountUser extends AccountBase {
 				super.equals(accountUser) &&
 				this.mUserName.equals(accountUser.mUserName) &&
 				this.mCreditCard.equals(accountUser.mCreditCard) &&
-				this.mPurchases.equals(accountUser.mPurchases) &&
-				this.mSubscription.equals(accountUser.mSubscription)
+				this.mPurchases.equals(accountUser.mPurchases)
 				);
 	}
 	

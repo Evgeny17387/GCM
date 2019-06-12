@@ -159,9 +159,8 @@ public class Model {
 				String email = rs.getString("Email");
 				String phoneNumber = rs.getString("PhoneNumber");
 				String creditCard = rs.getString("CreditCard");
-				String subscription = rs.getString("Subscription");
 
-				responseModel.mObject = new AccountUser(firstName, lastName, aPassword, email, phoneNumber, aUserName, creditCard, GetUserPurchases(aUserName), subscription);
+				responseModel.mObject = new AccountUser(firstName, lastName, aPassword, email, phoneNumber, aUserName, creditCard, GetUserPurchases(aUserName));
 
 				responseModel.mErrorCode = ErrorCodes.SUCCESS;
 
@@ -294,7 +293,7 @@ public class Model {
 
 	}
 
-	// Buy Subscription
+	// Subscription
 
 	public ResponseModel BuySubscription(String aUserName) {
 
@@ -446,9 +445,84 @@ public class Model {
 
 	// Purchases
 
+	private List<Purchase> GetUserPurchases(String aUserName) {
+
+		List<Purchase> purchaseList = null;
+
+		String sql;
+
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement prep_stmt = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			sql = "SELECT * FROM `Purchases` WHERE `UserName` = ?";
+
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.setString(1, aUserName);
+
+			rs = prep_stmt.executeQuery();
+
+			purchaseList = new ArrayList<Purchase>();
+
+			while (rs.next()) {
+
+				String userName = rs.getString("UserName");
+				String cityName = rs.getString("CityName");
+
+				Purchase purchase = new Purchase(userName, cityName);
+				
+				purchaseList.add(purchase);
+
+				System.out.println("Model: " + purchase.toString());
+
+			}
+
+		} catch (SQLException se) {
+
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+
+		}
+		
+		return purchaseList;
+	
+	}
+	
 	public ResponseModel GetUsersPurchases() {
 
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
 
 		List<Purchase> purchaseList = null;
 
@@ -476,21 +550,18 @@ public class Model {
 
 				String userName = rs.getString("UserName");
 				String cityName = rs.getString("CityName");
-				String type = rs.getString("Type");
 
-				Purchase purchase = new Purchase(userName, cityName, type);
+				Purchase purchase = new Purchase(userName, cityName);
 				
 				purchaseList.add(purchase);
 
-				System.out.println(purchase.toString());
+				System.out.println("Model: " + purchase.toString());
 
 			}
 			
 			responseModel.mObject = purchaseList;
 
-			rs.close();
-			stmt.close();
-			conn.close();
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
 
 		} catch (SQLException se) {
 
@@ -533,12 +604,12 @@ public class Model {
 		return responseModel;
 	
 	}
-	
-	public ResponseModel BuyMap(String aUserName, String aCityName, String aType) {
 
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
+	public ResponseModel BuyMap(String aUserName, String aCityName) {
 
-		if (aUserName.isEmpty() || aUserName.isEmpty() || aType.isEmpty()) {
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+		if (aUserName.isEmpty() || aUserName.isEmpty()) {
 			return new ResponseModel(ErrorCodes.PURCHASE_DETAILS_MISSING, null);
 		}
 
@@ -553,41 +624,29 @@ public class Model {
 	
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	
-			sql = "INSERT INTO `Purchases`(`UserName`, `CityName`, `Type`) VALUES (?, ?, ?)";
+			sql = "INSERT INTO `Purchases`(`UserName`, `CityName`) VALUES (?, ?)";
 
 			prep_stmt = conn.prepareStatement(sql);
 			
 			prep_stmt.setString(1, aUserName);
 			prep_stmt.setString(2, aCityName);
-			prep_stmt.setString(3, aType);
 			
 			prep_stmt.executeUpdate();
-
-			if (conn != null)
-				conn.close();
-			if (prep_stmt != null)
-				prep_stmt.close();
+			
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
 				
 		} catch (SQLException se) {
 
 			responseModel.mErrorCode = se.getErrorCode();
 			
-			if (!(se.getErrorCode() == ErrorCodes.USER_ALREADY_EXISTS)) {
-
-				se.printStackTrace();
-				System.out.println("SQLException: " + se.getMessage());
-		        System.out.println("SQLState: " + se.getSQLState());
-		        System.out.println("VendorError: " + se.getErrorCode());
-
-			}else {
-				
-	    	    System.out.println("User with this userName already exists");
-
-			}
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
 	
 		} catch (Exception e) {
 
-			responseModel.mErrorCode = ErrorCodes.FAILURE;
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
 
 			e.printStackTrace();
 	
@@ -713,82 +772,6 @@ public class Model {
 		}
 		
 		return responseModel;
-	
-	}
-
-	private List<Purchase> GetUserPurchases(String aUserName) {
-
-		List<Purchase> purchaseList = null;
-
-		String sql;
-
-		Connection conn = null;
-		ResultSet rs = null;
-		PreparedStatement prep_stmt = null;
-
-		try {
-
-			Class.forName(JDBC_DRIVER);
-
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			sql = "SELECT `UserName`, `CityName`, `Type` FROM `Purchases` WHERE `UserName` = ?";
-
-			prep_stmt = conn.prepareStatement(sql);
-
-			prep_stmt.setString(1, aUserName);
-
-			rs = prep_stmt.executeQuery();
-
-			purchaseList = new ArrayList<Purchase>();
-
-			while (rs.next()) {
-
-				String userName = rs.getString("UserName");
-				String cityName = rs.getString("CityName");
-				String type = rs.getString("Type");
-
-				Purchase purchase = new Purchase(userName, cityName, type);
-				
-				purchaseList.add(purchase);
-
-				System.out.println(purchase.toString());
-
-			}
-
-		} catch (SQLException se) {
-
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (rs != null)
-					rs.close();
-				if (conn != null)
-					conn.close();
-	
-			} catch (SQLException se) {
-	
-				se.printStackTrace();
-	
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-		
-			}
-
-		}
-		
-		return purchaseList;
 	
 	}
 

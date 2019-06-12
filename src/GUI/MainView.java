@@ -36,7 +36,7 @@ public class MainView extends BaseView {
 
 		mStackPane = new StackPane();
 		
-		mUpdateDetails = new Button("Update User Details");
+		mUpdateDetails = new Button("User Details");
 
         // OnClick
 
@@ -66,15 +66,23 @@ public class MainView extends BaseView {
         );
 
         // UI position
+
+        outBtn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        guestBtn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        memBtn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        signUp.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        workers_zone.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        mUpdateDetails.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+
+        int top = -250;
+        int interval = 50;
         
-        outBtn.setTranslateY(-200);
-        guestBtn.setTranslateY(-150);
-        memBtn.setTranslateY(-100);
-        signUp.setTranslateY(-50);
-        workers_zone.setTranslateY(0);
-        
-        mUpdateDetails.setTranslateY(50);
-        mUpdateDetails.setMaxWidth(300);
+        outBtn.setTranslateY(top);
+        mUpdateDetails.setTranslateY(top + interval);
+        guestBtn.setTranslateY(top + 2*interval);
+        memBtn.setTranslateY(top + 3*interval);
+        signUp.setTranslateY(top + 4*interval);
+        workers_zone.setTranslateY(top + 5*interval);
 
         // Scene
 

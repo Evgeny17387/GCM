@@ -85,14 +85,8 @@ public class View {
 		    	{
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
-		    			
-		    			
-		    			
-		    		}else if (responseModel.mErrorCode == ErrorCodes.PURCHASE_DETAILS_MISSING) {
 
-			    	    System.out.println("Purchase details are missing");
-
-			    	}
+		    		}
 
 		    	}
 
@@ -126,9 +120,9 @@ public class View {
 
 	    	    break;
 
-	    	case API.GET_USER_PURCHASES:
+	    	case API.GET_USERS_PURCHASES:
 
-	    	    System.out.println("View: " + API.GET_USER_PURCHASES);
+	    	    System.out.println("View: " + API.GET_USERS_PURCHASES);
 
 		    	{
 
@@ -159,6 +153,8 @@ public class View {
 
 	    	    break;
 
+	    	// Map Search
+	    	    
 	    	case "MapSearch_city_key":
 	    		
 	    	    System.out.println("View: " + "MapSearch_city_key");

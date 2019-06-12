@@ -1,20 +1,34 @@
 package GUI;
 
+import java.awt.Label;
+
 import Communication.ClientConsole;
 import DB_classes.AccountUser;
+import DB_classes.Purchase;
 import Defines.API;
 import Defines.Dimensions;
 import Defines.ErrorCodes;
 import Defines.SceneName;
 import Requests.Request;
 import Utils.UI_server_communicate;
+import ViewsItem.PurchaseView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class UpdateDetailsView extends BaseView {
 
@@ -25,6 +39,10 @@ public class UpdateDetailsView extends BaseView {
     static TextField mCreditCard;
     static TextField mFirstName;
     static TextField mLastName;
+
+    static TableView<PurchaseView> table;
+    
+    static ObservableList<PurchaseView> data;
 
 	public UpdateDetailsView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
@@ -63,7 +81,17 @@ public class UpdateDetailsView extends BaseView {
 
         Button update = new Button("Update User Details");
 
-		// OnClick
+        // Init Table
+
+        TableColumn cityColumn = new TableColumn("City");
+        cityColumn.setMinWidth(300);
+        cityColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("city"));
+
+        table = new TableView<PurchaseView>();
+        table.setEditable(false);
+        table.getColumns().addAll(cityColumn);
+        
+        // OnClick
 
         goBack.setOnAction(e->
         	Main.changeScene(SceneName.MAIN)
@@ -131,36 +159,33 @@ public class UpdateDetailsView extends BaseView {
         });
 
 		// Position in UI
-		
+
+		mUserName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
+		mPassword.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
+		mEmail.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
+		mPhoneNumber.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
+		mFirstName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
+		mLastName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
+		update.setMaxWidth(Dimensions.mUpdateDetailsViewUpdateButtonWidth);
+		table.setMaxWidth(Dimensions.mUpdateDetailsViewTableWidth);
+		table.setMaxHeight(Dimensions.mUpdateDetailsViewTableHeight);
+		goBack.setMaxWidth(Dimensions.mUpdateDetailsViewBackButtonWidth);
+
 		mUserName.setTranslateY(-250);
-		mUserName.setMaxWidth(300);
-		
 		mPassword.setTranslateY(-200);
-		mPassword.setMaxWidth(300);
-
 		mEmail.setTranslateY(-200);
-		mEmail.setMaxWidth(300);
-
 		mPhoneNumber.setTranslateY(-150);
-		mPhoneNumber.setMaxWidth(300);
-
 		mFirstName.setTranslateY(-100);
-		mFirstName.setMaxWidth(300);
-
 		mLastName.setTranslateY(-50);
-		mLastName.setMaxWidth(300);
-
 		update.setTranslateY(0);
-		update.setMaxWidth(200);
-
-		goBack.setTranslateY(50);
-		goBack.setMaxWidth(100);
+		table.setTranslateY(100);
+		goBack.setTranslateY(300);
 
 		// Scene
 		
 	    StackPane stackPane = new StackPane();
 	    stackPane.setBackground(new Background(myBI));
-	    stackPane.getChildren().addAll(mUserName, mPassword, mEmail, mPhoneNumber, mFirstName, mLastName, update, goBack);
+	    stackPane.getChildren().addAll(mUserName, mPassword, mEmail, mPhoneNumber, mFirstName, mLastName, update, table, goBack);
 
         mScene = new Scene(stackPane, Dimensions.mWith, Dimensions.mheight);
 
@@ -175,7 +200,15 @@ public class UpdateDetailsView extends BaseView {
 	    mFirstName.setText(Main.mAccountUser.mFirstName);
 	    mLastName.setText(Main.mAccountUser.mLastName);
 	    mCreditCard.setText(Main.mAccountUser.mCreditCard);
-		
+	    
+	    data = FXCollections.observableArrayList();
+
+	    for (Purchase purchase : Main.mAccountUser.mPurchases) {
+	        data.add(new PurchaseView(purchase.mCityName));
+	    }
+
+        table.setItems(data);
+        
 	}
 
 }

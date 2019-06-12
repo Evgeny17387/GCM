@@ -131,7 +131,7 @@ public class Controller {
 			break;
 
 		// Purchases
-			
+
 		case API.BUY_MAP:
 
 			System.out.println("Controller: " + API.BUY_MAP);
@@ -140,7 +140,7 @@ public class Controller {
 
 				BuyMapRequest buyMapRequest = gson.fromJson(gson.toJson(request.mObject), BuyMapRequest.class);
 
-				ResponseModel responseModel = model.BuyMap(buyMapRequest.mUserName, buyMapRequest.mCityName, buyMapRequest.mType);
+				ResponseModel responseModel = model.BuyMap(buyMapRequest.mUserName, buyMapRequest.mCityName);
 
 		    	ResponseController responseController = new ResponseController(API.BUY_MAP, responseModel);
 
@@ -170,9 +170,9 @@ public class Controller {
 
 			break;
 
-		case API.GET_USER_PURCHASES:
+		case API.GET_USERS_PURCHASES:
 
-			System.out.println("Controller: " + API.GET_USER_PURCHASES);
+			System.out.println("Controller: " + API.GET_USERS_PURCHASES);
 
 			{
 
@@ -196,7 +196,7 @@ public class Controller {
 										
 				}
 
-				responseController = new ResponseController(API.GET_USER_PURCHASES, responseModel);
+				responseController = new ResponseController(API.GET_USERS_PURCHASES, responseModel);
 
 		    	jsonString = gson.toJson(responseController);
 
