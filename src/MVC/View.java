@@ -7,10 +7,11 @@ import java.lang.reflect.Type;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import Constants.ErrorCodes;
-import Constants.API;
 import DB_classes.CityMap;
 import DB_classes.Purchase;
+import Defines.API;
+import Defines.ErrorCodes;
+import GUI.Main;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
@@ -28,20 +29,20 @@ public class View {
 
 	    	ResponseController responseController = gson.fromJson(message, ResponseController.class);
 
+    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+
+    	    System.out.println(responseModel.mErrorCode);
+
 	      	switch (responseController.mType) {
 
       		// Users
       	
 	    	case API.ADD_USER:
 
-	    	    System.out.println(API.ADD_USER);
+	    	    System.out.println("View: " + API.ADD_USER);
 
 		    	{
 		
-		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
-
-		    	    System.out.println(responseModel.mErrorCode);
-
 		    		GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
 
 		    	}
@@ -51,20 +52,21 @@ public class View {
     	    	break;
 
 	    	case API.GET_USER:
+	    	case API.UPDATE_USER:
 
-	    	    System.out.println(API.GET_USER);
+	    	    System.out.println("View: " + responseController.mType);
 
 		    	{
-		    				    		
-		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
-
-		    	    System.out.println(responseModel.mErrorCode);
 
 	    			GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 		    			
-			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
+		    			AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
+		    			
+		    			Main.mAccountUser = accountUser;
+
+						System.out.format("View: " + accountUser.toString());
 
 		    		}
 
@@ -74,45 +76,13 @@ public class View {
 
 	    	    break;
 
-	    	case API.UPDATE_USER:
-	    		
-	    	    System.out.println(API.UPDATE_USER);
-
-		    	{
-		
-		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
-
-		    	    System.out.println(responseModel.mErrorCode);
-
-		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
-
-			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
-
-						System.out.format(accountUser.toString());
-
-		    		}else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
-	    			
-		    			System.out.println("One or more user details are missing");
-	    			
-		    		}
-
-		    	}
-
-			    UI_server_communicate.mResposeFromserver = true;
-
-    	    	break;
-
         	// Purchases
 
 	    	case API.BUY_MAP:
 
-	    	    System.out.println(API.BUY_MAP);
+	    	    System.out.println("View: " + API.BUY_MAP);
 
 		    	{
-		    		
-		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
-	
-		    	    System.out.println(responseModel.mErrorCode);
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 		    			
@@ -134,13 +104,9 @@ public class View {
 
 	    	case API.GET_WORKER:
 
-	    	    System.out.println(API.GET_WORKER);
+	    	    System.out.println("View: " + API.GET_WORKER);
 
 		    	{
-		    		
-		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
-	
-		    	    System.out.println(responseModel.mErrorCode);
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 		    			
@@ -162,13 +128,9 @@ public class View {
 
 	    	case API.GET_USER_PURCHASES:
 
-	    	    System.out.println(API.GET_USER_PURCHASES);
+	    	    System.out.println("View: " + API.GET_USER_PURCHASES);
 
 		    	{
-
-		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
-
-		    	    System.out.println(responseModel.mErrorCode);
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 
@@ -199,7 +161,7 @@ public class View {
 
 	    	case "MapSearch_city_key":
 	    		
-	    	    System.out.println("MapSearch_city_key");
+	    	    System.out.println("View: " + "MapSearch_city_key");
 
 		    	{
 		    		
@@ -220,7 +182,7 @@ public class View {
 
 	    	case "MapSearch_place_key":
 
-	    	    System.out.println("MapSearch_place_key");
+	    	    System.out.println("View: " + "MapSearch_place_key");
 	    	    
 	    	    {
 

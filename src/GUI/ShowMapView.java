@@ -1,10 +1,11 @@
 package GUI;
 
 import Communication.ClientConsole;
-import Constants.MemLvl;
-import Constants.SceneName;
 import DB_classes.CityMap;
 import DB_classes.Place;
+import Defines.Dimensions;
+import Defines.MemLvl;
+import Defines.SceneName;
 import Utils.UI_server_communicate;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -109,7 +110,7 @@ public class ShowMapView extends BaseView {
        _result.setBackground(new Background(myBIc));
   	   _result.getChildren().addAll(nextM, pervM, getBack11, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
 
-  	   mScene = new Scene(_result, 1280,720);
+  	   mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
 		
 	}
 

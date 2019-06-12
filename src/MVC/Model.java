@@ -8,15 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.List;
-
-import Constants.ErrorCodes;
-
 import java.util.ArrayList;
 
 import DB_classes.CityMap;
 import DB_classes.Place;
 import DB_classes.Purchase;
 import DB_classes.Route;
+import Defines.ErrorCodes;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 
@@ -215,7 +213,7 @@ public class Model {
 
 	public ResponseModel UpdateUser(AccountUser aAccountUser) {
 		
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
 
 		if (
 				aAccountUser.mFirstName.isEmpty() ||
@@ -255,11 +253,6 @@ public class Model {
 			prep_stmt.executeUpdate();
 
 			responseModel = GetUser(aAccountUser.mUserName, aAccountUser.mPassword);
-
-			if (conn != null)
-				conn.close();
-			if (prep_stmt != null)
-				prep_stmt.close();
 				
 		} catch (SQLException se) {
 
@@ -272,7 +265,7 @@ public class Model {
 	
 		} catch (Exception e) {
 
-			responseModel.mErrorCode = ErrorCodes.FAILURE;
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
 
 			e.printStackTrace();
 	

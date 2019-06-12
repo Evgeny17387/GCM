@@ -1,8 +1,9 @@
 package GUI;
 
 import Communication.ClientConsole;
-import Constants.MemLvl;
-import Constants.SceneName;
+import Defines.MemLvl;
+import Defines.SceneName;
+import Defines.Dimensions;
 import DB_classes.CityMap;
 import DB_classes.Place;
 import Utils.UI_server_communicate;
@@ -51,7 +52,7 @@ public class BuyView extends BaseView{
 		root.setBackground(new Background(myBIc));
 		root.getChildren().addAll(oneTime,periodTime,goBack);
 
-		mScene = new Scene(root, 1280,720);
+		mScene = new Scene(root, Dimensions.mWith, Dimensions.mheight);
 
 	}
 

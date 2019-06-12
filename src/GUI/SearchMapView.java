@@ -3,7 +3,8 @@ package GUI;
 import com.google.gson.Gson;
 
 import Communication.ClientConsole;
-import Constants.SceneName;
+import Defines.Dimensions;
+import Defines.SceneName;
 import Requests.Request;
 import Utils.UI_server_communicate;
 import javafx.scene.Scene;
@@ -30,8 +31,6 @@ public class SearchMapView extends BaseView {
 	public SearchMapView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
 		super(aChat, aCommunicate);
-
-    	Gson gson = new Gson();
 
         BackgroundImage myBIc = new BackgroundImage(new Image("Images\\catalog_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         
@@ -62,7 +61,7 @@ public class SearchMapView extends BaseView {
         		request_string = "MapSearch_desc_key";
 
         	Request request = new Request(request_string, searchKey);
-        	String jsonString = gson.toJson(request);
+        	String jsonString = mGson.toJson(request);
 
         	mChat.SendToServer(jsonString);
 
@@ -84,7 +83,7 @@ public class SearchMapView extends BaseView {
         guestZone.setBackground(new Background(myBIc));
         guestZone.getChildren().addAll(searchTF, search_btn, getBack2, Search_by_city, Search_by_inplace, Search_by_general_description);
 
-        mScene = new Scene(guestZone, 1280,720);
+        mScene = new Scene(guestZone, Dimensions.mWith, Dimensions.mheight);
 		
 	}
 

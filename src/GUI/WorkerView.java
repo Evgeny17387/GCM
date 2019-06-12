@@ -2,8 +2,9 @@ package GUI;
 
 import com.google.gson.Gson;
 import Communication.ClientConsole;
-import Constants.API;
-import Constants.SceneName;
+import Defines.API;
+import Defines.Dimensions;
+import Defines.SceneName;
 import Requests.GeneralRequest;
 import Requests.Request;
 import Utils.UI_server_communicate;
@@ -33,8 +34,6 @@ public class WorkerView extends BaseView {
 	    nameW = new TextField();
 	    passwordW = new TextField();
 
-    	Gson gson = new Gson();
-
         BackgroundImage myBIW = new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
         nameW.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -49,7 +48,7 @@ public class WorkerView extends BaseView {
         	GeneralRequest accountCheck = new GeneralRequest(nameW.getText(), passwordW.getText());
 
         	Request request = new Request(API.GET_WORKER, accountCheck);
-        	String jsonString = gson.toJson(request);
+        	String jsonString = mGson.toJson(request);
 
         	mChat.SendToServer(jsonString);
 
@@ -68,7 +67,7 @@ public class WorkerView extends BaseView {
         workersZone.setBackground(new Background(myBIW));
         workersZone.getChildren().addAll(nameW, passwordW, nextW ,getBack6);
 
-        mScene = new Scene(workersZone, 1280,720);
+        mScene = new Scene(workersZone, Dimensions.mWith, Dimensions.mheight);
 		
 	}
 

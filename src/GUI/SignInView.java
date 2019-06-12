@@ -3,10 +3,11 @@ package GUI;
 import com.google.gson.Gson;
 
 import Communication.ClientConsole;
-import Constants.API;
-import Constants.ErrorCodes;
-import Constants.MemLvl;
-import Constants.SceneName;
+import Defines.API;
+import Defines.Dimensions;
+import Defines.ErrorCodes;
+import Defines.MemLvl;
+import Defines.SceneName;
 import Requests.GeneralRequest;
 import Requests.Request;
 import Utils.UI_server_communicate;
@@ -36,8 +37,6 @@ public class SignInView extends BaseView {
 
 		super(aChat, aCommunicate);
 
-    	Gson gson = new Gson();
-
         BackgroundImage myBIW = new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -61,7 +60,7 @@ public class SignInView extends BaseView {
 
 	        	GeneralRequest accountCheck = new GeneralRequest(name.getText(), password.getText());
 	        	Request request = new Request(API.GET_USER, accountCheck);
-	        	String jsonString = gson.toJson(request);
+	        	String jsonString = mGson.toJson(request);
 	        	mChat.SendToServer(jsonString);
 	        	mCommunicate.ask_server();
 	
@@ -74,6 +73,7 @@ public class SignInView extends BaseView {
 	        		alert.showAndWait();
 
 	        		Main.memberlevel = MemLvl.MEMBER;
+
 	        		Main.changeScene(SceneName.MAIN);
 	
 	        	} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_NOT_FOUND) {
@@ -111,7 +111,7 @@ public class SignInView extends BaseView {
         memberZone.setBackground(new Background(myBIW)); 
         memberZone.getChildren().addAll(name, password, getBack, btn);
         
-        mScene = new Scene(memberZone, 1280,720);
+        mScene = new Scene(memberZone, Dimensions.mWith, Dimensions.mheight);
 
 	}
 

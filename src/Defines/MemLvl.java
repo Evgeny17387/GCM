@@ -1,4 +1,4 @@
-package Constants;
+package Defines;
 
 
 public enum MemLvl {

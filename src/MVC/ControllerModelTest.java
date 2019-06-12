@@ -6,12 +6,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import Constants.API;
-import Constants.ErrorCodes;
-
 import DB_classes.AccountUser;
 import DB_classes.CityMap;
 import DB_classes.Route;
+import Defines.API;
+import Defines.ErrorCodes;
 import Requests.Request;
 import Responses.ResponseController;
 import Responses.ResponseModel;

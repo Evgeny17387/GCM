@@ -9,10 +9,11 @@ import java.util.Map;
 import Utils.UI_server_communicate;
 import MVC.View;
 import Communication.ClientConsole;
+import DB_classes.AccountUser;
 import DB_classes.CityMap;
-import Constants.ErrorCodes;
-import Constants.SceneName;
-import Constants.MemLvl;
+import Defines.ErrorCodes;
+import Defines.MemLvl;
+import Defines.SceneName;
 
 public class Main extends Application {
 
@@ -28,6 +29,8 @@ public class Main extends Application {
     public static int Price2 = 0;
 
     public static Stage mStage;
+    
+    public static AccountUser mAccountUser;
     
     public static void main(String[] args) {
 		launch(args);
@@ -52,6 +55,7 @@ public class Main extends Application {
         scenes.put(SceneName.SEARCH_MAP, new SearchMapView(chat, communicate));
         scenes.put(SceneName.SHOW_MAP, new ShowMapView(chat, communicate));
         scenes.put(SceneName.BUY, new BuyView(chat, communicate));
+        scenes.put(SceneName.UPDATE_DETAILS, new UpdateDetailsView(chat, communicate));
 
         changeScene(SceneName.MAIN);
 
@@ -82,6 +86,9 @@ public class Main extends Application {
 				break;
 			case BUY:
 				BuyView.refreshScene();
+				break;
+			case UPDATE_DETAILS:
+				UpdateDetailsView.refreshScene();
 				break;
 			default:
 			break;

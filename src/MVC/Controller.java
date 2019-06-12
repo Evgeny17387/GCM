@@ -4,14 +4,13 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
-import Constants.ErrorCodes;
-import Constants.API;
-
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 import DB_classes.CityMap;
 import DB_classes.Place;
 import DB_classes.Route;
+import Defines.API;
+import Defines.ErrorCodes;
 import MVC.Model;
 
 import Requests.Request;
@@ -41,7 +40,7 @@ public class Controller {
 	  	
 		case API.ADD_USER:
 
-			System.out.println(API.ADD_USER);
+			System.out.println("Controller: " + API.ADD_USER);
 
 			{
 				
@@ -49,7 +48,7 @@ public class Controller {
 				
 				ResponseModel responseModel = model.AddUser(accountUser);
 		
-				ResponseController responseController = new ResponseController(API.ADD_USER, responseModel);
+				ResponseController responseController = new ResponseController(request.mType, responseModel);
 		
 				jsonString = gson.toJson(responseController);
 				
@@ -59,7 +58,7 @@ public class Controller {
 
 		case API.GET_USER:
 
-			System.out.println(API.GET_USER);
+			System.out.println("Controller: " + API.GET_USER);
 				
 			{
 	
@@ -77,27 +76,27 @@ public class Controller {
 
 		case API.UPDATE_USER:
 
-			System.out.println(API.UPDATE_USER);
+			System.out.println("Controller: " + API.UPDATE_USER);
 
 			{
 				
 				AccountUser accountUser = gson.fromJson(gson.toJson(request.mObject), AccountUser.class);
 				
 				ResponseModel responseModel = model.UpdateUser(accountUser);
-				
-				ResponseController responseController = new ResponseController(API.UPDATE_USER, responseModel);
+		
+				ResponseController responseController = new ResponseController(request.mType, responseModel);
 		
 				jsonString = gson.toJson(responseController);
 				
 			}
-	
+
 			break;
 
 		// Subscription
 
 		case API.BUY_SUBSCRITION:
 
-			System.out.println(API.BUY_SUBSCRITION);
+			System.out.println("Controller: " + API.BUY_SUBSCRITION);
 
 			{
 
@@ -115,7 +114,7 @@ public class Controller {
 
 		case API.DELETE_SUBSCRITION:
 
-			System.out.println(API.DELETE_SUBSCRITION);
+			System.out.println("Controller: " + API.DELETE_SUBSCRITION);
 
 			{
 
@@ -135,7 +134,7 @@ public class Controller {
 			
 		case API.BUY_MAP:
 
-			System.out.println(API.BUY_MAP);
+			System.out.println("Controller: " + API.BUY_MAP);
 
 			{
 
@@ -155,7 +154,7 @@ public class Controller {
 
 		case API.GET_WORKER:
 
-			System.out.println(API.GET_WORKER);
+			System.out.println("Controller: " + API.GET_WORKER);
 
 			{
 
@@ -173,7 +172,7 @@ public class Controller {
 
 		case API.GET_USER_PURCHASES:
 
-			System.out.println(API.GET_USER_PURCHASES);
+			System.out.println("Controller: " + API.GET_USER_PURCHASES);
 
 			{
 
@@ -209,7 +208,7 @@ public class Controller {
 
 		case API.PROPOSE_NEW_PRICE:
 
-			System.out.println(API.PROPOSE_NEW_PRICE);
+			System.out.println("Controller: " + API.PROPOSE_NEW_PRICE);
 
 			{
 
@@ -231,7 +230,7 @@ public class Controller {
 
 			case API.APPROVE_PROPOSED_PRICE:
 
-				System.out.println(API.APPROVE_PROPOSED_PRICE);
+				System.out.println("Controller: " + API.APPROVE_PROPOSED_PRICE);
 
 				{
 
@@ -253,7 +252,7 @@ public class Controller {
 
 		case "MapSearch_city_key":
 
-			System.out.println("MapSearch_city_key");
+			System.out.println("Controller: " + "MapSearch_city_key");
 
 			{
 
@@ -271,7 +270,7 @@ public class Controller {
 
 		case "MapSearch_place_key":
 
-			System.out.println("MapSearch_place_key");
+			System.out.println("Controller: " + "MapSearch_place_key");
 
 			{
 				
@@ -291,7 +290,7 @@ public class Controller {
 
 		case API.GET_ROUTES:
 
-			System.out.println(API.GET_ROUTES);
+			System.out.println("Controller: " + API.GET_ROUTES);
 
 			{
 

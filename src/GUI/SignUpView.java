@@ -2,11 +2,12 @@ package GUI;
 
 import com.google.gson.Gson;
 import Communication.ClientConsole;
-import Constants.API;
-import Constants.ErrorCodes;
-import Constants.MemLvl;
-import Constants.SceneName;
 import DB_classes.AccountUser;
+import Defines.API;
+import Defines.Dimensions;
+import Defines.ErrorCodes;
+import Defines.MemLvl;
+import Defines.SceneName;
 import Requests.Request;
 import Utils.UI_server_communicate;
 import javafx.scene.Scene;
@@ -43,8 +44,6 @@ public class SignUpView extends BaseView {
 	    email 		= new TextField();
 	    phone_number 	= new TextField();
 
-    	Gson gson = new Gson();
-
         BackgroundImage myBIs = new BackgroundImage(new Image("Images\\sign_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
         nameR.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -62,16 +61,16 @@ public class SignUpView extends BaseView {
         	if (passwordR.getText().isEmpty() || email.getText().isEmpty() || phone_number.getText().isEmpty() || nameR.getText().isEmpty() || creditCard.getText().isEmpty()) {
 
         		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Error Dialog");
-        		alert.setHeaderText("Some fields are missing, please fill all fields");
-        		alert.setContentText("Ooops, there was an error!");
+        		alert.setTitle("Error");
+        		alert.setHeaderText("Some fields are missing");
+        		alert.setContentText("Please fill all fields");
         		alert.showAndWait();
         		
         	} else {
 
             	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), phone_number.getText(), nameR.getText(), creditCard.getText());
             	Request request = new Request(API.ADD_USER, accountUser);
-            	String jsonString = gson.toJson(request);
+            	String jsonString = mGson.toJson(request);
 
             	mChat.SendToServer(jsonString);
             	mCommunicate.ask_server();
@@ -128,7 +127,7 @@ public class SignUpView extends BaseView {
         sign_Up.setBackground(new Background(myBIs));
         sign_Up.getChildren().addAll(nameR, passwordR, creditCard, phone_number, email, signUp2, getBack3);
 
-        mScene = new Scene(sign_Up, 1280,720);
+        mScene = new Scene(sign_Up, Dimensions.mWith, Dimensions.mheight);
 		
 	}
 
