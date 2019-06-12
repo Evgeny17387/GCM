@@ -18,10 +18,10 @@ public class BaseView {
     static BackgroundImage myBIs = new BackgroundImage(new Image("Images\\Background_sign.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
     static BackgroundImage myBIW = new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
     
-	ClientConsole mChat;
-	UI_server_communicate mCommunicate;
+	static ClientConsole mChat;
+	static UI_server_communicate mCommunicate;
 	
-	Gson mGson;
+	static Gson mGson;
 	
 	public Scene mScene;
 

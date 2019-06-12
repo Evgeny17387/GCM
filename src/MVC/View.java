@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 
 import DB_classes.CityMap;
 import DB_classes.Purchase;
+import DB_classes.Purchases;
 import Defines.API;
 import Defines.ErrorCodes;
 import GUI.Main;
@@ -38,7 +39,7 @@ public class View {
 	      	switch (responseController.mType) {
 
       		// Users
-      	
+
 	    	case API.ADD_USER:
 
 	    	    System.out.println("View: " + API.ADD_USER);
@@ -124,23 +125,17 @@ public class View {
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 
-			    	    Type type = new TypeToken<List<Purchase>>(){}.getType();
+			    	    Type type = new TypeToken<List<Purchases>>(){}.getType();
+			    	    List<Purchases> purchasesList = new Gson().fromJson(gson.toJson(responseModel.mObject), type);
 
-			    	    List<Purchase> purchaseList = new Gson().fromJson(gson.toJson(responseModel.mObject), type);
-
-			    	    for (int i = 0; i < purchaseList.size(); i++) {
-			    	    	Purchase purchase = purchaseList.get(i);
-							System.out.println(purchase.toString());
-			    	    }
-		    			
-		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
-
-		    			System.out.println("Worker is not found");
+			    	    Main.mPurchases = purchasesList;
+			    	    
+						System.out.println(purchasesList.toString());
 
 		    		} else if (responseModel.mErrorCode == ErrorCodes.WORKER_NOT_MANAGER) {
 
-		    			System.out.println("Worker is not manager");
-
+		    			System.out.println("Worker is not a manager");
+		    			
 		    		}
 
 		    	}
@@ -150,7 +145,7 @@ public class View {
 	    	    break;
 
 	    	// Map Search
-	    	    
+
 	    	case "MapSearch_city_key":
 	    		
 	    	    System.out.println("View: " + "MapSearch_city_key");
@@ -158,7 +153,7 @@ public class View {
 		    	{
 		    		
 		    	    Type typeMap = new TypeToken<List<CityMap>>(){}.getType();
-		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
+		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseModel.mObject), typeMap);
 		    	    for (int i = 0; i < mapList.size(); i++) {
 		    	    	CityMap map = mapList.get(i);
 						System.out.println(map.toString());

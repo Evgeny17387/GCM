@@ -27,4 +27,9 @@ public class Dimensions {
 
 	public static final int mWorkerViewTextWidth 				= 300;
 
+	// WorkerReportsView
+
+	public static final int mWorkerReportsViewTableWidth		= 450;
+	public static final int mWorkerReportsViewTableheight		= 450;
+
 }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import DB_classes.CityMap;
 import DB_classes.Place;
 import DB_classes.Purchase;
+import DB_classes.Purchases;
 import DB_classes.Route;
 import Defines.ErrorCodes;
 import DB_classes.AccountUser;
@@ -684,7 +685,7 @@ public class Model {
 
 		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
 
-		List<Purchase> purchaseList = null;
+		List<Purchases> purchasesList = null;
 
 		String sql;
 
@@ -700,23 +701,23 @@ public class Model {
 
 			stmt = conn.createStatement();
 
-			sql = "SELECT * FROM Purchases";
+			sql = "SELECT * FROM Users";
 
 			rs = stmt.executeQuery(sql);
 
-			purchaseList = new ArrayList<Purchase>();
+			purchasesList = new ArrayList<Purchases>();
 
 			while (rs.next()) {
 
-				Purchase purchase = new Purchase(rs.getString("UserName"), rs.getString("CityName"), rs.getString("Date"));
-				
-				purchaseList.add(purchase);
+				Purchases purchases = new Purchases(rs.getString("UserName"), GetUserPurchases(rs.getString("UserName")));
 
-				System.out.println("Model: " + purchase.toString());
+				purchasesList.add(purchases);
+
+				System.out.println("Model: " + purchases.toString());
 
 			}
 			
-			responseModel.mObject = purchaseList;
+			responseModel.mObject = purchasesList;
 
 			responseModel.mErrorCode = ErrorCodes.SUCCESS;
 
@@ -1048,7 +1049,13 @@ public class Model {
 	
 	}
 
-	public List<CityMap> MapsByCity(String aName) {
+	public ResponseModel MapsByCity(String aName) {
+		
+		if (aName.isEmpty()) {
+			return new ResponseModel(ErrorCodes.USER_DETAILS_MISSING, null);
+		}
+		
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
 
 		List<CityMap> mapsList = null;
 
@@ -1082,21 +1089,25 @@ public class Model {
 
 			}
 
-		    rs.close();
-			stmt.close();
-			conn.close();
-	
+		    responseModel.mObject = mapsList;
+		    
+		    responseModel.mErrorCode = ErrorCodes.SUCCESS;
+
 		} catch (SQLException se) {
-	
+
+		    responseModel.mErrorCode = se.getErrorCode();
+
 			se.printStackTrace();
 			System.out.println("SQLException: " + se.getMessage());
 	        System.out.println("SQLState: " + se.getSQLState());
 	        System.out.println("VendorError: " + se.getErrorCode());
 	
 		} catch (Exception e) {
-	
+
+		    responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
 			e.printStackTrace();
-	
+
 		} finally {
 	
 			try {
@@ -1107,17 +1118,17 @@ public class Model {
 					stmt.close();
 				if (conn != null)
 					conn.close();
-	
+
 			} catch (SQLException se) {
-	
+
 				se.printStackTrace();
-	
+
 			}
-	
+
 		}
-		
-		return mapsList;
-	
+
+		return responseModel;
+
 	}
 
 	public List<CityMap> MapsByPlace(String aName) {

@@ -104,7 +104,7 @@ public class WorkerView extends BaseView {
 	
 	        		Alert alert = new Alert(AlertType.ERROR);
 	        		alert.setTitle("Error");
-	        		alert.setHeaderText("An unknown error has occurred, please try again");
+	        		alert.setHeaderText("An unknown error has occurred");
 	        		alert.setContentText("Please try again");
 	        		alert.showAndWait();
 	

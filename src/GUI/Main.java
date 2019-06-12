@@ -12,6 +12,7 @@ import Communication.ClientConsole;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 import DB_classes.CityMap;
+import DB_classes.Purchases;
 import Defines.ErrorCodes;
 import Defines.MemLvl;
 import Defines.SceneName;
@@ -33,7 +34,9 @@ public class Main extends Application {
     
     public static AccountUser mAccountUser;
     public static AccountWorker mAccountWorker;
-    
+
+    public static List<Purchases> mPurchases;
+
     public static void main(String[] args) {
 		launch(args);
 	}
@@ -79,6 +82,9 @@ public class Main extends Application {
 				break;
 			case WORKER_SIGN_IN:
 				WorkerView.refreshScene();
+				break;
+			case WORKER_ZONE:
+				WorkerReportsView.refreshScene();
 				break;
 			case SEARCH_MAP:
 				SearchMapView.refreshScene();

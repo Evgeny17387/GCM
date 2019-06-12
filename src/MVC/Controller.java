@@ -34,13 +34,13 @@ public class Controller {
 
 	  	String jsonString = "";
 
+		System.out.println("Controller: " + request.mType);
+
 	  	switch (request.mType) {
 	  	
 	  	// Users
 	  	
 		case API.ADD_USER:
-
-			System.out.println("Controller: " + API.ADD_USER);
 
 			{
 				
@@ -57,9 +57,7 @@ public class Controller {
 			break;
 
 		case API.GET_USER:
-
-			System.out.println("Controller: " + API.GET_USER);
-				
+	
 			{
 	
 				GeneralRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
@@ -75,8 +73,6 @@ public class Controller {
 			break;
 
 		case API.UPDATE_USER:
-
-			System.out.println("Controller: " + API.UPDATE_USER);
 
 			{
 				
@@ -96,8 +92,6 @@ public class Controller {
 
 		case API.BUY_SUBSCRITION:
 
-			System.out.println("Controller: " + API.BUY_SUBSCRITION);
-
 			{
 
 				GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
@@ -113,8 +107,6 @@ public class Controller {
 			break;
 
 		case API.DELETE_SUBSCRITION:
-
-			System.out.println("Controller: " + API.DELETE_SUBSCRITION);
 
 			{
 
@@ -134,8 +126,6 @@ public class Controller {
 
 		case API.BUY_MAP:
 
-			System.out.println("Controller: " + API.BUY_MAP);
-
 			{
 
 				BuyMapRequest buyMapRequest = gson.fromJson(gson.toJson(request.mObject), BuyMapRequest.class);
@@ -154,8 +144,6 @@ public class Controller {
 
 		case API.GET_WORKER:
 
-			System.out.println("Controller: " + API.GET_WORKER);
-
 			{
 
 				GeneralRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
@@ -172,14 +160,12 @@ public class Controller {
 
 		case API.GET_USERS_PURCHASES:
 
-			System.out.println("Controller: " + API.GET_USERS_PURCHASES);
-
 			{
 
 				GeneralRequest accountCheck = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
 
 				ResponseModel responseModel = model.GetWorker(accountCheck.mUserName, accountCheck.mPassword);
-				
+
 				ResponseController responseController;
 
 				if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
@@ -193,7 +179,7 @@ public class Controller {
 						responseModel.mErrorCode = ErrorCodes.WORKER_NOT_MANAGER;
 
 					}
-										
+
 				}
 
 				responseController = new ResponseController(API.GET_USERS_PURCHASES, responseModel);
@@ -203,12 +189,10 @@ public class Controller {
 			}
 
 			break;
-			
+
 		// Propose New price for a map
 
 		case API.PROPOSE_NEW_PRICE:
-
-			System.out.println("Controller: " + API.PROPOSE_NEW_PRICE);
 
 			{
 
@@ -230,8 +214,6 @@ public class Controller {
 
 			case API.APPROVE_PROPOSED_PRICE:
 
-				System.out.println("Controller: " + API.APPROVE_PROPOSED_PRICE);
-
 				{
 
 					ProposeNewPriceRequest proposeNewPriceRequest = gson.fromJson(gson.toJson(request.mObject), ProposeNewPriceRequest.class);
@@ -252,15 +234,13 @@ public class Controller {
 
 		case "MapSearch_city_key":
 
-			System.out.println("Controller: " + "MapSearch_city_key");
-
 			{
 
 				String cityName = gson.fromJson(gson.toJson(request.mObject), String.class);
 
-				List<CityMap> mapsListCityName = model.MapsByCity(cityName);
+				ResponseModel responseModel = model.MapsByCity(cityName);
 		
-		    	ResponseController responseController = new ResponseController("MapSearch_city_key", mapsListCityName);
+		    	ResponseController responseController = new ResponseController("MapSearch_city_key", responseModel);
 		
 		    	jsonString = gson.toJson(responseController);
 
@@ -269,8 +249,6 @@ public class Controller {
 			break;
 
 		case "MapSearch_place_key":
-
-			System.out.println("Controller: " + "MapSearch_place_key");
 
 			{
 				
@@ -289,8 +267,6 @@ public class Controller {
 		// Routes
 
 		case API.GET_ROUTES:
-
-			System.out.println("Controller: " + API.GET_ROUTES);
 
 			{
 

@@ -41,7 +41,7 @@ public class UpdateDetailsView extends BaseView {
     static TextField mLastName;
 
     static TableView<PurchaseView> table;
-    
+
     static ObservableList<PurchaseView> data;
 
 	public UpdateDetailsView(ClientConsole aChat, UI_server_communicate aCommunicate) {
@@ -84,11 +84,9 @@ public class UpdateDetailsView extends BaseView {
         // Init Table
 
         TableColumn cityColumn = new TableColumn("City");
-        cityColumn.setMinWidth(140);
         cityColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("city"));
 
         TableColumn dateColumn = new TableColumn("Date");
-        dateColumn.setMinWidth(140);
         dateColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("date"));
 
         table = new TableView<PurchaseView>();
@@ -102,14 +100,6 @@ public class UpdateDetailsView extends BaseView {
         );
 
         update.setOnAction(e->{
-        	
-        	System.out.println("1 - " + Main.mAccountUser.mUserName);
-        	System.out.println("2 - " + mPassword.getText());
-        	System.out.println("3 - " + mEmail.getText());
-        	System.out.println("4 - " + mPhoneNumber.getText());
-        	System.out.println("5 - " + mFirstName.getText());
-        	System.out.println("6 - " + mLastName.getText());
-        	System.out.println("7 - " + mCreditCard.getText());
         	
         	if (
         			mUserName.getText().isEmpty() ||
@@ -171,9 +161,11 @@ public class UpdateDetailsView extends BaseView {
 		mFirstName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
 		mLastName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
 		update.setMaxWidth(Dimensions.mUpdateDetailsViewUpdateButtonWidth);
+		goBack.setMaxWidth(Dimensions.mUpdateDetailsViewBackButtonWidth);
+        cityColumn.setMinWidth(140);
+        dateColumn.setMinWidth(140);
 		table.setMaxWidth(Dimensions.mUpdateDetailsViewTableWidth);
 		table.setMaxHeight(Dimensions.mUpdateDetailsViewTableHeight);
-		goBack.setMaxWidth(Dimensions.mUpdateDetailsViewBackButtonWidth);
 
 		mUserName.setTranslateY(-250);
 		mPassword.setTranslateY(-200);
