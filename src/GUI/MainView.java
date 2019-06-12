@@ -27,15 +27,18 @@ public class MainView extends BaseView {
     static Button guestBtn = new Button("To catalog");
     static Button signUp = new Button("Sign up");
     static Button workers_zone = new Button("Workers zone");
+    
+    
+    
+    
+    static BackgroundImage myBI = new BackgroundImage(new Image("Images\\Background.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+    static BackgroundImage myBIs = new BackgroundImage(new Image("Images\\Background_sign.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
 	public Scene getScene() {
-		
-        BackgroundImage myBI = new BackgroundImage(new Image("Images\\Background.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-
-        
+		        
 
         memBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_IN)));
-        outBtn.setOnAction(e->{Main.memberlevel=MemLvl.FREE_USER;changeScene();stage.setScene(Main.getScenes().get(SceneName.MAIN));});
+        outBtn.setOnAction(e->{Main.memberlevel=MemLvl.FREE_USER;changeScene();ShowMapView.changeScene();;stage.setScene(Main.getScenes().get(SceneName.MAIN));});
         guestBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SEARCH_MAP)));
         signUp.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_UP)));
         workers_zone.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.WORKER_ZONE)));
@@ -46,9 +49,9 @@ public class MainView extends BaseView {
         signUp.setTranslateY(-150);
         workers_zone.setTranslateY(-100);
 
+        root.getChildren().addAll(memBtn, guestBtn, signUp, workers_zone);
         root.setBackground(new Background(myBI));
-       if(Main.memberlevel==MemLvl.FREE_USER) root.getChildren().addAll(memBtn, guestBtn, signUp, workers_zone);
-       
+
 
         Scene scene = new Scene(root, 1280, 720);
 		
@@ -57,11 +60,14 @@ public class MainView extends BaseView {
 	public static void changeScene() {
 	
 		if(Main.memberlevel==MemLvl.FREE_USER) {
+			   System.out.println("im here now");
+	           root.setBackground(new Background(myBI));
 	    	   root.getChildren().clear();
 	    	   root.getChildren().addAll(memBtn, guestBtn, signUp, workers_zone);
 		}
 		if(Main.memberlevel==MemLvl.MEMBER) {
     	   root.getChildren().clear();
+           root.setBackground(new Background(myBIs));
     	   root.getChildren().addAll(outBtn, guestBtn);
        }
 }

@@ -61,9 +61,9 @@ public class SignInView extends BaseView {
         	if (Main.my_flag==0) {
 
         		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Error Dialog");
+        		alert.setTitle("Error ");
         		alert.setHeaderText("User details are incorrect");
-        		alert.setContentText("Ooops, there was an error!");
+        		alert.setContentText("Please try again");
         		alert.showAndWait();
 
         		Main.my_flag = -1;
@@ -71,9 +71,9 @@ public class SignInView extends BaseView {
         	} else if (Main.my_flag==1) {
 
         		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Confirmation Dialog");
+        		alert.setTitle("Error");
         		alert.setHeaderText("Some fields are missing, please fill all fields");
-        		alert.setContentText("O.K.");
+        		alert.setContentText("Please try again");
         		alert.showAndWait();
 
         		Main.my_flag = -1;
@@ -81,15 +81,15 @@ public class SignInView extends BaseView {
         	} else if (Main.my_flag==2) {
         		
         		Alert alert = new Alert(AlertType.CONFIRMATION);
-        		alert.setTitle("Error Dialog");
+        		alert.setTitle("Welcome");
         		alert.setHeaderText("Welcome Back !!!");
-        		alert.setContentText("O.k.");
+        		alert.setContentText("You are successfully signed in..");
         		alert.showAndWait();
         		Main.memberlevel=MemLvl.MEMBER;   
         		Main.my_flag = -1;
         		clean_tf();
         		MainView.changeScene();
-        		
+        		ShowMapView.changeScene();
         		stage.setScene(Main.getScenes().get(SceneName.MAIN));
 
         	}
