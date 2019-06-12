@@ -77,8 +77,6 @@ public class UpdateDetailsView extends BaseView {
 		mLastName.setEditable(true);
 		mLastName.setPromptText("LastName");
 
-        Button goBack = new Button("Back to Main");
-
         Button update = new Button("Update User Details");
 
         // Init Table
@@ -94,10 +92,6 @@ public class UpdateDetailsView extends BaseView {
         table.getColumns().addAll(cityColumn, dateColumn);
         
         // OnClick
-
-        goBack.setOnAction(e->
-        	Main.changeScene(SceneName.MAIN)
-        );
 
         update.setOnAction(e->{
         	

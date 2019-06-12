@@ -37,7 +37,6 @@ public class ShowMapView extends BaseView {
 	static TextField mapShow = new TextField();
 
     static Button chooseM = new Button("Buy options");
-    static Button getBack11 = new Button("Go to Main");
     static Button nextM = new Button("Next map");
     static Button pervM = new Button("Pervious map");
     static Button nextPlace = new Button("Next");
@@ -54,8 +53,6 @@ public class ShowMapView extends BaseView {
     		BuyView.myCity = Main.myMapList.get(0).mCity;
     		Main.changeScene(SceneName.BUY);
         });
-      
-        getBack11.setOnAction(e->Main.changeScene(SceneName.MAIN));
 
   	   imageViewMap.setPreserveRatio(true);
 
@@ -85,7 +82,6 @@ public class ShowMapView extends BaseView {
     	   setPlace(imageViewPlace);
        });
         
-		getBack11.setTranslateY(100);
 		nextM.setTranslateX(100);
 		nextM.setTranslateY(50);
 		pervM.setTranslateY(50);
@@ -108,7 +104,7 @@ public class ShowMapView extends BaseView {
 		chooseM.setTranslateX(0);
 
        _result.setBackground(new Background(myBIc));
-  	   _result.getChildren().addAll(nextM, pervM, getBack11, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
+  	   _result.getChildren().addAll(nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
 
   	   mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
 		

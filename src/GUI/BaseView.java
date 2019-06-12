@@ -3,9 +3,12 @@ package GUI;
 import com.google.gson.Gson;
 
 import Communication.ClientConsole;
+import Defines.Dimensions;
+import Defines.SceneName;
 import Utils.UI_server_communicate;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -25,12 +28,23 @@ public class BaseView {
 	
 	public Scene mScene;
 
+	static Button goBack;
+	
 	public BaseView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
 		this.mChat = aChat;
 		this.mCommunicate = aCommunicate;
 
 	    mGson = new Gson();
+
+        goBack = new Button("Go Back");
+        goBack.setOnAction(e->Main.changeScene(SceneName.MAIN));
+
+        goBack.setMaxHeight(Dimensions.mBaseViewButtonsHeight);
+        goBack.setMaxWidth(Dimensions.mBaseViewButtonsWidth);
+        
+        goBack.setTranslateY(Dimensions.mheight / 2 - Dimensions.mBaseViewButtonsHeight);
+        goBack.setTranslateX( - Dimensions.mWith / 2 + Dimensions.mBaseViewButtonsWidth);
 
 	}
 

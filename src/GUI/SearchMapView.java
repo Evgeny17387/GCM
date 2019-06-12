@@ -42,9 +42,6 @@ public class SearchMapView extends BaseView {
         Search_by_general_description.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        Button getBack2=new Button("Go Back");
-        getBack2.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
-
         Button search_btn=new Button("Search");
         search_btn.setOnAction(e->{
 
@@ -77,11 +74,10 @@ public class SearchMapView extends BaseView {
         Search_by_city.setTranslateX(-63);
         Search_by_inplace.setTranslateY(-200);
         Search_by_general_description.setTranslateY(-150);
-        getBack2.setTranslateX(-100);
 
         StackPane guestZone = new StackPane();
         guestZone.setBackground(new Background(myBIc));
-        guestZone.getChildren().addAll(searchTF, search_btn, getBack2, Search_by_city, Search_by_inplace, Search_by_general_description);
+        guestZone.getChildren().addAll(searchTF, search_btn, goBack, Search_by_city, Search_by_inplace, Search_by_general_description);
 
         mScene = new Scene(guestZone, Dimensions.mWith, Dimensions.mheight);
 		

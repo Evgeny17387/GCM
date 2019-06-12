@@ -7,6 +7,11 @@ public class Dimensions {
 	public static final int mWith 								= 1280;
 	public static final int mheight 							= 720;
 
+	// BaseView
+
+	public static final int mBaseViewButtonsWidth 				= 80;
+	public static final int mBaseViewButtonsHeight 				= 80;
+
 	// MainView
 
 	public static final int mMainViewButtonsWidth 				= 200;

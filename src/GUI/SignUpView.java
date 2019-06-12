@@ -52,9 +52,6 @@ public class SignUpView extends BaseView {
         creditCard.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         email.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        Button getBack3 = new Button("Go Back");
-        getBack3.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
-
         Button signUp2 = new Button("Sign Up");
         signUp2.setOnAction(e->{
 
@@ -119,13 +116,11 @@ public class SignUpView extends BaseView {
         email.setTranslateY(50);
         phone_number.setMaxWidth(300);
         phone_number.setTranslateY(100);
-        getBack3.setTranslateY(150);
-        getBack3.setTranslateX(-100);
         signUp2.setTranslateY(150);
 
         StackPane sign_Up = new StackPane();
         sign_Up.setBackground(new Background(myBIs));
-        sign_Up.getChildren().addAll(nameR, passwordR, creditCard, phone_number, email, signUp2, getBack3);
+        sign_Up.getChildren().addAll(nameR, passwordR, creditCard, phone_number, email, signUp2, goBack);
 
         mScene = new Scene(sign_Up, Dimensions.mWith, Dimensions.mheight);
 		

@@ -44,9 +44,6 @@ public class WorkerView extends BaseView {
         mName.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         mPassword.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        Button getBack = new Button("Go Back");
-        getBack.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
-
         // OnClick
 
         Button singIn = new Button("Sign In");
@@ -122,15 +119,13 @@ public class WorkerView extends BaseView {
         mPassword.setMaxWidth(Dimensions.mWorkerViewTextWidth);
 
         mName.setTranslateY(-50);
-        getBack.setTranslateY(100);
-        getBack.setTranslateX(-100);
         singIn.setTranslateY(100);
 
         // Scene
         
         StackPane stackPane = new StackPane();
         stackPane.setBackground(new Background(myBIW));
-        stackPane.getChildren().addAll(mName, mPassword, singIn ,getBack);
+        stackPane.getChildren().addAll(mName, mPassword, singIn ,goBack);
 
         mScene = new Scene(stackPane, Dimensions.mWith, Dimensions.mheight);
 		

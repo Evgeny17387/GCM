@@ -23,7 +23,6 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class BuyView extends BaseView{
-
 	
 	public static String myCity;
 	
@@ -33,7 +32,6 @@ public class BuyView extends BaseView{
 
     static Button oneTime = new Button();
     static Button periodTime = new Button();
-    Button goBack = new Button("Go back");
 
 	public BuyView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
@@ -44,11 +42,9 @@ public class BuyView extends BaseView{
 		goBack.setTranslateY(-150);
 		periodTime.setTranslateY(-200);
 		oneTime.setTranslateY(-250);
-
-		goBack.setOnAction(e->{Main.changeScene(SceneName.SEARCH_MAP);});
 	
 		root.setBackground(new Background(myBIc));
-		root.getChildren().addAll(oneTime,periodTime,goBack);
+		root.getChildren().addAll(oneTime, periodTime, goBack);
 
 		mScene = new Scene(root, Dimensions.mWith, Dimensions.mheight);
 

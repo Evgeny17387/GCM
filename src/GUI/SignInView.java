@@ -42,9 +42,6 @@ public class SignInView extends BaseView {
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        Button getBack = new Button("Go Back");
-        getBack.setOnAction(e->Main.changeScene(SceneName.MAIN));
-
         Button btn = new Button("Sign In");
         btn.setOnAction(e->{
 
@@ -104,13 +101,11 @@ public class SignInView extends BaseView {
         password.setMaxWidth(Dimensions.mSignInViewTextWidth);
 
         name.setTranslateY(-50);
-        getBack.setTranslateY(100);
-        getBack.setTranslateX(-100);
         btn.setTranslateY(100);
 
         StackPane memberZone = new StackPane();
         memberZone.setBackground(new Background(myBIW)); 
-        memberZone.getChildren().addAll(name, password, getBack, btn);
+        memberZone.getChildren().addAll(name, password, goBack, btn);
         
         mScene = new Scene(memberZone, Dimensions.mWith, Dimensions.mheight);
 

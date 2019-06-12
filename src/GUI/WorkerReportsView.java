@@ -34,10 +34,6 @@ public class WorkerReportsView extends BaseView {
 	public WorkerReportsView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
 		super(aChat, aCommunicate);
-
-		// Init
-		
-        Button getBack = new Button("Go Back");
         
         // Init Table
 
@@ -53,10 +49,6 @@ public class WorkerReportsView extends BaseView {
         table = new TableView<PurchaseView>();
         table.setEditable(false);
         table.getColumns().addAll(usernameColumn, cityColumn, dateColumn);
-
-        // OnClick
-        
-        getBack.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
         
 		// Position in UI
 
@@ -66,13 +58,11 @@ public class WorkerReportsView extends BaseView {
         table.setMaxWidth(Dimensions.mWorkerReportsViewTableWidth);
 		table.setMaxHeight(Dimensions.mWorkerReportsViewTableheight);
 
-        getBack.setTranslateY(300);
-
 		// Scene
 		
 	    StackPane stackPane = new StackPane();
 	    stackPane.setBackground(new Background(myBI));
-	    stackPane.getChildren().addAll(table, getBack);
+	    stackPane.getChildren().addAll(table, goBack);
 
         mScene = new Scene(stackPane, Dimensions.mWith, Dimensions.mheight);
 
