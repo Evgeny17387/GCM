@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import Communication.ClientConsole;
 import Constants.API;
+import Constants.ErrorCodes;
 import Constants.MemLvl;
 import Constants.SceneName;
 import Requests.GeneralRequest;
@@ -58,7 +59,7 @@ public class SignInView extends BaseView {
         	mChat.SendToServer(jsonString);
         	mCommunicate.ask_server();
 
-        	if (Main.my_flag==0) {
+        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
         		Alert alert = new Alert(AlertType.ERROR);
         		alert.setTitle("Error Dialog");
@@ -66,19 +67,7 @@ public class SignInView extends BaseView {
         		alert.setContentText("Ooops, there was an error!");
         		alert.showAndWait();
 
-        		Main.my_flag = -1;
-
-        	} else if (Main.my_flag==1) {
-
-        		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Confirmation Dialog");
-        		alert.setHeaderText("Some fields are missing, please fill all fields");
-        		alert.setContentText("O.K.");
-        		alert.showAndWait();
-
-        		Main.my_flag = -1;
-
-        	} else if (Main.my_flag==2) {
+        	} else if (Main.mServerResponseErrorCode==2) {
         		
         		Alert alert = new Alert(AlertType.CONFIRMATION);
         		alert.setTitle("Error Dialog");
@@ -86,14 +75,15 @@ public class SignInView extends BaseView {
         		alert.setContentText("O.k.");
         		alert.showAndWait();
         		Main.memberlevel=MemLvl.MEMBER;   
-        		Main.my_flag = -1;
         		clean_tf();
         		MainView.changeScene();
         		
         		stage.setScene(Main.getScenes().get(SceneName.MAIN));
 
         	}
-        	
+
+    		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
         });
 
         name.setMaxWidth(400);

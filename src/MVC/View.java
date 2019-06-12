@@ -40,6 +40,8 @@ public class View {
 		
 		    		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 
+		    	    System.out.println(responseModel.mErrorCode);
+
 		    		GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
 
 		    	}
@@ -58,27 +60,14 @@ public class View {
 
 		    	    System.out.println(responseModel.mErrorCode);
 
+	    			GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
+
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
 		    			
 			    		AccountUser accountUser = gson.fromJson(gson.toJson(responseModel.mObject), AccountUser.class);
 
-						System.out.println(accountUser.toString());
-		    			GUI.Main.mServerResponseErrorCode = 2;
-
-		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_NOT_FOUND) {
-
-		    			System.out.println("User not found");
-		    			GUI.Main.mServerResponseErrorCode = 0;
-
-		    			
-		    		} else if (responseModel.mErrorCode == ErrorCodes.USER_DETAILS_MISSING) {
-		    			
-		    			System.out.println("UserName or Password are missing");
-		    			GUI.Main.mServerResponseErrorCode = 1;
-
-	    			
 		    		}
-			    		
+
 		    	}
 
 			    UI_server_communicate.mResposeFromserver = true;
