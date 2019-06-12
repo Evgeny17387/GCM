@@ -82,12 +82,16 @@ public class Model {
 		} catch (SQLException se) {
 
 			responseModel.mErrorCode = se.getErrorCode();
-			
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
+
+			if (se.getErrorCode() != ErrorCodes.USER_ALREADY_EXISTS) {
+				
+				se.printStackTrace();
+				System.out.println("SQLException: " + se.getMessage());
+		        System.out.println("SQLState: " + se.getSQLState());
+		        System.out.println("VendorError: " + se.getErrorCode());
+
+			}
+				
 		} catch (Exception e) {
 
 			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;

@@ -22,36 +22,41 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class BuyView extends BaseView{
-	public BuyView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		super(stage, aChat, aCommunicate);
-	}
+
+	
 	public static String myCity;
-	StackPane root=new StackPane();
-    BackgroundImage myBIc = new BackgroundImage(new Image("Images\\Buy.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-    Button oneTime= new Button();
-    Button periodTime=new Button();
-    Button goBack=new Button("Go back");
-    
-    
-	public Scene getScene() {
-		goBack.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.SEARCH_MAP));});
+	
+	StackPane root = new StackPane();
+
+	BackgroundImage myBIc = new BackgroundImage(new Image("Images\\Buy.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
+    Button oneTime = new Button();
+    Button periodTime = new Button();
+    Button goBack = new Button("Go back");
+
+	public BuyView(ClientConsole aChat, UI_server_communicate aCommunicate) {
+
+		super(aChat, aCommunicate);
+
+		System.out.println(myCity);
+
 		goBack.setTranslateY(-150);
 		periodTime.setTranslateY(-200);
 		oneTime.setTranslateY(-250);
-		root.setBackground(new Background(myBIc));
-		System.out.println(myCity);
+
+		goBack.setOnAction(e->{Main.changeScene(SceneName.SEARCH_MAP);});
 		oneTime.setText("One Time Pruchase- Price"+ GUI.Main.Price1+"$, Maps of "+myCity);
 		periodTime.setText("Pruchase for 6 months - Price"+GUI.Main.Price2+ "$,Maps of "+myCity);
+
+		root.setBackground(new Background(myBIc));
 		root.getChildren().addAll(oneTime,periodTime,goBack);
-	  	   Scene scene =new Scene(root, 1280,720);
-	  	   return scene;
-	
-	
-	}
-	
-	
-	
-	
+
+		mScene = new Scene(root, 1280,720);
+
 	}
 
+	public static void refreshScene() {
 
+	}
+
+}

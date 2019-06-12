@@ -29,16 +29,12 @@ import GUI.MainView;
 
 public class SignInView extends BaseView {
 
-    TextField name = new TextField();
-    TextField password = new TextField();
+    static TextField name = new TextField("Please enter username");
+    static TextField password = new TextField("Please enter password");
 
-	public SignInView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		super(stage, aChat, aCommunicate);
-	}
+	public SignInView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
-	public Scene getScene() {
-		
-		clean_tf();
+		super(aChat, aCommunicate);
 
     	Gson gson = new Gson();
 
@@ -48,7 +44,7 @@ public class SignInView extends BaseView {
         password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         Button getBack = new Button("Go back");
-        getBack.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        getBack.setOnAction(e->Main.changeScene(SceneName.MAIN));
 
         Button btn = new Button("Next");
         btn.setOnAction(e->{
@@ -78,12 +74,7 @@ public class SignInView extends BaseView {
 	        		alert.showAndWait();
 
 	        		Main.memberlevel = MemLvl.MEMBER;
-
-	        		MainView.changeScene();
-	        		ShowMapView.changeScene();
-
-	        		clean_tf();
-	        		stage.setScene(Main.getScenes().get(SceneName.MAIN));
+	        		Main.changeScene(SceneName.MAIN);
 	
 	        	} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_NOT_FOUND) {
 	        		
@@ -120,12 +111,11 @@ public class SignInView extends BaseView {
         memberZone.setBackground(new Background(myBIW)); 
         memberZone.getChildren().addAll(name, password, getBack, btn);
         
-        Scene scene = new Scene(memberZone, 1280,720);
+        mScene = new Scene(memberZone, 1280,720);
 
-        return scene;
 	}
 
-    public void clean_tf() {
+	public static void refreshScene() {
 	     name.setText("Please enter username");
 	     password.setText("Please enter password");
     }

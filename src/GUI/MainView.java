@@ -28,56 +28,58 @@ public class MainView extends BaseView {
     static Button signUp = new Button("Sign up");
     static Button workers_zone = new Button("Workers zone");
 
-	public MainView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		super(stage, aChat, aCommunicate);
-	}
+	public MainView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
-	public Scene getScene() {
+		super(aChat, aCommunicate);
 
-        memBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_IN)));
+        memBtn.setOnAction(e->Main.changeScene(SceneName.SIGN_IN));
 
         outBtn.setOnAction(e->{
 
         	Main.memberlevel = MemLvl.FREE_USER;
-        	changeScene();
-        	ShowMapView.changeScene();
-        	stage.setScene(Main.getScenes().get(SceneName.MAIN));
+        	Main.changeScene(SceneName.MAIN);
 
         });
 
-        guestBtn.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SEARCH_MAP)));
+        guestBtn.setOnAction(e->Main.changeScene(SceneName.SEARCH_MAP));
 
-        signUp.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.SIGN_UP)));
+        signUp.setOnAction(e->Main.changeScene(SceneName.SIGN_UP));
 
-        workers_zone.setOnAction(e->stage.setScene(Main.getScenes().get(SceneName.WORKER_ZONE)));
+        workers_zone.setOnAction(e->Main.changeScene(SceneName.WORKER_ZONE));
 
-        memBtn.setTranslateY(-250);
-        outBtn.setTranslateY(-250);
-        guestBtn.setTranslateY(-200);
-        signUp.setTranslateY(-150);
-        workers_zone.setTranslateY(-100);
+        outBtn.setTranslateY(-200);
+        guestBtn.setTranslateY(-150);
+        memBtn.setTranslateY(-100);
+        signUp.setTranslateY(-50);
+        workers_zone.setTranslateY(0);
 
-        root.getChildren().addAll(memBtn, guestBtn, signUp, workers_zone);
+        root.getChildren().addAll(outBtn, guestBtn, memBtn, signUp, workers_zone);
         root.setBackground(new Background(myBI));
 
-        Scene scene = new Scene(root, 1280, 720);
-		
-		return scene;
+        mScene = new Scene(root, 1280, 720);
 	}
 
-	public static void changeScene() {
-	
+	public static void refreshScene() {
+
 		if (Main.memberlevel == MemLvl.FREE_USER) {
 
 			root.setBackground(new Background(myBI));
-			root.getChildren().clear();
-			root.getChildren().addAll(memBtn, guestBtn, signUp, workers_zone);
 
-		}else if (Main.memberlevel == MemLvl.MEMBER) {
+			outBtn.setVisible(false);
+			guestBtn.setVisible(true);
+			memBtn.setVisible(true);
+			signUp.setVisible(true);
+			workers_zone.setVisible(true);
+
+		} else if (Main.memberlevel == MemLvl.MEMBER) {
 
 			root.setBackground(new Background(myBIs));
-			root.getChildren().clear();
-			root.getChildren().addAll(outBtn, guestBtn);
+
+			outBtn.setVisible(true);
+			guestBtn.setVisible(true);
+			memBtn.setVisible(false);
+			signUp.setVisible(false);
+			workers_zone.setVisible(false);
 
 		}
 

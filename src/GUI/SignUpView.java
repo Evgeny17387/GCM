@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import Communication.ClientConsole;
 import Constants.API;
 import Constants.ErrorCodes;
+import Constants.MemLvl;
 import Constants.SceneName;
 import DB_classes.AccountUser;
 import Requests.Request;
@@ -26,19 +27,21 @@ import javafx.stage.Stage;
 
 public class SignUpView extends BaseView {
 
-    TextField nameR 		= new TextField();
-	TextField passwordR		= new TextField();
-    TextField creditCard 	= new TextField();
-    TextField email 		= new TextField();
-    TextField phone_number 	= new TextField();
+	static TextField nameR;
+	static TextField passwordR;
+	static TextField creditCard;
+	static TextField email;
+	static TextField phone_number;
 
-	public SignUpView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		super(stage, aChat, aCommunicate);
-	}
+	public SignUpView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
-	public Scene getScene() {
-		
-		clean_tf();
+		super(aChat, aCommunicate);
+
+	    nameR 		= new TextField();
+		passwordR		= new TextField();
+	    creditCard 	= new TextField();
+	    email 		= new TextField();
+	    phone_number 	= new TextField();
 
     	Gson gson = new Gson();
 
@@ -51,7 +54,7 @@ public class SignUpView extends BaseView {
         email.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         Button getBack3 = new Button("Go back");
-        getBack3.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        getBack3.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
 
         Button signUp2 = new Button("Sign up");
         signUp2.setOnAction(e->{
@@ -80,10 +83,8 @@ public class SignUpView extends BaseView {
 	        		alert.setHeaderText("You have been successfuly Singed Up");
 	        		alert.setContentText("Please Sing In");
 	        		alert.showAndWait();
-	
-	        		clean_tf();
 	        		
-	        		stage.setScene(Main.getScenes().get(SceneName.MAIN));
+	        		Main.changeScene(SceneName.MAIN);
 
         		} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
 
@@ -127,17 +128,18 @@ public class SignUpView extends BaseView {
         sign_Up.setBackground(new Background(myBIs));
         sign_Up.getChildren().addAll(nameR, passwordR, creditCard, phone_number, email, signUp2, getBack3);
 
-        Scene scene = new Scene(sign_Up, 1280,720);
+        mScene = new Scene(sign_Up, 1280,720);
 		
-		return scene;
 	}
 
-    public  void clean_tf() {
+	public static void refreshScene() {
+
 		nameR.setText("Please enter username");
 		passwordR.setText("Please enter password");
 		creditCard.setText("Please enter credit card");
 		email.setText("Please enter your email addres");
 		phone_number.setText("Please enter your phone number");
-    }
+
+	}
 
 }

@@ -16,7 +16,7 @@ import Constants.MemLvl;
 
 public class Main extends Application {
 
-	private static Map<SceneName, Scene> scenes = new HashMap<>();
+	private static Map<SceneName, BaseView> scenes = new HashMap<>();
 
 	public static MemLvl memberlevel = MemLvl.FREE_USER;
 
@@ -27,12 +27,17 @@ public class Main extends Application {
     public static int Price1 = 1;
     public static int Price2 = 0;
 
+    public static Stage mStage;
+    
     public static void main(String[] args) {
 		launch(args);
 	}
 
     @Override
 	public void start(Stage primaryStage) {
+    	
+    	mStage = primaryStage;
+    	
     	memberlevel = MemLvl.FREE_USER;
     	
     	View view = new View();
@@ -40,22 +45,50 @@ public class Main extends Application {
     	UI_server_communicate communicate = new UI_server_communicate();
 
     	primaryStage.setTitle("GCM");
-        scenes.put(SceneName.MAIN, new MainView(primaryStage, chat, communicate).getScene());
-        scenes.put(SceneName.SIGN_UP, new SignUpView(primaryStage, chat, communicate).getScene());
-        scenes.put(SceneName.SIGN_IN, new SignInView(primaryStage, chat, communicate).getScene());
-        scenes.put(SceneName.WORKER_ZONE, new WorkerView(primaryStage, chat, communicate).getScene());
-        scenes.put(SceneName.SEARCH_MAP, new SearchMapView(primaryStage, chat, communicate).getScene());
-        scenes.put(SceneName.SHOW_MAP, new ShowMapView(primaryStage, chat, communicate).getScene());
-        scenes.put(SceneName.BUY, new BuyView(primaryStage, chat, communicate).getScene());
+        scenes.put(SceneName.MAIN, new MainView(chat, communicate));
+        scenes.put(SceneName.SIGN_UP, new SignUpView(chat, communicate));
+        scenes.put(SceneName.SIGN_IN, new SignInView(chat, communicate));
+        scenes.put(SceneName.WORKER_ZONE, new WorkerView(chat, communicate));
+        scenes.put(SceneName.SEARCH_MAP, new SearchMapView(chat, communicate));
+        scenes.put(SceneName.SHOW_MAP, new ShowMapView(chat, communicate));
+        scenes.put(SceneName.BUY, new BuyView(chat, communicate));
 
-        primaryStage.setScene(scenes.get(SceneName.MAIN));
+        changeScene(SceneName.MAIN);
 
         primaryStage.show();
         
     }
 
-	public static Map<SceneName, Scene> getScenes() {
-		return scenes;
+	public static void changeScene(SceneName aSceneName) {
+		
+		switch (aSceneName) {
+			case MAIN:
+				MainView.refreshScene();
+				break;
+			case SIGN_UP:
+				SignUpView.refreshScene();
+				break;
+			case SIGN_IN:
+				SignInView.refreshScene();
+				break;
+			case WORKER_ZONE:
+				WorkerView.refreshScene();
+				break;
+			case SEARCH_MAP:
+				SearchMapView.refreshScene();
+				break;
+			case SHOW_MAP:
+				ShowMapView.refreshScene();
+				break;
+			case BUY:
+				BuyView.refreshScene();
+				break;
+			default:
+			break;
+		}
+
+		mStage.setScene(scenes.get(aSceneName).mScene);
+
 	}
 
 }

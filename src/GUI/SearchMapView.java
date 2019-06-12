@@ -23,17 +23,13 @@ import javafx.stage.Stage;
 
 public class SearchMapView extends BaseView {
 
-    TextField searchTF = new TextField();
+    static TextField searchTF = new TextField("Type map to search");
 
 	String request_string;
 
-	public SearchMapView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		super(stage, aChat, aCommunicate);
-	}
+	public SearchMapView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
-	public Scene getScene() {
-		
-		clean_tf();
+		super(aChat, aCommunicate);
 
     	Gson gson = new Gson();
 
@@ -48,7 +44,7 @@ public class SearchMapView extends BaseView {
         searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         Button getBack2=new Button("Go back");
-        getBack2.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        getBack2.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
 
         Button search_btn=new Button("Search");
         search_btn.setOnAction(e->{
@@ -72,7 +68,7 @@ public class SearchMapView extends BaseView {
 
         	mCommunicate.ask_server();
 
-        	stage.setScene(Main.getScenes().get(SceneName.SHOW_MAP));
+        	Main.changeScene(SceneName.SHOW_MAP);
 
         });
 
@@ -88,13 +84,14 @@ public class SearchMapView extends BaseView {
         guestZone.setBackground(new Background(myBIc));
         guestZone.getChildren().addAll(searchTF, search_btn, getBack2, Search_by_city, Search_by_inplace, Search_by_general_description);
 
-        Scene scene = new Scene(guestZone, 1280,720);
+        mScene = new Scene(guestZone, 1280,720);
 		
-		return scene;
 	}
 
-    public  void clean_tf() {
+	public static void refreshScene() {
+
 	     searchTF.setText("Type map to search");
-    }
+
+	}
 
 }

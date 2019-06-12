@@ -23,16 +23,15 @@ import javafx.stage.Stage;
 
 public class WorkerView extends BaseView {
 
-    TextField nameW = new TextField();
-    TextField passwordW = new TextField();
+    static TextField nameW;
+    static TextField passwordW;
 
-	public WorkerView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		super(stage, aChat, aCommunicate);
-	}
+	public WorkerView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
-	public Scene getScene() {
-		
-		clean_tf();
+		super(aChat, aCommunicate);
+
+	    nameW = new TextField();
+	    passwordW = new TextField();
 
     	Gson gson = new Gson();
 
@@ -42,7 +41,7 @@ public class WorkerView extends BaseView {
         passwordW.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         Button getBack6 = new Button("Go back");
-        getBack6.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        getBack6.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
 
         Button nextW = new Button("Next");
         nextW.setOnAction(e->{
@@ -69,14 +68,15 @@ public class WorkerView extends BaseView {
         workersZone.setBackground(new Background(myBIW));
         workersZone.getChildren().addAll(nameW, passwordW, nextW ,getBack6);
 
-        Scene scene = new Scene(workersZone, 1280,720);
+        mScene = new Scene(workersZone, 1280,720);
 		
-		return scene;
 	}
 
-    public  void clean_tf() {
+	public static void refreshScene() {
+
         nameW.setText("Please enter worker name");
         passwordW.setText("Please enter worker password");
-    }
+
+	}
 
 }

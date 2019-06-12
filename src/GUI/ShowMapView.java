@@ -42,20 +42,19 @@ public class ShowMapView extends BaseView {
     static Button nextPlace = new Button("Next");
     static Button prevPlace = new Button("Previos");
 
-	public ShowMapView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
-		super(stage, aChat, aCommunicate);
-	}
+	public ShowMapView(ClientConsole aChat, UI_server_communicate aCommunicate) {
 
-	public Scene getScene() {
-
-		clean_tf();
+		super(aChat, aCommunicate);
 
         BackgroundImage myBIc = new BackgroundImage(new Image("Images\\catalog_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
         mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        chooseM.setOnAction(e->{BuyView.myCity=Main.myMapList.get(0).mCity;stage.setScene(Main.getScenes().get(SceneName.BUY));});
+        chooseM.setOnAction(e->{
+    		BuyView.myCity = Main.myMapList.get(0).mCity;
+    		Main.changeScene(SceneName.BUY);
+        });
       
-        getBack11.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
+        getBack11.setOnAction(e->Main.changeScene(SceneName.MAIN));
 
   	   imageViewMap.setPreserveRatio(true);
 
@@ -104,19 +103,15 @@ public class ShowMapView extends BaseView {
 		imageViewPlace.setFitWidth(150);
 		mapShow.setMaxWidth(500);
 		mapShow.setTranslateY(0);
+    	chooseM.setTranslateY(50);
+		chooseM.setTranslateX(0);
 
        _result.setBackground(new Background(myBIc));
-  	   _result.getChildren().addAll(nextM, pervM, getBack11, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow);
+  	   _result.getChildren().addAll(nextM, pervM, getBack11, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
 
-  	   Scene scene = new Scene(_result, 1280,720);
+  	   mScene = new Scene(_result, 1280,720);
 		
-  	   return scene;
-
 	}
-
-    public  void clean_tf() {
-    	
-    }
 
     public void setMap(ImageView aImageView) {
     if (counter<0||counter>Main.myMapList.size()) return;
@@ -134,25 +129,19 @@ public class ShowMapView extends BaseView {
     	Place place = map.mPlaces.get(counterPlace);
 		aImageView.setImage(new Image(place.mURL));
     }
-    
-    public static void changeScene() {
-    	
-    	chooseM.setTranslateY(50);
-		chooseM.setTranslateX(0);
 
-		if(Main.memberlevel!=MemLvl.FREE_USER) {
+	public static void refreshScene() {
+		
+		if (Main.memberlevel == MemLvl.FREE_USER) {
 
-			_result.getChildren().add(chooseM);
+			chooseM.setVisible(false);
 
-		}
+		} else if (Main.memberlevel == MemLvl.MEMBER) {
 
-		if(Main.memberlevel==MemLvl.FREE_USER) {
-
-			_result.getChildren().clear();
-		  	_result.getChildren().addAll(nextM, pervM, getBack11, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow);
+			chooseM.setVisible(true);
 
 		}
 
-    }
+	}
 
 }
