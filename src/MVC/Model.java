@@ -77,6 +77,8 @@ public class Model {
 				
 			responseModel.mErrorCode = ErrorCodes.SUCCESS;
 			
+			System.out.println(accountUser.toString());
+			
 		} catch (SQLException se) {
 
 			responseModel.mErrorCode = se.getErrorCode();
@@ -129,9 +131,8 @@ public class Model {
 		ResponseModel responseModel = new ResponseModel(ErrorCodes.USER_NOT_FOUND, null);
 
 		String sql;
-
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement prep_stmt = null;
 		ResultSet rs = null;
 
 		try {
@@ -140,39 +141,31 @@ public class Model {
 
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-			stmt = conn.createStatement();
+			sql = "SELECT *  FROM Users WHERE UserName = ? AND Password = ?";
+			
+			prep_stmt = conn.prepareStatement(sql);
 
-			sql = "SELECT * FROM Users";
+			prep_stmt.setString(1, aUserName);
+			prep_stmt.setString(2, aPassword);
 
-			rs = stmt.executeQuery(sql);
+			rs = prep_stmt.executeQuery();
+			
+			if (rs.next()) {
 
-			while (rs.next()) {
+				String firstName = rs.getString("FirstName");
+				String lastName = rs.getString("LastName");
+				String email = rs.getString("Email");
+				String phoneNumber = rs.getString("PhoneNumber");
+				String creditCard = rs.getString("CreditCard");
+				String subscription = rs.getString("Subscription");
 
-				String userName = rs.getString("UserName");
-				String password = rs.getString("Password");
+				responseModel.mObject = new AccountUser(firstName, lastName, aPassword, email, phoneNumber, aUserName, creditCard, GetUserPurchases(aUserName), subscription);
 
-				if (userName.compareTo(aUserName) == 0 && password.compareTo(aPassword) == 0) {
+				responseModel.mErrorCode = ErrorCodes.SUCCESS;
 
-					responseModel.mErrorCode = ErrorCodes.SUCCESS;
-
-					String firstName = rs.getString("FirstName");
-					String lastName = rs.getString("LastName");
-					String email = rs.getString("Email");
-					String phoneNumber = rs.getString("PhoneNumber");
-					String creditCard = rs.getString("CreditCard");
-					String subscription = rs.getString("Subscription");
-
-					responseModel.mObject = new AccountUser(firstName, lastName, password, email, phoneNumber, userName, creditCard, GetUserPurchases(userName), subscription);
-
-					System.out.println(responseModel.mObject.toString());
-
-				}
+				System.out.println(responseModel.mObject.toString());
 
 			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
 	
 		} catch (SQLException se) {
 
@@ -195,8 +188,8 @@ public class Model {
 	
 				if (rs != null)
 					rs.close();
-				if (stmt != null)
-					stmt.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
 				if (conn != null)
 					conn.close();
 	
@@ -765,9 +758,6 @@ public class Model {
 				System.out.println(purchase.toString());
 
 			}
-
-			rs.close();
-			conn.close();
 
 		} catch (SQLException se) {
 

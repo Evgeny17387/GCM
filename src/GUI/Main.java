@@ -24,25 +24,29 @@ public class Main extends Application {
 
 	public static List<CityMap> myMapList;
 
-	public static void main(String[] args) {
+    public static int Price1 = 1;
+    public static int Price2 = 0;
+
+    public static void main(String[] args) {
 		launch(args);
 	}
 
     @Override
-    public void start(Stage primaryStage) {
-
+	public void start(Stage primaryStage) {
+    	memberlevel = MemLvl.FREE_USER;
+    	
     	View view = new View();
     	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
     	UI_server_communicate communicate = new UI_server_communicate();
 
     	primaryStage.setTitle("GCM");
-
         scenes.put(SceneName.MAIN, new MainView(primaryStage, chat, communicate).getScene());
         scenes.put(SceneName.SIGN_UP, new SignUpView(primaryStage, chat, communicate).getScene());
         scenes.put(SceneName.SIGN_IN, new SignInView(primaryStage, chat, communicate).getScene());
         scenes.put(SceneName.WORKER_ZONE, new WorkerView(primaryStage, chat, communicate).getScene());
         scenes.put(SceneName.SEARCH_MAP, new SearchMapView(primaryStage, chat, communicate).getScene());
         scenes.put(SceneName.SHOW_MAP, new ShowMapView(primaryStage, chat, communicate).getScene());
+        scenes.put(SceneName.BUY, new BuyView(primaryStage, chat, communicate).getScene());
 
         primaryStage.setScene(scenes.get(SceneName.MAIN));
 

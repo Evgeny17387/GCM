@@ -42,7 +42,7 @@ public class SignInView extends BaseView {
 
     	Gson gson = new Gson();
 
-        BackgroundImage myBIW= new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        BackgroundImage myBIW = new BackgroundImage(new Image("Images\\signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
         name.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         password.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -52,37 +52,60 @@ public class SignInView extends BaseView {
 
         Button btn = new Button("Next");
         btn.setOnAction(e->{
-        	
-        	GeneralRequest accountCheck = new GeneralRequest(name.getText(), password.getText());
-        	Request request = new Request(API.GET_USER, accountCheck);
-        	String jsonString = gson.toJson(request);
-        	mChat.SendToServer(jsonString);
-        	mCommunicate.ask_server();
 
-        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+        	if (password.getText().isEmpty() || name.getText().isEmpty()) {
 
         		Alert alert = new Alert(AlertType.ERROR);
         		alert.setTitle("Error Dialog");
-        		alert.setHeaderText("User details are incorrect");
+        		alert.setHeaderText("Some fields are missing, please fill all fields");
         		alert.setContentText("Ooops, there was an error!");
         		alert.showAndWait();
+        		
+        	} else {
 
-        	} else if (Main.mServerResponseErrorCode==2) {
-        		
-        		Alert alert = new Alert(AlertType.CONFIRMATION);
-        		alert.setTitle("Error Dialog");
-        		alert.setHeaderText("Welcome Back !!!");
-        		alert.setContentText("O.k.");
-        		alert.showAndWait();
-        		Main.memberlevel=MemLvl.MEMBER;   
-        		clean_tf();
-        		MainView.changeScene();
-        		
-        		stage.setScene(Main.getScenes().get(SceneName.MAIN));
+	        	GeneralRequest accountCheck = new GeneralRequest(name.getText(), password.getText());
+	        	Request request = new Request(API.GET_USER, accountCheck);
+	        	String jsonString = gson.toJson(request);
+	        	mChat.SendToServer(jsonString);
+	        	mCommunicate.ask_server();
+	
+	        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+	
+	        		Alert alert = new Alert(AlertType.CONFIRMATION);
+	        		alert.setTitle("Welcome");
+	        		alert.setHeaderText("You are successfully signed in..");
+	        		alert.setContentText("You are welcome to visit the Map Catalog");
+	        		alert.showAndWait();
+
+	        		Main.memberlevel = MemLvl.MEMBER;
+
+	        		MainView.changeScene();
+	        		ShowMapView.changeScene();
+
+	        		clean_tf();
+	        		stage.setScene(Main.getScenes().get(SceneName.MAIN));
+	
+	        	} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_NOT_FOUND) {
+	        		
+	        		Alert alert = new Alert(AlertType.ERROR);
+	        		alert.setTitle("Error ");
+	        		alert.setHeaderText("User details are incorrect");
+	        		alert.setContentText("Please try again");
+	        		alert.showAndWait();
+	
+	    		} else {
+	
+	        		Alert alert = new Alert(AlertType.ERROR);
+	        		alert.setTitle("Error");
+	        		alert.setHeaderText("An unknown error has occurred, please try again");
+	        		alert.setContentText("Please try again");
+	        		alert.showAndWait();
+	
+	        	}
+	
+	    		Main.mServerResponseErrorCode = ErrorCodes.RESET;
 
         	}
-
-    		Main.mServerResponseErrorCode = ErrorCodes.RESET;
 
         });
 
@@ -92,14 +115,17 @@ public class SignInView extends BaseView {
         getBack.setTranslateY(100);
         getBack.setTranslateX(-100);
         btn.setTranslateY(100);
+
         StackPane memberZone = new StackPane();
         memberZone.setBackground(new Background(myBIW)); 
         memberZone.getChildren().addAll(name, password, getBack, btn);
+        
         Scene scene = new Scene(memberZone, 1280,720);
-		return scene;
+
+        return scene;
 	}
 
-    public  void clean_tf() {
+    public void clean_tf() {
 	     name.setText("Please enter username");
 	     password.setText("Please enter password");
     }

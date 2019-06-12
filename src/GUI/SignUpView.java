@@ -76,9 +76,9 @@ public class SignUpView extends BaseView {
             	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
 	        		Alert alert = new Alert(AlertType.CONFIRMATION);
-	        		alert.setTitle("Confirmation Dialog");
-	        		alert.setHeaderText("Congradulations, you have been successfuly Singed Up, please Sing In !!!");
-	        		alert.setContentText("O.K.");
+	        		alert.setTitle("Congradulations");
+	        		alert.setHeaderText("You have been successfuly Singed Up");
+	        		alert.setContentText("Please Sing In");
 	        		alert.showAndWait();
 	
 	        		clean_tf();
@@ -88,17 +88,17 @@ public class SignUpView extends BaseView {
         		} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_ALREADY_EXISTS) {
 
             		Alert alert = new Alert(AlertType.ERROR);
-            		alert.setTitle("Error Dialog");
-            		alert.setHeaderText("User already exists, please choose another username");
-            		alert.setContentText("Ooops, there was an error!");
+            		alert.setTitle("Error");
+            		alert.setHeaderText("User already exists");
+            		alert.setContentText("Please choose another username and try again");
             		alert.showAndWait();
 
         		} else {
 
             		Alert alert = new Alert(AlertType.ERROR);
-            		alert.setTitle("Error Dialog");
-            		alert.setHeaderText("An unknown error has occurred, please try again");
-            		alert.setContentText("error!");
+            		alert.setTitle("Error");
+            		alert.setHeaderText("An unknown error has occurred");
+            		alert.setContentText("Please try again");
             		alert.showAndWait();
 
             	}
@@ -133,11 +133,11 @@ public class SignUpView extends BaseView {
 	}
 
     public  void clean_tf() {
-    	nameR.setText("Please enter username");
-	     passwordR.setText("Please enter password");
-	     creditCard.setText("Please enter credit card");
-	     email.setText("Please enter your email addres");
-	     phone_number.setText("Please enter your phone number");
+		nameR.setText("Please enter username");
+		passwordR.setText("Please enter password");
+		creditCard.setText("Please enter credit card");
+		email.setText("Please enter your email addres");
+		phone_number.setText("Please enter your phone number");
     }
 
 }

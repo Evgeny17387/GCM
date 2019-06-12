@@ -1,6 +1,7 @@
 package GUI;
 
 import Communication.ClientConsole;
+import Constants.MemLvl;
 import Constants.SceneName;
 import DB_classes.CityMap;
 import DB_classes.Place;
@@ -27,7 +28,19 @@ public class ShowMapView extends BaseView {
     int counter = 0;
     int counterPlace = 0;
 
-	TextField mapShow = new TextField();
+	static ImageView imageViewMap = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));	
+	static ImageView imageViewPlace = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));
+
+    static StackPane _result = new StackPane();
+
+	static TextField mapShow = new TextField();
+
+    static Button chooseM = new Button("Buy options");
+    static Button getBack11 = new Button("Go to Main");
+    static Button nextM = new Button("Next map");
+    static Button pervM = new Button("Pervious map");
+    static Button nextPlace = new Button("Next");
+    static Button prevPlace = new Button("Previos");
 
 	public ShowMapView(Stage stage, ClientConsole aChat, UI_server_communicate aCommunicate) {
 		super(stage, aChat, aCommunicate);
@@ -40,31 +53,24 @@ public class ShowMapView extends BaseView {
         BackgroundImage myBIc = new BackgroundImage(new Image("Images\\catalog_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
         mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-
-        Button getBack11 = new Button("Go to Main");
+        chooseM.setOnAction(e->{BuyView.myCity=Main.myMapList.get(0).mCity;stage.setScene(Main.getScenes().get(SceneName.BUY));});
+      
         getBack11.setOnAction(e->{stage.setScene(Main.getScenes().get(SceneName.MAIN));clean_tf();});
 
-  	   ImageView imageViewMap = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));	
   	   imageViewMap.setPreserveRatio(true);
 
-  	   ImageView imageViewPlace = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));
   	   imageViewPlace.setPreserveRatio(true);
 
-       Button chooseM = new Button("Choose this map");
-
-       Button nextM = new Button("Next map");
   	   nextM.setOnAction(e->{
         	if(counter!=Main.myMapList.size()-1)counter++;
         	setMap(imageViewMap);
         });
 
-       Button pervM = new Button("Pervious map");
         pervM.setOnAction(e->{
         	if(counter!=0)counter--;
         	setMap(imageViewMap);
         });
 
-       Button nextPlace = new Button("Next");
        nextPlace.setOnAction(e->{
     	   if(counterPlace != Main.myMapList.get(counter).mPlaces.size()-1) {
     		   counterPlace++;
@@ -72,7 +78,6 @@ public class ShowMapView extends BaseView {
     	   setPlace(imageViewPlace);
        });
 
-       Button prevPlace = new Button("Previos");
   	   prevPlace.setOnAction(e->{
     	   if(counterPlace != 0) {
     		   counterPlace--;
@@ -83,8 +88,6 @@ public class ShowMapView extends BaseView {
 		getBack11.setTranslateY(100);
 		nextM.setTranslateX(100);
 		nextM.setTranslateY(50);
-		chooseM.setTranslateY(50);
-		chooseM.setTranslateX(0);
 		pervM.setTranslateY(50);
 		pervM.setTranslateX(-100);
 		prevPlace.setTranslateY(-50);
@@ -102,9 +105,8 @@ public class ShowMapView extends BaseView {
 		mapShow.setMaxWidth(500);
 		mapShow.setTranslateY(0);
 
-       StackPane _result = new StackPane();
        _result.setBackground(new Background(myBIc));
-  	   _result.getChildren().addAll(nextM, pervM, chooseM, getBack11, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow);
+  	   _result.getChildren().addAll(nextM, pervM, getBack11, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow);
 
   	   Scene scene = new Scene(_result, 1280,720);
 		
@@ -119,9 +121,9 @@ public class ShowMapView extends BaseView {
     public void setMap(ImageView aImageView) {
     if (counter<0||counter>Main.myMapList.size()) return;
     CityMap map = Main.myMapList.get(counter);
-	System.out.println("good" +map.toString());
 	aImageView.setImage(new Image(map.mURL));
 	mapShow.setText(map.toString());
+	
     }
 
     public void setPlace(ImageView aImageView) {
@@ -131,6 +133,26 @@ public class ShowMapView extends BaseView {
     	}
     	Place place = map.mPlaces.get(counterPlace);
 		aImageView.setImage(new Image(place.mURL));
+    }
+    
+    public static void changeScene() {
+    	
+    	chooseM.setTranslateY(50);
+		chooseM.setTranslateX(0);
+
+		if(Main.memberlevel!=MemLvl.FREE_USER) {
+
+			_result.getChildren().add(chooseM);
+
+		}
+
+		if(Main.memberlevel==MemLvl.FREE_USER) {
+
+			_result.getChildren().clear();
+		  	_result.getChildren().addAll(nextM, pervM, getBack11, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow);
+
+		}
+
     }
 
 }
