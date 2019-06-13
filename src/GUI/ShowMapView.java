@@ -26,10 +26,10 @@ public class ShowMapView extends BaseView {
 	String request_string;
 
     static int counter = 0;
-    int counterPlace = 0;
+    public static int counterPlace =0;
 
 	static ImageView imageViewMap = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));	
-	static ImageView imageViewPlace = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));
+	static ImageView imageViewPlace = new ImageView(new Image("https://scontent.fhfa2-2.fna.fbcdn.net/v/t1.0-9/62406156_2525296037483339_111679483387314176_n.jpg?_nc_cat=110&_nc_ht=scontent.fhfa2-2.fna&oh=e0ca60d86bdb6a893fd0887712c464f7&oe=5D84F941"));
 
     static StackPane _result = new StackPane();
 
@@ -38,8 +38,8 @@ public class ShowMapView extends BaseView {
     static Button chooseM = new Button("Buy options");
     static Button nextM = new Button("Next map");
     static Button pervM = new Button("Pervious map");
-    static Button nextPlace = new Button("Next");
-    static Button prevPlace = new Button("Previos");
+    static Button nextPlace = new Button("Next place");
+    static Button prevPlace = new Button("Previous place");
     static Button showCity= new Button ("Show city");
     static Button showPlaces= new Button ("Show places");
     static Button showDescription= new Button ("Show Description");
@@ -53,69 +53,105 @@ public class ShowMapView extends BaseView {
         chooseM.setOnAction(e->{
     		BuyView.myCity = Main.myMapList.get(0);
     		Main.changeScene(SceneName.BUY);
+    		setDeafulePlace(imageViewPlace);
         });
 
   	   imageViewMap.setPreserveRatio(true);
-
   	   imageViewPlace.setPreserveRatio(true);
+  	   
   	 showVersion.setOnAction(e->{
   		 CityMap map = Main.myMapList.get(counter);
  		mapShow.setText(map.mVersion);
+ 		nextPlace.setVisible(false);
+ 		prevPlace.setVisible(false);
+ 		setDeafulePlace(imageViewPlace);
   	   });
   	 showDescription.setOnAction(e->{
   		 CityMap map = Main.myMapList.get(counter);
  		mapShow.setText(map.mDescription);
+ 		nextPlace.setVisible(false);
+ 		prevPlace.setVisible(false);
+ 		setDeafulePlace(imageViewPlace);
   	   });
   	 
   	   showCity.setOnAction(e->{
   		 CityMap map = Main.myMapList.get(counter);
  		mapShow.setText(map.mCity);
+ 		nextPlace.setVisible(false);
+ 		prevPlace.setVisible(false);
+ 		setDeafulePlace(imageViewPlace);
   	   });
   	   
+  	   
   	 showPlaces.setOnAction(e->{
+  		counterPlace =0;
   		 CityMap map = Main.myMapList.get(counter);
- 		mapShow.setText(map.mPlaces.toString());
+ 		mapShow.setText(map.mPlaces.get(counterPlace).mName+"- "+map.mPlaces.get(counterPlace).mDescription);
+ 		setPlace(imageViewPlace);
+ 		nextPlace.setVisible(true);
+ 		prevPlace.setVisible(true);
   	   });
+  	 
   	   nextM.setOnAction(e->{
+  		    counterPlace=0;
         	if(counter!=Main.myMapList.size()-1)counter++;
         	setMap(imageViewMap);
+        	nextPlace.setVisible(false);
+     		prevPlace.setVisible(false);
+     		setDeafulePlace(imageViewPlace);
         });
 
         pervM.setOnAction(e->{
+        	counterPlace=0;
         	if(counter!=0)counter--;
         	setMap(imageViewMap);
+        	nextPlace.setVisible(false);
+     		prevPlace.setVisible(false);
+     		setDeafulePlace(imageViewPlace);
         });
 
        nextPlace.setOnAction(e->{
     	   if(counterPlace != Main.myMapList.get(counter).mPlaces.size()-1) {
     		   counterPlace++;
+    		 
     	   }
+    	   CityMap map = Main.myMapList.get(counter);
+    	   mapShow.setText(map.mPlaces.get(counterPlace).mName+"- "+map.mPlaces.get(counterPlace).mDescription);
     	   setPlace(imageViewPlace);
+    	   nextPlace.setVisible(true);
+    	   prevPlace.setVisible(true);
        });
 
   	   prevPlace.setOnAction(e->{
     	   if(counterPlace != 0) {
     		   counterPlace--;
     	   }
+    	   CityMap map = Main.myMapList.get(counter);
+    	   mapShow.setText(map.mPlaces.get(counterPlace).mName+"- "+map.mPlaces.get(counterPlace).mDescription);
     	   setPlace(imageViewPlace);
+    	   nextPlace.setVisible(true);
+	 	   prevPlace.setVisible(true);
        });
         showCity.setTranslateY(120);
-        showCity.setTranslateX(-150);
+        showCity.setTranslateX(-170);
         showPlaces.setTranslateY(120);
-        showPlaces.setTranslateX(-50);
+        showPlaces.setTranslateX(-70);
+        prevPlace.setTranslateY(190);
+		prevPlace.setTranslateX(-70);
+		nextPlace.setTranslateY(160);
+		nextPlace.setTranslateX(-70);
         showDescription.setTranslateY(120);
-        showDescription.setTranslateX(70);
-        showVersion.setTranslateX(200);
+        showDescription.setTranslateX(50);
+        showVersion.setTranslateX(180);
         showVersion.setTranslateY(120);
         
 		nextM.setTranslateX(100);
 		nextM.setTranslateY(50);
 		pervM.setTranslateY(50);
 		pervM.setTranslateX(-100);
-		prevPlace.setTranslateY(-50);
-		prevPlace.setTranslateX(100);
-		nextPlace.setTranslateY(-50);
-		nextPlace.setTranslateX(200);
+		nextPlace.setVisible(false);
+	 	prevPlace.setVisible(false);
+		
 		imageViewMap.setTranslateX(-100);
 		imageViewMap.setTranslateY(-150);
 		imageViewMap.setFitHeight(200);
@@ -129,7 +165,7 @@ public class ShowMapView extends BaseView {
     	chooseM.setTranslateY(50);
 		chooseM.setTranslateX(0);
 
-       _result.setBackground(new Background(myBIc));
+       _result.setBackground(new Background(myBIc2));
   	   _result.getChildren().addAll(showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
 
   	   mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
@@ -148,11 +184,18 @@ public class ShowMapView extends BaseView {
     	CityMap map = Main.myMapList.get(counter);
     	if (counterPlace < 0 || counterPlace >= map.mPlaces.size()) {
     		return;
-    	}
+    	}    	
     	Place place = map.mPlaces.get(counterPlace);
 		aImageView.setImage(new Image(place.mURL));
     }
+    
 
+    public static void setDeafulePlace(ImageView aImageView) {
+    	aImageView.setImage(new Image("https://scontent.fhfa2-2.fna.fbcdn.net/v/t1.0-9/62406156_2525296037483339_111679483387314176_n.jpg?_nc_cat=110&_nc_ht=scontent.fhfa2-2.fna&oh=e0ca60d86bdb6a893fd0887712c464f7&oe=5D84F941"));
+    }
+    
+    
+    
 	public static void refreshScene() {
 		CityMap map = Main.myMapList.get(counter);
 		mapShow.setText(map.mName);

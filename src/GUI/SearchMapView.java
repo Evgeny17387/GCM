@@ -62,9 +62,8 @@ public class SearchMapView extends BaseView {
 
         	if((Search_by_city.isSelected()&&Search_by_inplace.isSelected())||(Search_by_city.isSelected()&&Search_by_general_description.isSelected())||Search_by_inplace.isSelected()&&Search_by_general_description.isSelected())
         		return;
-
+    		//GUI.ShowMapView.setDeafulePlace();
         	String searchKey = searchTF.getText();
-
         	if(Search_by_city.isSelected())
         		request_string = "MapSearch_city_key";
         	else if(Search_by_inplace.isSelected())

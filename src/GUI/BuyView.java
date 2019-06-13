@@ -28,14 +28,23 @@ public class BuyView extends BaseView{
 	StackPane root = new StackPane();
 
     static Button oneTime = new Button();
+    static Button goBack = new Button("Go back");
     static Button periodTime = new Button();
 	public BuyView(ClientConsole aChat) {
 
 		super(aChat);
 
 		System.out.println(myCity);
+		
+		
+		goBack.setOnAction(e->{Main.changeScene(SceneName.SHOW_MAP);});
 
-		goBack.setTranslateY(-150);
+        goBack.setMaxHeight(Dimensions.mBaseViewButtonsHeight);
+        goBack.setMaxWidth(Dimensions.mBaseViewButtonsWidth);
+        
+        goBack.setTranslateY(Dimensions.mheight / 2 - Dimensions.mBaseViewButtonsHeight);
+        goBack.setTranslateX( - Dimensions.mWith / 2 + Dimensions.mBaseViewButtonsWidth);
+
 		periodTime.setTranslateY(-200);
 		oneTime.setTranslateY(-250);
 	
@@ -47,8 +56,8 @@ public class BuyView extends BaseView{
 	}
 
 	public static void refreshScene() {
-		oneTime.setText("One Time Pruchase- Price"+ myCity.mPrice+"$, Maps of "+myCity);
-		periodTime.setText("Pruchase for 6 months - Price"+ myCity.mPrice+ "$,Maps of "+myCity);
+		oneTime.setText("One Time Pruchase- Price"+ myCity.mPrice+"$, Maps of "+myCity.mCity);
+		periodTime.setText("Pruchase for 6 months - Price"+ myCity.mPrice+ "$,Maps of "+myCity.mCity);
 
 	}
 
