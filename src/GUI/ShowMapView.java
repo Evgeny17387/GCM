@@ -49,8 +49,6 @@ public class ShowMapView extends BaseView {
 
 		super(aChat);
 
-        BackgroundImage myBIc = new BackgroundImage(new Image("Images\\catalog_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-
         mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         chooseM.setOnAction(e->{
     		BuyView.myCity = Main.myMapList.get(0);
