@@ -127,14 +127,16 @@ public class SearchMapView extends BaseView {
         guestZone.getChildren().addAll(searchTF, search_btn, goBack, Search_by_city, Search_by_inplace, Search_by_general_description);
 
         mScene = new Scene(guestZone, Dimensions.mWith, Dimensions.mheight);
-		
+
 	}
 
 	public static void refreshScene() {
 
-	     searchTF.setText("Type map to search");
-	     
-	     Search_by_city.setSelected(false);
+//	     searchTF.setText("Type map to search");
+	     searchTF.setText("Haifa");
+
+//	     Search_by_city.setSelected(false);
+	     Search_by_city.setSelected(true);
 	     Search_by_inplace.setSelected(false);
 	     Search_by_general_description.setSelected(false);
 

@@ -294,157 +294,79 @@ public class Model {
 
 	}
 
-	// Subscription
-
-	public ResponseModel BuySubscription(String aUserName) {
-
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
-
-		String sql;
-
-		Connection conn = null;
-		PreparedStatement prep_stmt = null;
-
-		try {
-
-			Class.forName(JDBC_DRIVER);
-
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			sql = "UPDATE `Users` SET `Subscription`=? WHERE `UserName`=?";
-
-			prep_stmt = conn.prepareStatement(sql);
-
-			String subscription = TimeAndDateUtils.GetCurrentDate();
-			
-			prep_stmt.setString(1, subscription);
-			prep_stmt.setString(2, aUserName);
-
-			prep_stmt.executeUpdate();
-
-			if (conn != null)
-				conn.close();
-			if (prep_stmt != null)
-				prep_stmt.close();
-			
-			responseModel.mErrorCode = ErrorCodes.SUCCESS;
-			responseModel.mObject = subscription;
-				
-		} catch (SQLException se) {
-
-			responseModel.mErrorCode = se.getErrorCode();
-			
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-
-			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
-
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (conn != null)
-					conn.close();
-				if (prep_stmt != null)
-					prep_stmt.close();
-	
-			} catch (SQLException se) {
-
-				se.printStackTrace();
-				
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-		
-			}
-	
-		}
-
-		return responseModel;
-
-	}
-
-	public ResponseModel DeleteSubscription(String aUserName) {
-
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
-
-		String sql;
-
-		Connection conn = null;
-		PreparedStatement prep_stmt = null;
-
-		try {
-
-			Class.forName(JDBC_DRIVER);
-
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			sql = "UPDATE `Users` SET `Subscription`=? WHERE `UserName`=?";
-
-			prep_stmt = conn.prepareStatement(sql);
-
-			String subscription = "NO";
-			
-			prep_stmt.setString(1, subscription);
-			prep_stmt.setString(2, aUserName);
-
-			prep_stmt.executeUpdate();
-
-			if (conn != null)
-				conn.close();
-			if (prep_stmt != null)
-				prep_stmt.close();
-			
-			responseModel.mErrorCode = ErrorCodes.SUCCESS;
-			responseModel.mObject = subscription;
-				
-		} catch (SQLException se) {
-
-			responseModel.mErrorCode = se.getErrorCode();
-			
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-
-			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
-
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (conn != null)
-					conn.close();
-				if (prep_stmt != null)
-					prep_stmt.close();
-	
-			} catch (SQLException se) {
-
-				se.printStackTrace();
-				
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-		
-			}
-	
-		}
-
-		return responseModel;
-
-	}
-
 	// Purchases
+
+	public ResponseModel Buy(String aUserName, String aCityName, String aType) {
+
+		if (aUserName.isEmpty() || aCityName.isEmpty() || aType.isEmpty()) {
+			return new ResponseModel(ErrorCodes.PURCHASE_DETAILS_MISSING, null);
+		}
+
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+		String sql;
+		
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			sql = "INSERT INTO `Purchases`(`UserName`, `CityName`, `Date`, `Type`) VALUES (?, ?, ?, ?)";
+
+			prep_stmt = conn.prepareStatement(sql);
+			
+			prep_stmt.setString(1, aUserName);
+			prep_stmt.setString(2, aCityName);
+			prep_stmt.setString(3, TimeAndDateUtils.GetCurrentDate());
+			prep_stmt.setString(4, aType);
+			
+			prep_stmt.executeUpdate();
+			
+			responseModel.mErrorCode = ErrorCodes.SUCCESS;
+				
+		} catch (SQLException se) {
+
+			responseModel.mErrorCode = se.getErrorCode();
+			
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+		return responseModel;
+
+	}
 
 	private List<Purchase> GetUserPurchases(String aUserName) {
 		
@@ -478,7 +400,7 @@ public class Model {
 
 			while (rs.next()) {
 
-				Purchase purchase = new Purchase(rs.getString("UserName"), rs.getString("CityName"), rs.getString("Date"));
+				Purchase purchase = new Purchase(rs.getString("UserName"), rs.getString("CityName"), rs.getString("Date"), rs.getString("Type"));
 				
 				purchaseList.add(purchase);
 
@@ -520,77 +442,6 @@ public class Model {
 		
 		return purchaseList;
 	
-	}
-
-	public ResponseModel BuyMap(String aUserName, String aCityName) {
-
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
-
-		if (aUserName.isEmpty() || aUserName.isEmpty()) {
-			return new ResponseModel(ErrorCodes.PURCHASE_DETAILS_MISSING, null);
-		}
-
-		String sql;
-		
-		Connection conn = null;
-		PreparedStatement prep_stmt = null;
-	
-		try {
-	
-			Class.forName(JDBC_DRIVER);
-	
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	
-			sql = "INSERT INTO `Purchases`(`UserName`, `CityName`, `Date`) VALUES (?, ?, ?)";
-
-			prep_stmt = conn.prepareStatement(sql);
-			
-			prep_stmt.setString(1, aUserName);
-			prep_stmt.setString(2, aCityName);
-			prep_stmt.setString(3, TimeAndDateUtils.GetCurrentDate());
-			
-			prep_stmt.executeUpdate();
-			
-			responseModel.mErrorCode = ErrorCodes.SUCCESS;
-				
-		} catch (SQLException se) {
-
-			responseModel.mErrorCode = se.getErrorCode();
-			
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-
-			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
-
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (conn != null)
-					conn.close();
-				if (prep_stmt != null)
-					prep_stmt.close();
-	
-			} catch (SQLException se) {
-
-				se.printStackTrace();
-				
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-		
-			}
-	
-		}
-
-		return responseModel;
-
 	}
 	
 	// Workers
@@ -896,7 +747,7 @@ public class Model {
 	
 	}
 
-	// Maps
+	// Maps Search
 
 	public List<Place> GetPlacesByMap(String aName) {
 

@@ -17,7 +17,7 @@ import Requests.Request;
 import Requests.GeneralRequest;
 import Requests.GetRoutesRequest;
 import Requests.ProposeNewPriceRequest;
-import Requests.BuyMapRequest;
+import Requests.BuyRequest;
 
 import Responses.ResponseController;
 import Responses.ResponseModel;
@@ -88,51 +88,17 @@ public class Controller {
 
 			break;
 
-		// Subscription
-
-		case API.BUY_SUBSCRITION:
-
-			{
-
-				GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
-
-				ResponseModel responseModel = model.BuySubscription(generalRequest.mUserName);
-
-				ResponseController responseController = new ResponseController(API.BUY_SUBSCRITION, responseModel);
-
-				jsonString = gson.toJson(responseController);
-
-			}
-
-			break;
-
-		case API.DELETE_SUBSCRITION:
-
-			{
-
-				GeneralRequest generalRequest = gson.fromJson(gson.toJson(request.mObject), GeneralRequest.class);
-
-				ResponseModel responseModel = model.DeleteSubscription(generalRequest.mUserName);
-
-				ResponseController responseController = new ResponseController(API.DELETE_SUBSCRITION, responseModel);
-
-				jsonString = gson.toJson(responseController);
-
-			}
-
-			break;
-
 		// Purchases
 
-		case API.BUY_MAP:
+		case API.BUY:
 
 			{
 
-				BuyMapRequest buyMapRequest = gson.fromJson(gson.toJson(request.mObject), BuyMapRequest.class);
+				BuyRequest buyRequest = gson.fromJson(gson.toJson(request.mObject), BuyRequest.class);
 
-				ResponseModel responseModel = model.BuyMap(buyMapRequest.mUserName, buyMapRequest.mCityName);
+				ResponseModel responseModel = model.Buy(buyRequest.mUserName, buyRequest.mCityName, buyRequest.mType);
 
-		    	ResponseController responseController = new ResponseController(API.BUY_MAP, responseModel);
+		    	ResponseController responseController = new ResponseController(API.BUY, responseModel);
 
 		    	jsonString = gson.toJson(responseController);
 

@@ -49,7 +49,7 @@ public class BaseView {
 	    mGson = new Gson();
 
         goBack = new Button("Go Back");
-        goBack.setOnAction(e->{Main.changeScene(SceneName.MAIN);GUI.ShowMapView.counter=0;GUI.ShowMapView.counterPlace=0;});
+        goBack.setOnAction(e->{Main.changeScene(SceneName.MAIN);});
 
         goBack.setMaxHeight(Dimensions.mBaseViewButtonsHeight);
         goBack.setMaxWidth(Dimensions.mBaseViewButtonsWidth);

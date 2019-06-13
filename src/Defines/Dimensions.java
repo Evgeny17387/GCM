@@ -41,4 +41,20 @@ public class Dimensions {
 	public static final int mWorkerReportsViewTableWidth		= 450;
 	public static final int mWorkerReportsViewTableheight		= 300;
 
+	// ShowMapView
+
+	public static final int mShowMapViewButtonWidth 			= 120;
+
+	public static final int mShowMapViewTextWidth 				= 500;
+	
+	public static final int mShowMapViewTextRow1 				= 50;
+	public static final int mShowMapViewTextRow2 				= 100;
+	public static final int mShowMapViewTextRow3 				= 150;
+	public static final int mShowMapViewTextRow4 				= 200;
+
+	public static final int mShowMapViewTextCol1 				= -210;
+	public static final int mShowMapViewTextCol2 				= -70;
+	public static final int mShowMapViewTextCol3 				= 70;
+	public static final int mShowMapViewTextCol4 				= 210;
+
 }

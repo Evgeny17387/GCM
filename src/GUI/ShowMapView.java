@@ -7,6 +7,7 @@ import Defines.Dimensions;
 import Defines.EditLevel;
 import Defines.MemLvl;
 import Defines.SceneName;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -24,26 +25,33 @@ import javafx.stage.Stage;
 
 public class ShowMapView extends BaseView {
 
+	// Images
+	
+    static Image mMapPlaceDefault;
+
+    static ImageView imageViewMap;
+    static ImageView imageViewPlace;
+
+	// Variables
+
 	String request_string;
 
-    static int counter = 0;
-    public static int counterPlace =0;
+    static int mCounter;
+    public static int mCounterPlace;
 
-	static ImageView imageViewMap = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));	
-	static ImageView imageViewPlace = new ImageView(new Image("https://scontent.fhfa2-2.fna.fbcdn.net/v/t1.0-9/62406156_2525296037483339_111679483387314176_n.jpg?_nc_cat=110&_nc_ht=scontent.fhfa2-2.fna&oh=e0ca60d86bdb6a893fd0887712c464f7&oe=5D84F941"));
-
-    static StackPane _result = new StackPane();
+    // TextView
 
 	static TextField mapShow = new TextField();
 
-	
-    
+	// Buttons
+
+    static Button mBuy = new Button("Buy");
+
     static Button editPlace = new Button("Edit this place");
     static Button addMapToCity = new Button("");
     static Button editPrice= new Button ("Edit price");
     static Button editMap= new Button ("Edit map");
 
-    static Button chooseM = new Button("Buy options");
     static Button nextM = new Button("Next map");
     static Button pervM = new Button("Pervious map");
     static Button nextPlace = new Button("Next place");
@@ -53,31 +61,50 @@ public class ShowMapView extends BaseView {
     static Button showDescription= new Button ("Show Description");
     static Button showVersion= new Button ("Show Version");
 
+    // Other
     
-    
+    static StackPane _result = new StackPane();
+
 	public ShowMapView(ClientConsole aChat) {
 
 		super(aChat);
 
-        mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        chooseM.setOnAction(e->{
-    		BuyView.myCity = Main.myMapList.get(0);
+		// Init
+		
+		mMapPlaceDefault = new Image("/Images/MapPlaceDefault.png");
+		
+		imageViewMap = new ImageView(mMapPlaceDefault);
+		imageViewPlace = new ImageView(mMapPlaceDefault);
+
+		imageViewMap.setPreserveRatio(true);
+		imageViewPlace.setPreserveRatio(true);
+
+		mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+		mapShow.setAlignment(Pos.CENTER);
+
+		// OnClick
+		
+        mBuy.setOnAction(e->{
+
+        	
+        	
+        	BuyView.myCity = Main.myMapList.get(0);
     		Main.changeScene(SceneName.BUY);
     		setDeafulePlace(imageViewPlace);
-        });
 
-  	   imageViewMap.setPreserveRatio(true);
-  	   imageViewPlace.setPreserveRatio(true);
+        
+        
+        });
   	   
   	  showVersion.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(counter);
+  		 CityMap map = Main.myMapList.get(mCounter);
  		mapShow.setText(map.mVersion);
  		nextPlace.setVisible(false);
  		prevPlace.setVisible(false);
  		setDeafulePlace(imageViewPlace);
   	   });
   	 showDescription.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(counter);
+  		 CityMap map = Main.myMapList.get(mCounter);
  		mapShow.setText(map.mDescription);
  		nextPlace.setVisible(false);
  		prevPlace.setVisible(false);
@@ -85,7 +112,7 @@ public class ShowMapView extends BaseView {
   	   });
   	 
   	   showCity.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(counter);
+  		 CityMap map = Main.myMapList.get(mCounter);
  		mapShow.setText(map.mCity);
  		nextPlace.setVisible(false);
  		prevPlace.setVisible(false);
@@ -95,74 +122,129 @@ public class ShowMapView extends BaseView {
   	   
   	 showPlaces.setOnAction(e->{
   		if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER)editPlace.setVisible(true);
-  		counterPlace =0;
-  		 CityMap map = Main.myMapList.get(counter);
- 		mapShow.setText(map.mPlaces.get(counterPlace).mName+"- "+map.mPlaces.get(counterPlace).mDescription);
+  		mCounterPlace =0;
+  		 CityMap map = Main.myMapList.get(mCounter);
+ 		mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
  		setPlace(imageViewPlace);
  		nextPlace.setVisible(true);
  		prevPlace.setVisible(true);
   	   });
   	 
   	   nextM.setOnAction(e->{
-  		    counterPlace=0;
-        	if(counter!=Main.myMapList.size()-1)counter++;
-        	setMap(imageViewMap);
+  		 mCounterPlace=0;
+        	if(mCounter!=Main.myMapList.size()-1)mCounter++;
+        	setMap();
         	nextPlace.setVisible(false);
      		prevPlace.setVisible(false);
      		setDeafulePlace(imageViewPlace);
         });
 
         pervM.setOnAction(e->{
-        	counterPlace=0;
-        	if(counter!=0)counter--;
-        	setMap(imageViewMap);
+        	mCounterPlace=0;
+        	if(mCounter!=0)mCounter--;
+        	setMap();
         	nextPlace.setVisible(false);
      		prevPlace.setVisible(false);
      		setDeafulePlace(imageViewPlace);
         });
 
        nextPlace.setOnAction(e->{
-    	   if(counterPlace != Main.myMapList.get(counter).mPlaces.size()-1) {
-    		   counterPlace++;
+    	   if(mCounterPlace != Main.myMapList.get(mCounter).mPlaces.size()-1) {
+    		   mCounterPlace++;
     		 
     	   }
-    	   CityMap map = Main.myMapList.get(counter);
-    	   mapShow.setText(map.mPlaces.get(counterPlace).mName+"- "+map.mPlaces.get(counterPlace).mDescription);
+    	   CityMap map = Main.myMapList.get(mCounter);
+    	   mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
     	   setPlace(imageViewPlace);
     	   nextPlace.setVisible(true);
     	   prevPlace.setVisible(true);
        });
 
   	   prevPlace.setOnAction(e->{
-    	   if(counterPlace != 0) {
-    		   counterPlace--;
+    	   if(mCounterPlace != 0) {
+    		   mCounterPlace--;
     	   }
-    	   CityMap map = Main.myMapList.get(counter);
-    	   mapShow.setText(map.mPlaces.get(counterPlace).mName+"- "+map.mPlaces.get(counterPlace).mDescription);
+    	   CityMap map = Main.myMapList.get(mCounter);
+    	   mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
     	   setPlace(imageViewPlace);
     	   nextPlace.setVisible(true);
 	 	   prevPlace.setVisible(true);
        });
-        showCity.setTranslateY(120);
-        showCity.setTranslateX(-170);
-        showPlaces.setTranslateY(120);
-        showPlaces.setTranslateX(-70);
-        prevPlace.setTranslateY(190);
-		prevPlace.setTranslateX(-70);
-		nextPlace.setTranslateY(160);
-		nextPlace.setTranslateX(-70);
-        showDescription.setTranslateY(120);
-        showDescription.setTranslateX(50);
-        showVersion.setTranslateX(180);
-        showVersion.setTranslateY(120);
-        
-		nextM.setTranslateX(100);
-		nextM.setTranslateY(50);
-		pervM.setTranslateY(50);
-		pervM.setTranslateX(-100);
-		nextPlace.setVisible(false);
-	 	prevPlace.setVisible(false);
+
+  	   editPrice.setOnAction(e->{
+  			GUI.Main.editlevel=EditLevel.PRICE;
+  		});
+
+  		addMapToCity.setOnAction(e->{
+  			GUI.Main.editlevel=EditLevel.ADD;
+  		});
+
+  		editPlace.setOnAction(e->{
+  			GUI.Main.editlevel=EditLevel.PLACE;
+
+  		});
+
+  		editMap.setOnAction(e->{
+  			GUI.Main.editlevel=EditLevel.MAP;
+
+  		});
+
+  	   // UI
+
+		nextM.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		pervM.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		nextPlace.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		prevPlace.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		showCity.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		showPlaces.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		showDescription.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		showVersion.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		mBuy.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
+		mapShow.setMaxWidth(Dimensions.mShowMapViewTextWidth);
+
+		// Y - coordinates
 		
+		nextM.setTranslateY(Dimensions.mShowMapViewTextRow1);
+		pervM.setTranslateY(Dimensions.mShowMapViewTextRow1);
+
+        showCity.setTranslateY(Dimensions.mShowMapViewTextRow2);
+        showPlaces.setTranslateY(Dimensions.mShowMapViewTextRow2);
+        showDescription.setTranslateY(Dimensions.mShowMapViewTextRow2);
+        showVersion.setTranslateY(Dimensions.mShowMapViewTextRow2);
+        
+        nextPlace.setTranslateY(Dimensions.mShowMapViewTextRow3);
+        prevPlace.setTranslateY(Dimensions.mShowMapViewTextRow4);
+		
+		// X - coordinates
+
+        showCity.setTranslateX(Dimensions.mShowMapViewTextCol1);
+        showPlaces.setTranslateX(Dimensions.mShowMapViewTextCol2);
+        prevPlace.setTranslateX(Dimensions.mShowMapViewTextCol2);
+		nextPlace.setTranslateX(Dimensions.mShowMapViewTextCol2);
+        showDescription.setTranslateX(Dimensions.mShowMapViewTextCol3);
+        showVersion.setTranslateX(Dimensions.mShowMapViewTextCol4);
+        
+		pervM.setTranslateX(Dimensions.mShowMapViewTextCol1);
+        nextM.setTranslateX(Dimensions.mShowMapViewTextCol4);
+
+		mBuy.setTranslateY(50);
+
+		// Maps
+
+		imageViewMap.setTranslateX(-200);
+		imageViewMap.setTranslateY(-150);
+
+		imageViewMap.setFitWidth(390);
+		imageViewMap.setFitHeight(290);
+
+		imageViewPlace.setTranslateX(200);
+		imageViewPlace.setTranslateY(-150);
+
+		imageViewPlace.setFitWidth(390);
+		imageViewPlace.setFitHeight(290);
+
+		// Edit Buttons
+
 	 	editPlace.setTranslateY(220);
 	 	editPrice.setTranslateY(220);
 	 	editMap.setTranslateY(220);
@@ -171,106 +253,87 @@ public class ShowMapView extends BaseView {
 	 	editPrice.setTranslateX(-70);
 	 	editMap.setTranslateX(50);
 	 	addMapToCity.setTranslateX(180);
+
+		// Scene
+
+		_result.setBackground(new Background(myBIc2));
+		_result.getChildren().addAll(editPrice,addMapToCity,editPlace,editMap,showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, mBuy);  	   
+		mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
+  	   
+	}
+
+	public static void refreshScene() {
+
+	    mCounter = 0;
+	    mCounterPlace = 0;
+
+		imageViewMap = new ImageView(mMapPlaceDefault);
+		imageViewPlace = new ImageView(mMapPlaceDefault);
+
+		nextPlace.setVisible(false);
+	 	prevPlace.setVisible(false);
+
 	 	editPlace.setVisible(false);
 	 	editPrice.setVisible(false);
 	 	editMap.setVisible(false);
 	 	addMapToCity.setVisible(false);
-	 	
-		imageViewMap.setTranslateX(-100);
-		imageViewMap.setTranslateY(-150);
-		imageViewMap.setFitHeight(200);
-		imageViewMap.setFitWidth(350);
-		imageViewPlace.setTranslateX(150);
-		imageViewPlace.setTranslateY(-150);
-		imageViewPlace.setFitHeight(100);
-		imageViewPlace.setFitWidth(150);
-		mapShow.setMaxWidth(500);
-		mapShow.setTranslateY(0);
-    	chooseM.setTranslateY(50);
-		chooseM.setTranslateX(0);
-       _result.setBackground(new Background(myBIc2));
-  	   _result.getChildren().addAll(editPrice,addMapToCity,editPlace,editMap,showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
 
-  	   
-  	
-  	   
-  		editPrice.setOnAction(e->{
-  			GUI.Main.editlevel=EditLevel.PRICE;
-  		});
-  		addMapToCity.setOnAction(e->{
-  			GUI.Main.editlevel=EditLevel.ADD;
-  		});
-  		editPlace.setOnAction(e->{
-  			GUI.Main.editlevel=EditLevel.PLACE;
+		setMap();
 
-  		});
-  		editMap.setOnAction(e->{
-  			GUI.Main.editlevel=EditLevel.MAP;
-
-  		});
-  	   
-  	   mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
-		
-  	   
-	}
-
-	
-	
-	
-	
-	
-	
-    public static void setMap(ImageView aImageView) {
-    if (counter<0||counter>Main.myMapList.size()) return;
-    CityMap map = Main.myMapList.get(counter);
-	aImageView.setImage(new Image(map.mURL));
-	mapShow.setText(map.mName);
-	
-    }
-
-    public void setPlace(ImageView aImageView) {
-    	CityMap map = Main.myMapList.get(counter);
-    	if (counterPlace < 0 || counterPlace >= map.mPlaces.size()) {
-    		return;
-    	}    	
-    	Place place = map.mPlaces.get(counterPlace);
-		aImageView.setImage(new Image(place.mURL));
-    }
-    
-
-    public static void setDeafulePlace(ImageView aImageView) {
-		editPlace.setVisible(false);
-    	aImageView.setImage(new Image("https://scontent.fhfa2-2.fna.fbcdn.net/v/t1.0-9/62406156_2525296037483339_111679483387314176_n.jpg?_nc_cat=110&_nc_ht=scontent.fhfa2-2.fna&oh=e0ca60d86bdb6a893fd0887712c464f7&oe=5D84F941"));
-    }
-    
-    
-    
-	public static void refreshScene() {
-		CityMap map = Main.myMapList.get(counter);
-		mapShow.setText(map.mName);
-		setMap(imageViewMap);
-		
 		if (Main.memberlevel == MemLvl.FREE_USER) {
 
-			chooseM.setVisible(false);
+			mBuy.setVisible(false);
 
 		} else if (Main.memberlevel == MemLvl.MEMBER) {
 
-			chooseM.setVisible(true);
+			mBuy.setVisible(true);
 
-		}
+		} else if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER) {
 
-		
-			else if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER) {
-				
+				CityMap map = Main.myMapList.get(mCounter);
+
 			 	editPrice.setVisible(true);
 			 	editMap.setVisible(true);
 			 	editMap.setText("edit " + map.mName+" map");
 			 	addMapToCity.setVisible(true);
 			 	addMapToCity.setText("Add map of "+map.mCity);
-				
-				
+
 		}
+
 	}
+
+    public static void setMap() {
+
+    	if (mCounter < 0 || mCounter > Main.myMapList.size()) {
+	    	return;
+	    }
+
+    	CityMap map = Main.myMapList.get(mCounter);
+
+		if (Main.memberlevel != MemLvl.FREE_USER) {
+		    imageViewMap.setImage(new Image(map.mURL));
+	    }
+
+	    mapShow.setText(map.mName);
+
+    }
+
+    public void setPlace(ImageView aImageView) {
+    	CityMap map = Main.myMapList.get(mCounter);
+    	if (mCounterPlace < 0 || mCounterPlace >= map.mPlaces.size()) {
+    		return;
+    	}    	
+    	Place place = map.mPlaces.get(mCounterPlace);
+
+		if (Main.memberlevel != MemLvl.FREE_USER) {
+			aImageView.setImage(new Image(place.mURL));
+		}
+
+    }
+
+    public static void setDeafulePlace(ImageView aImageView) {
+		editPlace.setVisible(false);
+    	aImageView.setImage(mMapPlaceDefault);
+    }
 
 }

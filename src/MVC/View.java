@@ -73,9 +73,9 @@ public class View {
 
         	// Purchases
 
-	    	case API.BUY_MAP:
+	    	case API.BUY:
 
-	    	    System.out.println("View: " + API.BUY_MAP);
+	    	    System.out.println("View: " + API.BUY);
 
 		    	{
 

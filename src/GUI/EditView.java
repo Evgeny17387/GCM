@@ -18,7 +18,9 @@ public class EditView extends BaseView  {
 	public EditView(ClientConsole aChat) {
 
 		super(aChat);
-	
+
+		// Init
+		
 		StackPane root = new StackPane();
 	    root.setBackground(new Background(myBIe));
 		TextField mName=new TextField("Type new map name");
@@ -31,12 +33,20 @@ public class EditView extends BaseView  {
 	
 		Button Next=new Button ("Next");
 		Button goBack=new Button("Go back");
-		goBack.setOnAction(e->{Main.changeScene(SceneName.SHOW_MAP);GUI.ShowMapView.counter=0;GUI.ShowMapView.counterPlace=0;});
+
+		// OnClick
+
+		goBack.setOnAction(e->{Main.changeScene(SceneName.SHOW_MAP);});
+
+		// UI
+
 		goBack.setMaxHeight(Dimensions.mBaseViewButtonsHeight);
 		goBack.setMaxWidth(Dimensions.mBaseViewButtonsWidth);
 		goBack.setTranslateY(Dimensions.mheight / 2 - Dimensions.mBaseViewButtonsHeight);
 		goBack.setTranslateX( - Dimensions.mWith / 2 + Dimensions.mBaseViewButtonsWidth);
-       
+
+		// Scene
+
        	root.getChildren().addAll(mName,mDescription,mPrice,newMapName,newMapDescription,newMapPic,placeDescription,Next,goBack);
      	mScene = new Scene(root, Dimensions.mWith, Dimensions.mheight);
 
