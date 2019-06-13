@@ -39,6 +39,7 @@ public class MainView extends BaseView {
     static Button mCatalog = new Button("Catalog");
     static Button mWorkerSignIn = new Button("Worker Sign In");
     static Button mWorkersZone;
+    static Button mEdit;
 
 	public MainView(ClientConsole aChat) {
 
@@ -50,6 +51,7 @@ public class MainView extends BaseView {
 		
 		mUpdateDetails = new Button("User Details");
 		mWorkersZone = new Button("Worker Zone");
+		mEdit = new Button("Edit");
 
         // OnClick
 
@@ -128,7 +130,11 @@ public class MainView extends BaseView {
         	}
 
         });
-        
+
+        mEdit.setOnAction(e->
+    		Main.changeScene(SceneName.EDIT)
+        );
+
         // UI position
 
         mSignOut.setMaxWidth(Dimensions.mMainViewButtonsWidth);
@@ -138,6 +144,7 @@ public class MainView extends BaseView {
         mWorkerSignIn.setMaxWidth(Dimensions.mMainViewButtonsWidth);
         mUpdateDetails.setMaxWidth(Dimensions.mMainViewButtonsWidth);
         mWorkersZone.setMaxWidth(Dimensions.mMainViewButtonsWidth);
+        mEdit.setMaxWidth(Dimensions.mMainViewButtonsWidth);
 
         int top = -100;
         int interval = 50;
@@ -152,9 +159,11 @@ public class MainView extends BaseView {
         
         mWorkersZone.setTranslateY(top);
 
+        mEdit.setTranslateY(top + 3*interval);
+
         // Scene
 
-        mStackPane.getChildren().addAll(mSignOut, mCatalog, mUserSignIn, mSignUp, mWorkerSignIn, mUpdateDetails, mWorkersZone);
+        mStackPane.getChildren().addAll(mSignOut, mCatalog, mUserSignIn, mSignUp, mWorkerSignIn, mUpdateDetails, mWorkersZone, mEdit);
         mStackPane.setBackground(new Background(myBI));
 
         mScene = new Scene(mStackPane, Dimensions.mWith, Dimensions.mheight);
@@ -176,6 +185,7 @@ public class MainView extends BaseView {
 			mUpdateDetails.setVisible(false);
 			mSignOut.setVisible(false);
 			mWorkersZone.setVisible(false);
+	        mEdit.setVisible(false);
 
 		} else if (Main.memberlevel == MemLvl.MEMBER) {
 
@@ -191,6 +201,7 @@ public class MainView extends BaseView {
 			mUserSignIn.setVisible(false);
 			mWorkerSignIn.setVisible(false);
 			mWorkersZone.setVisible(false);
+	        mEdit.setVisible(false);
 
 		} else if (Main.memberlevel == MemLvl.MANAGER || Main.memberlevel == MemLvl.EDITOR_MANAGER || Main.memberlevel == MemLvl.WORKER) {
 		
@@ -201,6 +212,7 @@ public class MainView extends BaseView {
 			mWorkersZone.setVisible(true);
 			mSignOut.setVisible(true);
 			mCatalog.setVisible(true);
+	        mEdit.setVisible(true);
 
 			mUpdateDetails.setVisible(false);
 			mSignUp.setVisible(false);

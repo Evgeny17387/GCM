@@ -63,7 +63,7 @@ public class Main extends Application {
         scenes.put(SceneName.SEARCH_MAP, new SearchMapView(chat));
         scenes.put(SceneName.SHOW_MAP, new ShowMapView(chat));
         scenes.put(SceneName.BUY, new BuyView(chat));
-        //scenes.put(SceneName.EDIT, new EditView(chat));
+        scenes.put(SceneName.EDIT, new EditView(chat));
 
         changeScene(SceneName.MAIN);
 
