@@ -28,34 +28,52 @@ import javafx.stage.Stage;
 
 public class SignUpView extends BaseView {
 
-	static TextField nameR;
-	static TextField passwordR;
-	static TextField creditCard;
-	static TextField email;
-	static TextField phone_number;
+	static TextField mUserName;
+	static TextField mPassword;
+	static TextField mCreditCard;
+	static TextField mEmail;
+	static TextField mPhonenumber;
+	static TextField mFirstName;
+	static TextField mLastName;
 
 	public SignUpView(ClientConsole aChat) {
 
 		super(aChat);
+		
+		// Init
 
-	    nameR 		= new TextField();
-		passwordR		= new TextField();
-	    creditCard 	= new TextField();
-	    email 		= new TextField();
-	    phone_number 	= new TextField();
+		mUserName 		= new TextField();
+		mPassword		= new TextField();
+		mCreditCard 	= new TextField();
+		mEmail 			= new TextField();
+		mPhonenumber 	= new TextField();
+		mFirstName 		= new TextField();
+		mLastName 		= new TextField();
 
         BackgroundImage myBIs = new BackgroundImage(new Image("Images\\sign_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
-        nameR.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        phone_number.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        passwordR.setFont(Font.font("Verdana", FontWeight.BOLD, 12));;
-        creditCard.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        email.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        mUserName.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        mPhonenumber.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        mPassword.setFont(Font.font("Verdana", FontWeight.BOLD, 12));;
+        mCreditCard.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        mEmail.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        mFirstName.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        mLastName.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+
+		// OnClick
 
         Button signUp2 = new Button("Sign Up");
         signUp2.setOnAction(e->{
 
-        	if (passwordR.getText().isEmpty() || email.getText().isEmpty() || phone_number.getText().isEmpty() || nameR.getText().isEmpty() || creditCard.getText().isEmpty()) {
+        	if (
+        			mPassword.getText().isEmpty() ||
+        			mEmail.getText().isEmpty() ||
+        			mPhonenumber.getText().isEmpty() ||
+        			mUserName.getText().isEmpty() ||
+        			mUserName.getText().isEmpty() ||
+        			mFirstName.getText().isEmpty() ||
+        			mLastName.getText().isEmpty()
+        		) {
 
         		Alert alert = new Alert(AlertType.ERROR);
         		alert.setTitle("Error");
@@ -65,7 +83,7 @@ public class SignUpView extends BaseView {
         		
         	} else {
 
-            	AccountUser accountUser = new AccountUser("FirstName", "LastName", passwordR.getText(), email.getText(), phone_number.getText(), nameR.getText(), creditCard.getText());
+            	AccountUser accountUser = new AccountUser(mFirstName.getText(), mLastName.getText(), mPassword.getText(), mEmail.getText(), mPhonenumber.getText(), mUserName.getText(), mCreditCard.getText());
             	Request request = new Request(API.ADD_USER, accountUser);
             	String jsonString = mGson.toJson(request);
 
@@ -107,21 +125,31 @@ public class SignUpView extends BaseView {
         	
         });
 
-        nameR.setTranslateY(-100);
-        nameR.setMaxWidth(300);
-        passwordR.setMaxWidth(300);
-        passwordR.setTranslateY(-50);
-        creditCard.setMaxWidth(300);
-        creditCard.setTranslateY(0);
-        email.setMaxWidth(300);
-        email.setTranslateY(50);
-        phone_number.setMaxWidth(300);
-        phone_number.setTranslateY(100);
+		// UI position
+
+        mUserName.setMaxWidth(Dimensions.mSignUpViewTextWidth);
+        mPassword.setMaxWidth(Dimensions.mSignUpViewTextWidth);
+        mCreditCard.setMaxWidth(Dimensions.mSignUpViewTextWidth);
+        mEmail.setMaxWidth(Dimensions.mSignUpViewTextWidth);
+        mPhonenumber.setMaxWidth(Dimensions.mSignUpViewTextWidth);
+        mFirstName.setMaxWidth(Dimensions.mSignUpViewTextWidth);
+        mLastName.setMaxWidth(Dimensions.mSignUpViewTextWidth);
+
+        mFirstName.setTranslateY(-200);
+        mLastName.setTranslateY(-150);
+        mUserName.setTranslateY(-100);
+        mPassword.setTranslateY(-50);
+        mCreditCard.setTranslateY(0);
+        mEmail.setTranslateY(50);
+        mPhonenumber.setTranslateY(100);
+
         signUp2.setTranslateY(150);
 
+        // Scene
+        
         StackPane sign_Up = new StackPane();
         sign_Up.setBackground(new Background(myBIs));
-        sign_Up.getChildren().addAll(nameR, passwordR, creditCard, phone_number, email, signUp2, goBack);
+        sign_Up.getChildren().addAll(mFirstName, mLastName, mUserName, mPassword, mCreditCard, mEmail, mPhonenumber, signUp2, goBack);
 
         mScene = new Scene(sign_Up, Dimensions.mWith, Dimensions.mheight);
 		
@@ -129,11 +157,13 @@ public class SignUpView extends BaseView {
 
 	public static void refreshScene() {
 
-		nameR.setText("Please enter username");
-		passwordR.setText("Please enter password");
-		creditCard.setText("Please enter credit card");
-		email.setText("Please enter your email addres");
-		phone_number.setText("Please enter your phone number");
+		mFirstName.setText("Please enter firstname");
+		mLastName.setText("Please enter lastname");
+		mUserName.setText("Please enter username");
+		mPassword.setText("Please enter password");
+		mCreditCard.setText("Please enter credit card");
+		mEmail.setText("Please enter your email addres");
+		mPhonenumber.setText("Please enter your phone number");
 
 	}
 

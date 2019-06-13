@@ -20,6 +20,10 @@ public class Dimensions {
 
 	public static final int mSignInViewTextWidth 				= 300;
 
+	// SignUpView
+
+	public static final int mSignUpViewTextWidth 				= 300;
+
 	// UpdateDetailsView
 	
 	public static final int mUpdateDetailsViewTextWidth 		= 300;
