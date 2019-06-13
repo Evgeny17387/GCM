@@ -12,6 +12,7 @@ import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 import DB_classes.CityMap;
 import DB_classes.Purchases;
+import Defines.EditLevel;
 import Defines.ErrorCodes;
 import Defines.MemLvl;
 import Defines.SceneName;
@@ -23,6 +24,7 @@ public class Main extends Application {
 	private static Map<SceneName, BaseView> scenes = new HashMap<>();
 
 	public static MemLvl memberlevel = MemLvl.FREE_USER;
+	public static EditLevel editlevel = EditLevel.ZERO;
 
 	public static int mServerResponseErrorCode = ErrorCodes.RESET;
 
@@ -47,11 +49,12 @@ public class Main extends Application {
 
     	mStage = primaryStage;
     	memberlevel = MemLvl.FREE_USER;
+    	editlevel = EditLevel.ZERO;
     	
     	View view = new View();
     	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
-
-        scenes.put(SceneName.MAIN, new MainView(chat));
+        
+    	scenes.put(SceneName.MAIN, new MainView(chat));
         scenes.put(SceneName.SIGN_UP, new SignUpView(chat));
         scenes.put(SceneName.SIGN_IN, new SignInView(chat));
         scenes.put(SceneName.UPDATE_DETAILS, new UpdateDetailsView(chat));
@@ -60,6 +63,7 @@ public class Main extends Application {
         scenes.put(SceneName.SEARCH_MAP, new SearchMapView(chat));
         scenes.put(SceneName.SHOW_MAP, new ShowMapView(chat));
         scenes.put(SceneName.BUY, new BuyView(chat));
+        //scenes.put(SceneName.EDIT, new EditView(chat));
 
         changeScene(SceneName.MAIN);
 
@@ -97,6 +101,8 @@ public class Main extends Application {
 			case UPDATE_DETAILS:
 				UpdateDetailsView.refreshScene();
 				break;
+			case EDIT:
+				EditView.refreshScene();
 			default:
 			break;
 		}

@@ -23,6 +23,7 @@ public class BaseView {
     BackgroundImage myBIs1;
     BackgroundImage myBIc1;
     BackgroundImage myBIc2;
+    BackgroundImage myBIe;
 
     static ClientConsole mChat;
 	
@@ -41,6 +42,7 @@ public class BaseView {
         myBIs1 = new BackgroundImage(new Image("/Images/sign_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
     	myBIc1 = new BackgroundImage(new Image("/Images/Buy.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         myBIc2 = new BackgroundImage(new Image("/Images/catalog2.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        myBIe = new BackgroundImage(new Image("/Images/edit.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
 		this.mChat = aChat;
 

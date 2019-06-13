@@ -4,6 +4,7 @@ import Communication.ClientConsole;
 import DB_classes.CityMap;
 import DB_classes.Place;
 import Defines.Dimensions;
+import Defines.EditLevel;
 import Defines.MemLvl;
 import Defines.SceneName;
 import javafx.scene.Scene;
@@ -187,15 +188,32 @@ public class ShowMapView extends BaseView {
 		mapShow.setTranslateY(0);
     	chooseM.setTranslateY(50);
 		chooseM.setTranslateX(0);
-
        _result.setBackground(new Background(myBIc2));
   	   _result.getChildren().addAll(editPrice,addMapToCity,editPlace,editMap,showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
 
+  	   
+  	
+  	   
+  		editPrice.setOnAction(e->{
+  			GUI.Main.editlevel=EditLevel.PRICE;
+  		});
+  		addMapToCity.setOnAction(e->{
+  			GUI.Main.editlevel=EditLevel.ADD;
+  		});
+  		editPlace.setOnAction(e->{
+  			GUI.Main.editlevel=EditLevel.PLACE;
+
+  		});
+  		editMap.setOnAction(e->{
+  			GUI.Main.editlevel=EditLevel.MAP;
+
+  		});
+  	   
   	   mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
 		
+  	   
 	}
 
-	
 	
 	
 	
