@@ -998,7 +998,7 @@ public class Model {
 
 		    	String name = rs.getString("Name");
 				String city = rs.getString("City");
-				int version = rs.getInt("Version");
+				String version = rs.getString("Version");
 				String description = rs.getString("Description");
 				int price = rs.getInt("Price");
 				String url = rs.getString("URL");

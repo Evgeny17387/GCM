@@ -46,7 +46,6 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 
     	mStage = primaryStage;
-
     	memberlevel = MemLvl.FREE_USER;
     	
     	View view = new View();

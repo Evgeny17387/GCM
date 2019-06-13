@@ -15,9 +15,9 @@ public class Place {
 	public String toString() {
 
 		return (
-				"Name:" + this.mName + " ; " +
-				"Classification:" + this.mClassification + " ; " +
-				"URL:" + this.mURL
+				this.mName   
+			//	"Classification:" + this.mClassification + " ; " +
+			//	"URL:" + this.mURL
 				);
 
 	}

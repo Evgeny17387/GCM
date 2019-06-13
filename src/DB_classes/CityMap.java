@@ -7,16 +7,16 @@ import DB_classes.Place;
 public class CityMap {
 
 	public String mName;
-	public int mVersion;
+	public String mVersion;
 	public String mCity;
 	public String mDescription;
 	public List<Place> mPlaces;
 	public int mPrice;
 	public String mURL;
 	
-	public CityMap(String aName, int aVersion, String aCity, String aDescription, List<Place> aPlaces, int aPrice, String aURL){
+	public CityMap(String aName, String version, String aCity, String aDescription, List<Place> aPlaces, int aPrice, String aURL){
     	this.mName = aName;
-    	this.mVersion = aVersion;
+    	this.mVersion = version;
     	this.mCity = aCity;
     	this.mDescription = aDescription;
     	this.mPlaces = aPlaces;

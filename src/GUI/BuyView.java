@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 
 public class BuyView extends BaseView{
 	
-	public static String myCity;
+	public static CityMap myCity;
 	
 	StackPane root = new StackPane();
 
@@ -31,7 +31,7 @@ public class BuyView extends BaseView{
 
     static Button oneTime = new Button();
     static Button periodTime = new Button();
-
+    
 	public BuyView(ClientConsole aChat) {
 
 		super(aChat);
@@ -44,14 +44,14 @@ public class BuyView extends BaseView{
 	
 		root.setBackground(new Background(myBIc));
 		root.getChildren().addAll(oneTime, periodTime, goBack);
-
+		
 		mScene = new Scene(root, Dimensions.mWith, Dimensions.mheight);
 
 	}
 
 	public static void refreshScene() {
-		oneTime.setText("One Time Pruchase- Price"+ GUI.Main.Price1+"$, Maps of "+myCity);
-		periodTime.setText("Pruchase for 6 months - Price"+GUI.Main.Price2+ "$,Maps of "+myCity);
+		oneTime.setText("One Time Pruchase- Price"+ myCity.mPrice+"$, Maps of "+myCity);
+		periodTime.setText("Pruchase for 6 months - Price"+ myCity.mPrice+ "$,Maps of "+myCity);
 
 	}
 

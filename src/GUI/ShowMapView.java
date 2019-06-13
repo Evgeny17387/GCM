@@ -25,7 +25,7 @@ public class ShowMapView extends BaseView {
 
 	String request_string;
 
-    int counter = 0;
+    static int counter = 0;
     int counterPlace = 0;
 
 	static ImageView imageViewMap = new ImageView(new Image("https://www.myyellowknifenow.com/wp-content/uploads/2019/02/photographer-698908_960_720.jpg"));	
@@ -40,6 +40,10 @@ public class ShowMapView extends BaseView {
     static Button pervM = new Button("Pervious map");
     static Button nextPlace = new Button("Next");
     static Button prevPlace = new Button("Previos");
+    static Button showCity= new Button ("Show city");
+    static Button showPlaces= new Button ("Show places");
+    static Button showDescription= new Button ("Show Description");
+    static Button showVersion= new Button ("Show Version");
 
 	public ShowMapView(ClientConsole aChat) {
 
@@ -49,14 +53,31 @@ public class ShowMapView extends BaseView {
 
         mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         chooseM.setOnAction(e->{
-    		BuyView.myCity = Main.myMapList.get(0).mCity;
+    		BuyView.myCity = Main.myMapList.get(0);
     		Main.changeScene(SceneName.BUY);
         });
 
   	   imageViewMap.setPreserveRatio(true);
 
   	   imageViewPlace.setPreserveRatio(true);
-
+  	 showVersion.setOnAction(e->{
+  		 CityMap map = Main.myMapList.get(counter);
+ 		mapShow.setText(map.mVersion);
+  	   });
+  	 showDescription.setOnAction(e->{
+  		 CityMap map = Main.myMapList.get(counter);
+ 		mapShow.setText(map.mDescription);
+  	   });
+  	 
+  	   showCity.setOnAction(e->{
+  		 CityMap map = Main.myMapList.get(counter);
+ 		mapShow.setText(map.mCity);
+  	   });
+  	   
+  	 showPlaces.setOnAction(e->{
+  		 CityMap map = Main.myMapList.get(counter);
+ 		mapShow.setText(map.mPlaces.toString());
+  	   });
   	   nextM.setOnAction(e->{
         	if(counter!=Main.myMapList.size()-1)counter++;
         	setMap(imageViewMap);
@@ -80,6 +101,14 @@ public class ShowMapView extends BaseView {
     	   }
     	   setPlace(imageViewPlace);
        });
+        showCity.setTranslateY(120);
+        showCity.setTranslateX(-150);
+        showPlaces.setTranslateY(120);
+        showPlaces.setTranslateX(-50);
+        showDescription.setTranslateY(120);
+        showDescription.setTranslateX(70);
+        showVersion.setTranslateX(200);
+        showVersion.setTranslateY(120);
         
 		nextM.setTranslateX(100);
 		nextM.setTranslateY(50);
@@ -103,17 +132,17 @@ public class ShowMapView extends BaseView {
 		chooseM.setTranslateX(0);
 
        _result.setBackground(new Background(myBIc));
-  	   _result.getChildren().addAll(nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
+  	   _result.getChildren().addAll(showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
 
   	   mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
 		
 	}
 
-    public void setMap(ImageView aImageView) {
+    public static void setMap(ImageView aImageView) {
     if (counter<0||counter>Main.myMapList.size()) return;
     CityMap map = Main.myMapList.get(counter);
 	aImageView.setImage(new Image(map.mURL));
-	mapShow.setText(map.toString());
+	mapShow.setText(map.mName);
 	
     }
 
@@ -127,6 +156,9 @@ public class ShowMapView extends BaseView {
     }
 
 	public static void refreshScene() {
+		CityMap map = Main.myMapList.get(counter);
+		mapShow.setText(map.mName);
+		setMap(imageViewMap);
 		
 		if (Main.memberlevel == MemLvl.FREE_USER) {
 
