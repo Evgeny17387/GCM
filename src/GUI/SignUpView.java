@@ -52,8 +52,6 @@ public class SignUpView extends BaseView {
 		mFirstName 		= new TextField();
 		mLastName 		= new TextField();
 
-        BackgroundImage myBIs = new BackgroundImage(new Image("Images\\sign_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-
         mUserName.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         mPhonenumber.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         mPassword.setFont(Font.font("Verdana", FontWeight.BOLD, 12));;
@@ -158,7 +156,7 @@ public class SignUpView extends BaseView {
         // Scene
         
         StackPane sign_Up = new StackPane();
-        sign_Up.setBackground(new Background(myBIs));
+        sign_Up.setBackground(new Background(myBIs1));
         sign_Up.getChildren().addAll(mFirstName, mLastName, mUserName, mPassword, mCreditCard, mEmail, mPhonenumber, signUp2, goBack);
 
         mScene = new Scene(sign_Up, Dimensions.mWith, Dimensions.mheight);

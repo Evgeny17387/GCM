@@ -27,8 +27,6 @@ public class BuyView extends BaseView{
 	
 	StackPane root = new StackPane();
 
-	BackgroundImage myBIc = new BackgroundImage(new Image("Images\\Buy.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-
     static Button oneTime = new Button();
     static Button periodTime = new Button();
 
@@ -42,7 +40,7 @@ public class BuyView extends BaseView{
 		periodTime.setTranslateY(-200);
 		oneTime.setTranslateY(-250);
 	
-		root.setBackground(new Background(myBIc));
+		root.setBackground(new Background(myBIc1));
 		root.getChildren().addAll(oneTime, periodTime, goBack);
 
 		mScene = new Scene(root, Dimensions.mWith, Dimensions.mheight);

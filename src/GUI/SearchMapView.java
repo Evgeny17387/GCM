@@ -43,8 +43,6 @@ public class SearchMapView extends BaseView {
 
 		// Init
 		
-        BackgroundImage myBIc = new BackgroundImage(new Image("Images\\catalog_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-
         searchTF = new TextField("Type map to search");
 
         Search_by_city = new CheckBox("Search by city");
