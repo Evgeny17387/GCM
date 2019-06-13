@@ -6,7 +6,6 @@ import Defines.SceneName;
 import Defines.Dimensions;
 import DB_classes.CityMap;
 import DB_classes.Place;
-import Utils.UI_server_communicate;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

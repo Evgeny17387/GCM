@@ -6,7 +6,6 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import Utils.UI_server_communicate;
 import MVC.View;
 import Communication.ClientConsole;
 import DB_classes.AccountUser;
@@ -18,6 +17,8 @@ import Defines.MemLvl;
 import Defines.SceneName;
 
 public class Main extends Application {
+
+	public static boolean mResposeFromserver = false;
 
 	private static Map<SceneName, BaseView> scenes = new HashMap<>();
 

@@ -9,11 +9,13 @@ import Defines.API;
 import Defines.Dimensions;
 import Defines.ErrorCodes;
 import Defines.SceneName;
+import Dialogs.MessageDialog;
+import Dialogs.ProgressForm;
 import Requests.Request;
-import Utils.UI_server_communicate;
 import ViewsItem.PurchaseView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -116,32 +118,43 @@ public class UpdateDetailsView extends BaseView {
             	AccountUser accountUser = new AccountUser(mFirstName.getText(), mLastName.getText(), mPassword.getText(), mEmail.getText(), mPhoneNumber.getText(), mUserName.getText(), mCreditCard.getText());
             	Request request = new Request(API.UPDATE_USER, accountUser);
             	String jsonString = mGson.toJson(request);
-
             	mChat.SendToServer(jsonString);
 
-            	UI_server_communicate.ask_server();
+                ProgressForm progressForm = new ProgressForm();
+                Task<Void> waitTask = new Dialogs.WaitTask();
+                progressForm.activateProgressBar(waitTask);
 
-            	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+                waitTask.setOnSucceeded(event -> {
 
-	        		Alert alert = new Alert(AlertType.CONFIRMATION);
-	        		alert.setTitle("Congradulations");
-	        		alert.setHeaderText("Your details have been updated");
-	        		alert.setContentText("");
-	        		alert.showAndWait();
-	        		
-	        		refreshScene();
+                	progressForm.getDialogStage().close();
+                	update.setDisable(false);
+                    goBack.setDisable(false);
 
-        		} else {
+                	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-            		Alert alert = new Alert(AlertType.ERROR);
-            		alert.setTitle("Error");
-            		alert.setHeaderText("An unknown error has occurred");
-            		alert.setContentText("Please try again");
-            		alert.showAndWait();
+    	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Congradulations", "Your details have been updated", "");
+    	        		alert.showAndWait();
+    	        		
+    	        		refreshScene();
 
-            	}
+            		} else {
 
-        		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+    	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred", "Please try again");
+                		alert.showAndWait();
+
+                	}
+
+            		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
+                });
+
+                update.setDisable(true);
+                goBack.setDisable(true);
+
+                progressForm.getDialogStage().show();
+
+                Thread thread = new Thread(waitTask);
+                thread.start();
         		
         	}
         	

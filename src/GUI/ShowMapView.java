@@ -6,7 +6,6 @@ import DB_classes.Place;
 import Defines.Dimensions;
 import Defines.MemLvl;
 import Defines.SceneName;
-import Utils.UI_server_communicate;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

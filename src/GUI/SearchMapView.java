@@ -6,8 +6,10 @@ import Communication.ClientConsole;
 import Defines.Dimensions;
 import Defines.ErrorCodes;
 import Defines.SceneName;
+import Dialogs.MessageDialog;
+import Dialogs.ProgressForm;
 import Requests.Request;
-import Utils.UI_server_communicate;
+import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -74,26 +76,40 @@ public class SearchMapView extends BaseView {
 
         	Request request = new Request(request_string, searchKey);
         	String jsonString = mGson.toJson(request);
-
         	mChat.SendToServer(jsonString);
 
-        	UI_server_communicate.ask_server();
+            ProgressForm progressForm = new ProgressForm();
+            Task<Void> waitTask = new Dialogs.WaitTask();
+            progressForm.activateProgressBar(waitTask);
 
-        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+            waitTask.setOnSucceeded(event -> {
 
-            	Main.changeScene(SceneName.SHOW_MAP);
+            	progressForm.getDialogStage().close();
+            	search_btn.setDisable(false);
+                goBack.setDisable(false);
 
-    		} else {
-    			
-        		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Error");
-        		alert.setHeaderText("An unknown error has occurred, please try again");
-        		alert.setContentText("Please try again");
-        		alert.showAndWait();
+            	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-        	}
+                	Main.changeScene(SceneName.SHOW_MAP);
 
-    		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+        		} else {
+
+            		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred, please try again", "Please try again");
+            		alert.showAndWait();
+
+            	}
+
+        		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
+            });
+
+            search_btn.setDisable(true);
+            goBack.setDisable(true);
+
+            progressForm.getDialogStage().show();
+
+            Thread thread = new Thread(waitTask);
+            thread.start();
     		
         });
 

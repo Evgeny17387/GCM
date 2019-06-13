@@ -1,19 +1,22 @@
-package Utils;
+package Dialogs;
 
 import Defines.Constants;
+import GUI.Main;
+import javafx.concurrent.Task;
 
-public class  UI_server_communicate {
-
-	// Wait for reply from the server
-
-	public static boolean mResposeFromserver = false;
-
-	public static void ask_server() {
+public class WaitTask extends Task<Void> {
+	
+    @Override
+    public Void call() throws InterruptedException {
 
 		int Counter = 0;
 		
-		while (mResposeFromserver != true && Counter < Constants.mDelayTimeSeconds) {
-	
+		// Awaiting loop
+		
+		while (Main.mResposeFromserver != true && Counter < Constants.mDelayTimeSeconds) {
+
+            updateProgress(Counter, Constants.mDelayTimeSeconds);
+
 		    System.out.println("Awaiting server response");
 	
 	        try {
@@ -23,7 +26,7 @@ public class  UI_server_communicate {
 	        }
 	
 	        Counter++;
-	
+
 		}
 	
 		// Check if reply has come or not
@@ -31,15 +34,17 @@ public class  UI_server_communicate {
 		if (Counter != Constants.mDelayTimeSeconds) {
 
 			System.out.println("Server replies");
-			mResposeFromserver = false;
+			Main.mResposeFromserver = false;
 
 		}else {
 
 			System.out.println("Server doesn't answer");
-			mResposeFromserver = false;
+			Main.mResposeFromserver = false;
 
 		}
 
-	}
+    	return null;
 
-}
+    }
+
+};

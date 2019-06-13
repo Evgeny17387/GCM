@@ -8,9 +8,11 @@ import Defines.ErrorCodes;
 import Defines.MemLvl;
 import Defines.MemLvlWorkerdb;
 import Defines.SceneName;
+import Dialogs.MessageDialog;
+import Dialogs.ProgressForm;
 import Requests.GeneralRequest;
 import Requests.Request;
-import Utils.UI_server_communicate;
+import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -62,52 +64,50 @@ public class WorkerView extends BaseView {
             	GeneralRequest accountCheck = new GeneralRequest(mName.getText(), mPassword.getText());
             	Request request = new Request(API.GET_WORKER, accountCheck);
             	String jsonString = mGson.toJson(request);
-
             	mChat.SendToServer(jsonString);
 
-            	UI_server_communicate.ask_server();
-	
-	        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
-	
-	        		Alert alert = new Alert(AlertType.CONFIRMATION);
-	        		alert.setTitle("Welcome");
-	        		alert.setHeaderText("You are successfully signed in..");
-	        		alert.setContentText("You are welcome to visit the Reports");
-	        		alert.showAndWait();
+                ProgressForm progressForm = new ProgressForm();
+                Task<Void> waitTask = new Dialogs.WaitTask();
+                progressForm.activateProgressBar(waitTask);
 
-	        		switch (Main.mAccountWorker.mType) {
-	        			case MemLvlWorkerdb.mManager:
-	    	        		Main.memberlevel = MemLvl.MANAGER;
-	        			break;
-	        			case MemLvlWorkerdb.mManagerContent:
-	    	        		Main.memberlevel = MemLvl.EDITOR_MANAGER;
-	        			break;
-	        			case MemLvlWorkerdb.mRegular:
-	    	        		Main.memberlevel = MemLvl.WORKER;
-	        			break;
-	        		}
+                waitTask.setOnSucceeded(event -> {
 
-	        		Main.changeScene(SceneName.MAIN);
-	
-	        	} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_NOT_FOUND) {
-	        		
-	        		Alert alert = new Alert(AlertType.ERROR);
-	        		alert.setTitle("Error");
-	        		alert.setHeaderText("Worker details are incorrect");
-	        		alert.setContentText("Please try again");
-	        		alert.showAndWait();
-	
-	    		} else {
-	
-	        		Alert alert = new Alert(AlertType.ERROR);
-	        		alert.setTitle("Error");
-	        		alert.setHeaderText("An unknown error has occurred");
-	        		alert.setContentText("Please try again");
-	        		alert.showAndWait();
-	
-	        	}
-	
-	    		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+                	progressForm.getDialogStage().close();
+                	singIn.setDisable(false);
+                    goBack.setDisable(false);
+
+    	        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+
+    	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Welcome", "You are successfully signed in..", "You are welcome to visit the Reports");
+    	        		alert.showAndWait();
+
+    	        		MemLvlWorkerdb.UpdateWorkerLevel();
+    	        		
+    	        		Main.changeScene(SceneName.MAIN);
+    	
+    	        	} else if (Main.mServerResponseErrorCode == ErrorCodes.USER_NOT_FOUND) {
+    	        		
+    	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "Worker details are incorrect", "Please try again");
+    	        		alert.showAndWait();
+    	
+    	    		} else {
+
+    	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred", "Please try again");
+    	        		alert.showAndWait();
+    	
+    	        	}
+    	
+    	    		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
+                });
+
+                singIn.setDisable(true);
+                goBack.setDisable(true);
+
+                progressForm.getDialogStage().show();
+
+                Thread thread = new Thread(waitTask);
+                thread.start();
 	    		
         	}
 

@@ -8,11 +8,13 @@ import Defines.Dimensions;
 import Defines.ErrorCodes;
 import Defines.MemLvl;
 import Defines.SceneName;
+import Dialogs.MessageDialog;
+import Dialogs.ProgressForm;
 import Requests.GeneralRequest;
 import Requests.Request;
-import Utils.UI_server_communicate;
 import ViewsItem.PurchaseView;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -83,33 +85,44 @@ public class MainView extends BaseView {
             	GeneralRequest accountCheck = new GeneralRequest(Main.mAccountWorker.mFirstName, Main.mAccountWorker.mPassword);
             	Request request = new Request(API.GET_USERS_PURCHASES, accountCheck);
             	String jsonString = mGson.toJson(request);
-
             	mChat.SendToServer(jsonString);
 
-            	UI_server_communicate.ask_server();
+                ProgressForm progressForm = new ProgressForm();
+                Task<Void> waitTask = new Dialogs.WaitTask();
+                progressForm.activateProgressBar(waitTask);
 
-            	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+                waitTask.setOnSucceeded(event -> {
 
-            		Main.changeScene(SceneName.WORKER_ZONE);
+                	progressForm.getDialogStage().close();
+                	mWorkersZone.setDisable(false);
+                    goBack.setDisable(false);
 
-        		} else {
+                	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-            		Alert alert = new Alert(AlertType.ERROR);
-            		alert.setTitle("Error");
-            		alert.setHeaderText("An unknown error has occurred");
-            		alert.setContentText("Please try again");
-            		alert.showAndWait();
+                		Main.changeScene(SceneName.WORKER_ZONE);
 
-            	}
-            	
-        		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+            		} else {
+
+    	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred", "Please try again");
+                		alert.showAndWait();
+
+                	}
+                	
+            		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
+                });
+
+                mWorkersZone.setDisable(true);
+                goBack.setDisable(true);
+
+                progressForm.getDialogStage().show();
+
+                Thread thread = new Thread(waitTask);
+                thread.start();
 
         	} else {
         		
-        		Alert alert = new Alert(AlertType.ERROR);
-        		alert.setTitle("Error");
-        		alert.setHeaderText("You are not authorized");
-        		alert.setContentText("You must be a Manger to watch reports");
+        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Welcome", "You are not authorized", "You must be a Manger to watch reports");
         		alert.showAndWait();
 
         	}

@@ -11,7 +11,6 @@ import Defines.MemLvlWorkerdb;
 import Defines.SceneName;
 import Requests.GeneralRequest;
 import Requests.Request;
-import Utils.UI_server_communicate;
 import ViewsItem.PurchaseView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

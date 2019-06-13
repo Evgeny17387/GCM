@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import Communication.ClientConsole;
 import Defines.Dimensions;
 import Defines.SceneName;
-import Utils.UI_server_communicate;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

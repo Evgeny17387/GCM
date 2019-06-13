@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import DB_classes.CityMap;
-import DB_classes.Purchase;
 import DB_classes.Purchases;
 import Defines.API;
 import Defines.ErrorCodes;
@@ -18,7 +17,6 @@ import DB_classes.AccountWorker;
 
 import Responses.ResponseController;
 import Responses.ResponseModel;
-import Utils.UI_server_communicate;
 
 public class View {
 
@@ -48,7 +46,7 @@ public class View {
 
 		    	}
 
-			    UI_server_communicate.mResposeFromserver = true;
+			    Main.mResposeFromserver = true;
 
     	    	break;
 
@@ -69,7 +67,7 @@ public class View {
 
 		    	}
 
-			    UI_server_communicate.mResposeFromserver = true;
+		    	Main.mResposeFromserver = true;
 
 	    	    break;
 
@@ -87,7 +85,7 @@ public class View {
 
 		    	}
 
-			    UI_server_communicate.mResposeFromserver = true;
+		    	Main.mResposeFromserver = true;
 
 	    	    break;
 
@@ -111,7 +109,7 @@ public class View {
 
 		    	}
 
-			    UI_server_communicate.mResposeFromserver = true;
+		    	Main.mResposeFromserver = true;
 
 	    	    break;
 
@@ -134,7 +132,7 @@ public class View {
 
 		    	}
 
-			    UI_server_communicate.mResposeFromserver = true;
+		    	Main.mResposeFromserver = true;
 
 	    	    break;
 
@@ -157,7 +155,7 @@ public class View {
 		    		
 		    	}
 
-			    UI_server_communicate.mResposeFromserver = true;
+		    	Main.mResposeFromserver = true;
 
 	    		break;
 
@@ -177,7 +175,7 @@ public class View {
 		    	
 	    	    }
 
-	    	    UI_server_communicate.mResposeFromserver = true;
+	    	    Main.mResposeFromserver = true;
 
 	    		break;
 
