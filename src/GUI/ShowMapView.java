@@ -170,6 +170,9 @@ public class ShowMapView extends BaseView {
 
 		}
 
+		
+			else if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER) {
+		}
 	}
 
 }

@@ -31,7 +31,6 @@ public class BuyView extends BaseView{
 
     static Button oneTime = new Button();
     static Button periodTime = new Button();
-    
 	public BuyView(ClientConsole aChat) {
 
 		super(aChat);
