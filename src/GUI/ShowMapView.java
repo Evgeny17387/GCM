@@ -35,6 +35,13 @@ public class ShowMapView extends BaseView {
 
 	static TextField mapShow = new TextField();
 
+	
+    
+    static Button editPlace = new Button("Edit this place");
+    static Button addMapToCity = new Button("");
+    static Button editPrice= new Button ("Edit price");
+    static Button editMap= new Button ("Edit map");
+
     static Button chooseM = new Button("Buy options");
     static Button nextM = new Button("Next map");
     static Button pervM = new Button("Pervious map");
@@ -45,6 +52,8 @@ public class ShowMapView extends BaseView {
     static Button showDescription= new Button ("Show Description");
     static Button showVersion= new Button ("Show Version");
 
+    
+    
 	public ShowMapView(ClientConsole aChat) {
 
 		super(aChat);
@@ -59,7 +68,7 @@ public class ShowMapView extends BaseView {
   	   imageViewMap.setPreserveRatio(true);
   	   imageViewPlace.setPreserveRatio(true);
   	   
-  	 showVersion.setOnAction(e->{
+  	  showVersion.setOnAction(e->{
   		 CityMap map = Main.myMapList.get(counter);
  		mapShow.setText(map.mVersion);
  		nextPlace.setVisible(false);
@@ -84,6 +93,7 @@ public class ShowMapView extends BaseView {
   	   
   	   
   	 showPlaces.setOnAction(e->{
+  		if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER)editPlace.setVisible(true);
   		counterPlace =0;
   		 CityMap map = Main.myMapList.get(counter);
  		mapShow.setText(map.mPlaces.get(counterPlace).mName+"- "+map.mPlaces.get(counterPlace).mDescription);
@@ -152,6 +162,19 @@ public class ShowMapView extends BaseView {
 		nextPlace.setVisible(false);
 	 	prevPlace.setVisible(false);
 		
+	 	editPlace.setTranslateY(220);
+	 	editPrice.setTranslateY(220);
+	 	editMap.setTranslateY(220);
+	 	addMapToCity.setTranslateY(220);
+	 	editPlace.setTranslateX(-170);
+	 	editPrice.setTranslateX(-70);
+	 	editMap.setTranslateX(50);
+	 	addMapToCity.setTranslateX(180);
+	 	editPlace.setVisible(false);
+	 	editPrice.setVisible(false);
+	 	editMap.setVisible(false);
+	 	addMapToCity.setVisible(false);
+	 	
 		imageViewMap.setTranslateX(-100);
 		imageViewMap.setTranslateY(-150);
 		imageViewMap.setFitHeight(200);
@@ -166,12 +189,19 @@ public class ShowMapView extends BaseView {
 		chooseM.setTranslateX(0);
 
        _result.setBackground(new Background(myBIc2));
-  	   _result.getChildren().addAll(showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
+  	   _result.getChildren().addAll(editPrice,addMapToCity,editPlace,editMap,showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, chooseM);
 
   	   mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
 		
 	}
 
+	
+	
+	
+	
+	
+	
+	
     public static void setMap(ImageView aImageView) {
     if (counter<0||counter>Main.myMapList.size()) return;
     CityMap map = Main.myMapList.get(counter);
@@ -191,6 +221,7 @@ public class ShowMapView extends BaseView {
     
 
     public static void setDeafulePlace(ImageView aImageView) {
+		editPlace.setVisible(false);
     	aImageView.setImage(new Image("https://scontent.fhfa2-2.fna.fbcdn.net/v/t1.0-9/62406156_2525296037483339_111679483387314176_n.jpg?_nc_cat=110&_nc_ht=scontent.fhfa2-2.fna&oh=e0ca60d86bdb6a893fd0887712c464f7&oe=5D84F941"));
     }
     
@@ -213,6 +244,14 @@ public class ShowMapView extends BaseView {
 
 		
 			else if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER) {
+				
+			 	editPrice.setVisible(true);
+			 	editMap.setVisible(true);
+			 	editMap.setText("edit " + map.mName+" map");
+			 	addMapToCity.setVisible(true);
+			 	addMapToCity.setText("Add map of "+map.mCity);
+				
+				
 		}
 	}
 
