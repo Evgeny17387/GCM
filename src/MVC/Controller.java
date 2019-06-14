@@ -220,9 +220,9 @@ public class Controller {
 				
 				String placeName = gson.fromJson(gson.toJson(request.mObject), String.class);
 		
-				List<CityMap> mapsListPlaceName = model.MapsByPlace(placeName);
+				ResponseModel responseModel = model.GetMapsByPlace(placeName);
 		
-		    	ResponseController responseController = new ResponseController(API.SEARCH_BY_PLACE, mapsListPlaceName);
+		    	ResponseController responseController = new ResponseController(API.SEARCH_BY_PLACE, responseModel);
 		
 		    	jsonString = gson.toJson(responseController);
 				

@@ -167,7 +167,7 @@ public class View {
 	    	    {
 
 		    	    Type typeMap = new TypeToken<List<CityMap>>(){}.getType();
-		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
+		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseModel.mObject), typeMap);
 
 		    	    GUI.Main.myMapList = mapList;
 
