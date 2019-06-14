@@ -370,12 +370,16 @@ public class ShowMapView extends BaseView {
 
 	 	boolean isUserCanWatchImages = Main.memberlevel == MemLvl.MEMBER && ( Main.mAccountUser.HasSubscription(Main.myMapList.get(mCounterMap).mCity) || mIsFirstViewAfterPurchase);
 	 	
-		if (!isUserCanWatchImages) {
+		if (Main.memberlevel == MemLvl.FREE_USER || !isUserCanWatchImages) {
 			imageViewMap.setImage(mMapPlaceDefault);
 			imageViewPlace.setImage(mMapPlaceDefault);
 		}
 
 		if (Main.memberlevel == MemLvl.FREE_USER) {
+			mBuy.setVisible(false);
+			mSubscription.setVisible(false);
+			mOneTime.setVisible(false);
+		} else if (Main.memberlevel == MemLvl.MANAGER || Main.memberlevel == MemLvl.EDITOR_MANAGER || Main.memberlevel == MemLvl.WORKER) {
 			mBuy.setVisible(false);
 			mSubscription.setVisible(false);
 			mOneTime.setVisible(false);
@@ -420,7 +424,12 @@ public class ShowMapView extends BaseView {
 
     	CityMap map = Main.myMapList.get(mCounterMap);
     	
-		if (Main.memberlevel == MemLvl.MEMBER && ( Main.mAccountUser.HasSubscription(map.mCity) || mIsFirstViewAfterPurchase) ) {
+		if ( 
+				(Main.memberlevel == MemLvl.MANAGER) ||
+				(Main.memberlevel == MemLvl.EDITOR_MANAGER) ||
+				(Main.memberlevel == MemLvl.WORKER) ||
+				( Main.memberlevel == MemLvl.MEMBER && ( Main.mAccountUser.HasSubscription(map.mCity) || mIsFirstViewAfterPurchase ) ) 
+			) {
 			imageViewMap.setImage(new Image(map.mURL));
 		}
 
@@ -438,7 +447,12 @@ public class ShowMapView extends BaseView {
 
     	Place place = map.mPlaces.get(mCounterPlace);
 
-		if (Main.memberlevel == MemLvl.MEMBER && ( Main.mAccountUser.HasSubscription(map.mCity) || mIsFirstViewAfterPurchase) ) {
+		if (
+				(Main.memberlevel == MemLvl.MANAGER) ||
+				(Main.memberlevel == MemLvl.EDITOR_MANAGER) ||
+				(Main.memberlevel == MemLvl.WORKER) ||
+				Main.memberlevel == MemLvl.MEMBER && ( Main.mAccountUser.HasSubscription(map.mCity) || mIsFirstViewAfterPurchase) 
+			) {
 			imageViewPlace.setImage((new Image(place.mURL)));
 		}
 

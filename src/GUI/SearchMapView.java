@@ -96,7 +96,7 @@ public class SearchMapView extends BaseView {
 
                 	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-                		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Success", Main.myMapList.size() + " Maps were found", "Don't forget to buy a subscription :)");
+                		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Success", Main.myMapList.size() + " Maps were found", "Enjoy");
                 		alert.showAndWait();
 
                     	Main.changeScene(SceneName.SHOW_MAP);
