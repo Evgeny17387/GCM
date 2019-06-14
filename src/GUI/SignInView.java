@@ -1,16 +1,19 @@
 package GUI;
 
 import Communication.ClientConsole;
+import DB_classes.Purchase;
 import Defines.API;
 import Defines.Constants;
 import Defines.Dimensions;
 import Defines.ErrorCodes;
 import Defines.MemLvl;
+import Defines.PurchaseType;
 import Defines.SceneName;
 import Dialogs.MessageDialog;
 import Dialogs.ProgressForm;
 import Requests.GeneralRequest;
 import Requests.Request;
+import Utils.TimeAndDateUtils;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -82,6 +85,16 @@ public class SignInView extends BaseView {
     	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Welcome", "You are successfully signed in..", "You are welcome to visit the Map Catalog");
     	        		alert.showAndWait();
 
+    	        		for (Purchase purcahse : Main.mAccountUser.mPurchases) {
+    	        			if (purcahse.mType.equals(PurchaseType.SUBSCRIPTION)) {
+    	        				int subscriptionLeftDays = Constants.mSubscriptionDays - TimeAndDateUtils.GetDaysLeft(purcahse.mDate);
+    	        				if (subscriptionLeftDays < Constants.mSubscriptionDaysLeftWarning) {
+    	        	        		MessageDialog alertSubscription = new MessageDialog(AlertType.WARNING, "Subscription Expiration", "Days left for subscruption to " + purcahse.mCityName + " : " + subscriptionLeftDays, "Don't foget to subscribe again...");
+    	        	        		alertSubscription.showAndWait();
+    	        				}
+    	        			}
+    	        		}
+    	        		
     	        		Main.memberlevel = MemLvl.MEMBER;
 
     	        		Main.changeScene(SceneName.MAIN);
