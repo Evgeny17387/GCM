@@ -78,7 +78,7 @@ public class WorkerView extends BaseView {
 
     	        	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-    	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Welcome", "You are successfully signed in..", "You are welcome to visit the Reports");
+    	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Welcome", "You are successfully signed in..", "You are welcome to visit the Reports");
     	        		alert.showAndWait();
 
     	        		MemLvlWorkerdb.UpdateWorkerLevel();

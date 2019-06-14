@@ -100,7 +100,7 @@ public class SignUpView extends BaseView {
 
                 	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-    	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Congradulations", "You have been successfuly Singed Up", "Please Sing In");
+    	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Congradulations", "You have been successfuly Singed Up", "Please Sing In");
     	        		alert.showAndWait();
     	        		
     	        		Main.changeScene(SceneName.MAIN);

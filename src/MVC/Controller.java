@@ -204,7 +204,7 @@ public class Controller {
 
 				String cityName = gson.fromJson(gson.toJson(request.mObject), String.class);
 
-				ResponseModel responseModel = model.MapsByCity(cityName);
+				ResponseModel responseModel = model.GetMapsByCity(cityName);
 		
 		    	ResponseController responseController = new ResponseController(API.SEARCH_BY_CITY, responseModel);
 		

@@ -142,7 +142,7 @@ public class ShowMapView extends BaseView {
 
                 if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Congradulation", "Your purchase has been accepted", "Enjoy the Maps");
+	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Congradulation", "Your purchase has been accepted", "Enjoy the Maps");
 	        		alert.showAndWait();
 	
 	        		mIsFirstViewAfterPurchase = true;

@@ -79,7 +79,7 @@ public class SignInView extends BaseView {
 
                     if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-    	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Welcome", "You are successfully signed in..", "You are welcome to visit the Map Catalog");
+    	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Welcome", "You are successfully signed in..", "You are welcome to visit the Map Catalog");
     	        		alert.showAndWait();
 
     	        		Main.memberlevel = MemLvl.MEMBER;

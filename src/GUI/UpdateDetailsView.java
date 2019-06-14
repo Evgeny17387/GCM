@@ -135,7 +135,7 @@ public class UpdateDetailsView extends BaseView {
 
                 	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-    	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Congradulations", "Your details have been updated", "");
+    	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Congradulations", "Your details have been updated", "");
     	        		alert.showAndWait();
     	        		
     	        		refreshScene();

@@ -96,11 +96,19 @@ public class SearchMapView extends BaseView {
 
                 	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
+                		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Success", Main.myMapList.size() + " Maps were found", "Don't forget to buy a subscription :)");
+                		alert.showAndWait();
+
                     	Main.changeScene(SceneName.SHOW_MAP);
 
-            		} else {
+                	} else if (Main.mServerResponseErrorCode == ErrorCodes.NO_MAPS_FOUND) {
+                		
+                		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Sorry", "No maps were found for this ley", "Please try a different key");
+                		alert.showAndWait();
+                		
+                	} else {
 
-                		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred, please try again", "Please try again");
+                		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred", "Please try again");
                 		alert.showAndWait();
 
                 	}
