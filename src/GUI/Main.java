@@ -11,6 +11,7 @@ import Communication.ClientConsole;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 import DB_classes.CityMap;
+import DB_classes.Purchase;
 import DB_classes.Purchases;
 import Defines.EditLevel;
 import Defines.ErrorCodes;

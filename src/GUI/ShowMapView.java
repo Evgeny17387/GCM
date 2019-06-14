@@ -3,14 +3,25 @@ package GUI;
 import Communication.ClientConsole;
 import DB_classes.CityMap;
 import DB_classes.Place;
+import Defines.API;
 import Defines.Dimensions;
 import Defines.EditLevel;
+import Defines.ErrorCodes;
 import Defines.MemLvl;
 import Defines.SceneName;
+import Dialogs.MessageDialog;
+import Dialogs.ProgressForm;
+import Requests.BuyRequest;
+import Requests.GeneralRequest;
+import Requests.Request;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -36,7 +47,9 @@ public class ShowMapView extends BaseView {
 
 	String request_string;
 
-    static int mCounter;
+	static boolean mIsFirstViewAfterPurchase = false;
+
+    static int mCounterMap;
     public static int mCounterPlace;
 
     // TextView
@@ -61,6 +74,11 @@ public class ShowMapView extends BaseView {
     static Button showDescription= new Button ("Show Description");
     static Button showVersion= new Button ("Show Version");
 
+    // Radio - Buy
+    
+	static RadioButton mSubscription;
+	static RadioButton mOneTime;
+   
     // Other
     
     static StackPane _result = new StackPane();
@@ -71,10 +89,10 @@ public class ShowMapView extends BaseView {
 
 		// Init
 		
-		mMapPlaceDefault = new Image("/Images/MapPlaceDefault.png");
-		
-		imageViewMap = new ImageView(mMapPlaceDefault);
-		imageViewPlace = new ImageView(mMapPlaceDefault);
+	    mMapPlaceDefault = new Image("/Images/MapPlaceDefault.png");
+
+	    imageViewMap = new ImageView(new Image("/Images/MapPlaceDefault.png"));
+	    imageViewPlace = new ImageView(new Image("/Images/MapPlaceDefault.png"));
 
 		imageViewMap.setPreserveRatio(true);
 		imageViewPlace.setPreserveRatio(true);
@@ -82,29 +100,87 @@ public class ShowMapView extends BaseView {
 		mapShow.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 		mapShow.setAlignment(Pos.CENTER);
 
+		// Buy
+		
+		mSubscription = new RadioButton("Subscription");
+		mOneTime = new RadioButton("OneTime");
+
+		ToggleGroup group = new ToggleGroup();
+		mSubscription.setToggleGroup(group);
+		mOneTime.setToggleGroup(group);
+
+		mSubscription.setSelected(true);
+
 		// OnClick
 		
         mBuy.setOnAction(e->{
 
+        	setDiableAll(true);
         	
+        	String type;
         	
-        	BuyView.myCity = Main.myMapList.get(0);
-    		Main.changeScene(SceneName.BUY);
-    		setDeafulePlace(imageViewPlace);
+        	if (mSubscription.isSelected()) {
+        		type = mSubscription.getText();
+        	} else {
+        		type = mOneTime.getText();
+        	}
+        	
+        	BuyRequest buyRequest = new BuyRequest(Main.mAccountUser.mUserName, Main.myMapList.get(0).mCity, type);
+        	Request request = new Request(API.BUY, buyRequest);
+        	String jsonString = mGson.toJson(request);
+        	mChat.SendToServer(jsonString);
 
-        
+            ProgressForm progressForm = new ProgressForm();
+            Task<Void> waitTask = new Dialogs.WaitTask();
+            progressForm.activateProgressBar(waitTask);
+
+            waitTask.setOnSucceeded(event -> {
+
+            	progressForm.getDialogStage().close();
+
+	        	setDiableAll(false);
+
+                if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+
+	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Congradulation", "Your purchase has been accepted", "Enjoy the Maps");
+	        		alert.showAndWait();
+	
+	        		mIsFirstViewAfterPurchase = true;
+
+	    		} else {
+
+	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred, please try again", "Please try again");
+	        		alert.showAndWait();
+	
+	        	}
+
+	        	refreshScene();
+
+	    		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+	    			        		        	
+            });
+
+            progressForm.getDialogStage().show();
+
+            Thread thread = new Thread(waitTask);
+            thread.start();
         
         });
-  	   
+
+		goBack.setOnAction(e->{
+			mIsFirstViewAfterPurchase = false;
+			Main.changeScene(SceneName.MAIN);
+		});
+		
   	  showVersion.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(mCounter);
+  		 CityMap map = Main.myMapList.get(mCounterMap);
  		mapShow.setText(map.mVersion);
  		nextPlace.setVisible(false);
  		prevPlace.setVisible(false);
  		setDeafulePlace(imageViewPlace);
   	   });
   	 showDescription.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(mCounter);
+  		 CityMap map = Main.myMapList.get(mCounterMap);
  		mapShow.setText(map.mDescription);
  		nextPlace.setVisible(false);
  		prevPlace.setVisible(false);
@@ -112,7 +188,7 @@ public class ShowMapView extends BaseView {
   	   });
   	 
   	   showCity.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(mCounter);
+  		 CityMap map = Main.myMapList.get(mCounterMap);
  		mapShow.setText(map.mCity);
  		nextPlace.setVisible(false);
  		prevPlace.setVisible(false);
@@ -123,16 +199,16 @@ public class ShowMapView extends BaseView {
   	 showPlaces.setOnAction(e->{
   		if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER)editPlace.setVisible(true);
   		mCounterPlace =0;
-  		 CityMap map = Main.myMapList.get(mCounter);
+  		 CityMap map = Main.myMapList.get(mCounterMap);
  		mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
- 		setPlace(imageViewPlace);
+ 		setPlace();
  		nextPlace.setVisible(true);
  		prevPlace.setVisible(true);
   	   });
   	 
   	   nextM.setOnAction(e->{
   		 mCounterPlace=0;
-        	if(mCounter!=Main.myMapList.size()-1)mCounter++;
+        	if(mCounterMap!=Main.myMapList.size()-1)mCounterMap++;
         	setMap();
         	nextPlace.setVisible(false);
      		prevPlace.setVisible(false);
@@ -141,7 +217,7 @@ public class ShowMapView extends BaseView {
 
         pervM.setOnAction(e->{
         	mCounterPlace=0;
-        	if(mCounter!=0)mCounter--;
+        	if(mCounterMap!=0)mCounterMap--;
         	setMap();
         	nextPlace.setVisible(false);
      		prevPlace.setVisible(false);
@@ -149,13 +225,13 @@ public class ShowMapView extends BaseView {
         });
 
        nextPlace.setOnAction(e->{
-    	   if(mCounterPlace != Main.myMapList.get(mCounter).mPlaces.size()-1) {
+    	   if(mCounterPlace != Main.myMapList.get(mCounterMap).mPlaces.size()-1) {
     		   mCounterPlace++;
     		 
     	   }
-    	   CityMap map = Main.myMapList.get(mCounter);
+    	   CityMap map = Main.myMapList.get(mCounterMap);
     	   mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
-    	   setPlace(imageViewPlace);
+    	   setPlace();
     	   nextPlace.setVisible(true);
     	   prevPlace.setVisible(true);
        });
@@ -164,12 +240,14 @@ public class ShowMapView extends BaseView {
     	   if(mCounterPlace != 0) {
     		   mCounterPlace--;
     	   }
-    	   CityMap map = Main.myMapList.get(mCounter);
+    	   CityMap map = Main.myMapList.get(mCounterMap);
     	   mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
-    	   setPlace(imageViewPlace);
+    	   setPlace();
     	   nextPlace.setVisible(true);
 	 	   prevPlace.setVisible(true);
        });
+
+		// Edit
 
   	   editPrice.setOnAction(e->{
   			GUI.Main.editlevel=EditLevel.PRICE;
@@ -201,7 +279,7 @@ public class ShowMapView extends BaseView {
 		showVersion.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
 		mBuy.setMaxWidth(Dimensions.mShowMapViewButtonWidth);
 		mapShow.setMaxWidth(Dimensions.mShowMapViewTextWidth);
-
+		
 		// Y - coordinates
 		
 		nextM.setTranslateY(Dimensions.mShowMapViewTextRow1);
@@ -214,7 +292,12 @@ public class ShowMapView extends BaseView {
         
         nextPlace.setTranslateY(Dimensions.mShowMapViewTextRow3);
         prevPlace.setTranslateY(Dimensions.mShowMapViewTextRow4);
-		
+
+		mBuy.setTranslateY(Dimensions.mShowMapViewTextRow1);
+
+		mSubscription.setTranslateY(Dimensions.mShowMapViewTextRow1 - 15);
+		mOneTime.setTranslateY(Dimensions.mShowMapViewTextRow1 + 15);
+
 		// X - coordinates
 
         showCity.setTranslateX(Dimensions.mShowMapViewTextCol1);
@@ -227,7 +310,10 @@ public class ShowMapView extends BaseView {
 		pervM.setTranslateX(Dimensions.mShowMapViewTextCol1);
         nextM.setTranslateX(Dimensions.mShowMapViewTextCol4);
 
-		mBuy.setTranslateY(50);
+		mBuy.setTranslateX(Dimensions.mShowMapViewTextCol2);
+
+		mSubscription.setTranslateX(Dimensions.mShowMapViewTextCol3);
+		mOneTime.setTranslateX(Dimensions.mShowMapViewTextCol3 - 5);
 
 		// Maps
 
@@ -257,40 +343,59 @@ public class ShowMapView extends BaseView {
 		// Scene
 
 		_result.setBackground(new Background(myBIc2));
-		_result.getChildren().addAll(editPrice,addMapToCity,editPlace,editMap,showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, mBuy);  	   
+		_result.getChildren().addAll(mSubscription, mOneTime, editPrice,addMapToCity,editPlace,editMap,showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, mBuy);  	   
 		mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
   	   
 	}
 
+	// Edit
+	
+    public static void setDeafulePlace(ImageView aImageView) {
+		editPlace.setVisible(false);
+    	aImageView.setImage(mMapPlaceDefault);
+    }
+    
 	public static void refreshScene() {
-
-	    mCounter = 0;
+		
+		mCounterMap = 0;
 	    mCounterPlace = 0;
-
-		imageViewMap = new ImageView(mMapPlaceDefault);
-		imageViewPlace = new ImageView(mMapPlaceDefault);
 
 		nextPlace.setVisible(false);
 	 	prevPlace.setVisible(false);
 
+	 	boolean isUserCanWatchImages = Main.memberlevel == MemLvl.MEMBER && ( Main.mAccountUser.HasSubscription(Main.myMapList.get(mCounterMap).mCity) || mIsFirstViewAfterPurchase);
+	 	
+		if (!isUserCanWatchImages) {
+			imageViewMap.setImage(mMapPlaceDefault);
+			imageViewPlace.setImage(mMapPlaceDefault);
+		}
+
+		if (Main.memberlevel == MemLvl.FREE_USER) {
+			mBuy.setVisible(false);
+			mSubscription.setVisible(false);
+			mOneTime.setVisible(false);
+		} else if (!isUserCanWatchImages) {
+			mBuy.setVisible(true);
+			mSubscription.setVisible(true);
+			mOneTime.setVisible(true);
+		} else {
+			mBuy.setVisible(false);
+			mSubscription.setVisible(false);
+			mOneTime.setVisible(false);
+		}
+
+	 	// Edit
+	 	
 	 	editPlace.setVisible(false);
 	 	editPrice.setVisible(false);
 	 	editMap.setVisible(false);
 	 	addMapToCity.setVisible(false);
 
 		setMap();
+			
+		if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER) {
 
-		if (Main.memberlevel == MemLvl.FREE_USER) {
-
-			mBuy.setVisible(false);
-
-		} else if (Main.memberlevel == MemLvl.MEMBER) {
-
-			mBuy.setVisible(true);
-
-		} else if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER) {
-
-				CityMap map = Main.myMapList.get(mCounter);
+				CityMap map = Main.myMapList.get(mCounterMap);
 
 			 	editPrice.setVisible(true);
 			 	editMap.setVisible(true);
@@ -304,36 +409,51 @@ public class ShowMapView extends BaseView {
 
     public static void setMap() {
 
-    	if (mCounter < 0 || mCounter > Main.myMapList.size()) {
+    	if (mCounterMap < 0 || mCounterMap > Main.myMapList.size()) {
 	    	return;
 	    }
 
-    	CityMap map = Main.myMapList.get(mCounter);
-
-		if (Main.memberlevel != MemLvl.FREE_USER) {
-		    imageViewMap.setImage(new Image(map.mURL));
-	    }
+    	CityMap map = Main.myMapList.get(mCounterMap);
+    	
+		if (Main.memberlevel == MemLvl.MEMBER && ( Main.mAccountUser.HasSubscription(map.mCity) || mIsFirstViewAfterPurchase) ) {
+			imageViewMap.setImage(new Image(map.mURL));
+		}
 
 	    mapShow.setText(map.mName);
 
     }
 
-    public void setPlace(ImageView aImageView) {
-    	CityMap map = Main.myMapList.get(mCounter);
+    public void setPlace() {
+
+    	CityMap map = Main.myMapList.get(mCounterMap);
+
     	if (mCounterPlace < 0 || mCounterPlace >= map.mPlaces.size()) {
     		return;
     	}    	
+
     	Place place = map.mPlaces.get(mCounterPlace);
 
-		if (Main.memberlevel != MemLvl.FREE_USER) {
-			aImageView.setImage(new Image(place.mURL));
+		if (Main.memberlevel == MemLvl.MEMBER && ( Main.mAccountUser.HasSubscription(map.mCity) || mIsFirstViewAfterPurchase) ) {
+			imageViewPlace.setImage((new Image(place.mURL)));
 		}
 
     }
 
-    public static void setDeafulePlace(ImageView aImageView) {
-		editPlace.setVisible(false);
-    	aImageView.setImage(mMapPlaceDefault);
-    }
+   private static void setDiableAll(boolean aDisable) {
+	   
+	   showVersion.setDisable(aDisable);
+	   showDescription.setDisable(aDisable);
+	   showCity.setDisable(aDisable);
+	   showPlaces.setDisable(aDisable);
+	   
+	   nextM.setDisable(aDisable);
+	   pervM.setDisable(aDisable);
 
+	   prevPlace.setDisable(aDisable);
+	   nextPlace.setDisable(aDisable);
+	   
+	   mBuy.setDisable(aDisable);
+
+   }
+    
 }

@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import DB_classes.CityMap;
+import DB_classes.Purchase;
 import DB_classes.Purchases;
 import Defines.API;
 import Defines.ErrorCodes;
@@ -80,7 +81,11 @@ public class View {
 		    	{
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
-		    		
+		    			
+		    			Purchase purchase = gson.fromJson(gson.toJson(responseModel.mObject), Purchase.class);
+		    			
+		    			Main.mAccountUser.mPurchases.add(purchase);
+		    			
 		    		}
 
 		    	}

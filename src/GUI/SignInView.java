@@ -76,7 +76,6 @@ public class SignInView extends BaseView {
 
                 	progressForm.getDialogStage().close();
                     btn.setDisable(false);
-                    goBack.setDisable(false);
 
                     if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
@@ -104,7 +103,6 @@ public class SignInView extends BaseView {
                 });
 
                 btn.setDisable(true);
-                goBack.setDisable(true);
 
                 progressForm.getDialogStage().show();
 

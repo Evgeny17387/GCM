@@ -3,6 +3,8 @@ package DB_classes;
 import java.util.ArrayList;
 import java.util.List;
 
+import Defines.PurchaseType;
+
 public class AccountUser extends AccountBase {
 
 	public String mUserName;
@@ -43,5 +45,17 @@ public class AccountUser extends AccountBase {
 				this.mPurchases.equals(accountUser.mPurchases)
 				);
 	}
-	
+
+	public boolean HasSubscription(String aCity) {
+
+		for (Purchase purchase : mPurchases) {
+			if (purchase.mCityName.equals(aCity) && purchase.mType.equals(PurchaseType.SUBSCRIPTION)) {
+				return true;
+			}
+		}
+		
+		return false;
+
+	}
+
 }

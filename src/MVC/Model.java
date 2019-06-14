@@ -319,13 +319,17 @@ public class Model {
 
 			prep_stmt = conn.prepareStatement(sql);
 			
+			String date = TimeAndDateUtils.GetCurrentDate();
+			
 			prep_stmt.setString(1, aUserName);
 			prep_stmt.setString(2, aCityName);
-			prep_stmt.setString(3, TimeAndDateUtils.GetCurrentDate());
+			prep_stmt.setString(3, date);
 			prep_stmt.setString(4, aType);
 			
 			prep_stmt.executeUpdate();
-			
+
+			responseModel.mObject = new Purchase(aUserName, aCityName, date, aType);
+
 			responseModel.mErrorCode = ErrorCodes.SUCCESS;
 				
 		} catch (SQLException se) {
