@@ -45,15 +45,20 @@ public class WorkerReportsView extends BaseView {
         TableColumn dateColumn = new TableColumn("Date");
         dateColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("date"));
 
+        TableColumn typeColumn = new TableColumn("Type");
+        typeColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("type"));
+
         table = new TableView<PurchaseView>();
         table.setEditable(false);
-        table.getColumns().addAll(usernameColumn, cityColumn, dateColumn);
+        table.getColumns().addAll(usernameColumn, cityColumn, dateColumn, typeColumn);
         
 		// Position in UI
 
-        cityColumn.setMinWidth(145);
-        dateColumn.setMinWidth(145);
-        usernameColumn.setMinWidth(145);
+        cityColumn.setMinWidth(Dimensions.mWorkerReportsViewColumnWidth);
+        dateColumn.setMinWidth(Dimensions.mWorkerReportsViewColumnWidth);
+        usernameColumn.setMinWidth(Dimensions.mWorkerReportsViewColumnWidth);
+        typeColumn.setMinWidth(Dimensions.mWorkerReportsViewColumnWidth);
+
         table.setMaxWidth(Dimensions.mWorkerReportsViewTableWidth);
 		table.setMaxHeight(Dimensions.mWorkerReportsViewTableheight);
 
@@ -73,7 +78,7 @@ public class WorkerReportsView extends BaseView {
 
 	    for (Purchases purchases : Main.mPurchases) {
 		    for (Purchase purchase : purchases.mPurchases) {
-		    	data.add(new PurchaseView(purchase.mCityName, purchase.mDate, purchase.mUserName));
+		    	data.add(new PurchaseView(purchase.mCityName, purchase.mDate, purchase.mUserName, purchase.mType));
 		    }
 	    }
 

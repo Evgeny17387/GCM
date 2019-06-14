@@ -28,9 +28,10 @@ public class Dimensions {
 	
 	public static final int mUpdateDetailsViewTextWidth 		= 300;
 	public static final int mUpdateDetailsViewUpdateButtonWidth = 200;
-	public static final int mUpdateDetailsViewTableWidth 		= 300;
-	public static final int mUpdateDetailsViewTableHeight 		= 100;
 	public static final int mUpdateDetailsViewBackButtonWidth 	= 150;
+	public static final int mUpdateDetailsViewTableHeight 		= 100;
+	public static final int mUpdateDetailsViewTableWidth 		= 335;
+	public static final int mUpdateDetailsViewColumnWidth 		= 110;
 
 	// WorkerView
 
@@ -38,7 +39,8 @@ public class Dimensions {
 
 	// WorkerReportsView
 
-	public static final int mWorkerReportsViewTableWidth		= 450;
+	public static final int mWorkerReportsViewColumnWidth		= 110;
+	public static final int mWorkerReportsViewTableWidth		= 445;
 	public static final int mWorkerReportsViewTableheight		= 300;
 
 	// ShowMapView

@@ -89,9 +89,12 @@ public class UpdateDetailsView extends BaseView {
         TableColumn dateColumn = new TableColumn("Date");
         dateColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("date"));
 
+        TableColumn typeColumn = new TableColumn("Type");
+        typeColumn.setCellValueFactory(new PropertyValueFactory<PurchaseView, String>("type"));
+
         table = new TableView<PurchaseView>();
         table.setEditable(false);
-        table.getColumns().addAll(cityColumn, dateColumn);
+        table.getColumns().addAll(cityColumn, dateColumn, typeColumn);
         
         // OnClick
 
@@ -170,9 +173,12 @@ public class UpdateDetailsView extends BaseView {
 		mLastName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
 		update.setMaxWidth(Dimensions.mUpdateDetailsViewUpdateButtonWidth);
 		goBack.setMaxWidth(Dimensions.mUpdateDetailsViewBackButtonWidth);
-        cityColumn.setMinWidth(140);
-        dateColumn.setMinWidth(140);
-		table.setMaxWidth(Dimensions.mUpdateDetailsViewTableWidth);
+
+		cityColumn.setMinWidth(Dimensions.mUpdateDetailsViewColumnWidth);
+        dateColumn.setMinWidth(Dimensions.mUpdateDetailsViewColumnWidth);
+        typeColumn.setMinWidth(Dimensions.mUpdateDetailsViewColumnWidth);
+
+        table.setMaxWidth(Dimensions.mUpdateDetailsViewTableWidth);
 		table.setMaxHeight(Dimensions.mUpdateDetailsViewTableHeight);
 
 		mUserName.setTranslateY(-250);
@@ -208,7 +214,7 @@ public class UpdateDetailsView extends BaseView {
 	    data = FXCollections.observableArrayList();
 
 	    for (Purchase purchase : Main.mAccountUser.mPurchases) {
-	        data.add(new PurchaseView(purchase.mCityName, purchase.mDate));
+	        data.add(new PurchaseView(purchase.mCityName, purchase.mDate, purchase.mType));
 	    }
 
         table.setItems(data);
