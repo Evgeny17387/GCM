@@ -143,20 +143,16 @@ public class View {
 
 	    	// Map Search
 
-	    	case "MapSearch_city_key":
+	    	case API.SEARCH_BY_CITY:
 	    		
-	    	    System.out.println("View: " + "MapSearch_city_key");
+	    	    System.out.println("View: " + API.SEARCH_BY_CITY);
 
 		    	{
 		    		
 		    	    Type typeMap = new TypeToken<List<CityMap>>(){}.getType();
 		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseModel.mObject), typeMap);
-		    	    for (int i = 0; i < mapList.size(); i++) {
-		    	    	CityMap map = mapList.get(i);
-						System.out.println(map.toString());
-		    	    }
-			    	   GUI.Main.myMapList=mapList;
 
+		    	    GUI.Main.myMapList = mapList;
 		    		
 		    	}
 
@@ -164,20 +160,17 @@ public class View {
 
 	    		break;
 
-	    	case "MapSearch_place_key":
+	    	case API.SEARCH_BY_PLACE:
 
-	    	    System.out.println("View: " + "MapSearch_place_key");
+	    	    System.out.println("View: " + API.SEARCH_BY_PLACE);
 	    	    
 	    	    {
 
 		    	    Type typeMap = new TypeToken<List<CityMap>>(){}.getType();
 		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
-		    	    for (int i = 0; i < mapList.size(); i++) {
-		    	    	CityMap map = mapList.get(i);
-						System.out.println(map.toString());
-		    	    }
-		    	    
-		    	
+
+		    	    GUI.Main.myMapList = mapList;
+
 	    	    }
 
 	    	    Main.mResposeFromserver = true;

@@ -22,7 +22,6 @@ public class BaseView {
     BackgroundImage myBIc;
     BackgroundImage myBIs1;
     BackgroundImage myBIc1;
-    BackgroundImage myBIc2;
     BackgroundImage myBIe;
 
     static ClientConsole mChat;
@@ -38,10 +37,9 @@ public class BaseView {
 	    myBI = new BackgroundImage(new Image("/Images/Background.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 	    myBIs = new BackgroundImage(new Image("/Images/Background_sign.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 	    myBIW = new BackgroundImage(new Image("/Images/signInIm.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        myBIc = new BackgroundImage(new Image("/Images/catalog_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        myBIc = new BackgroundImage(new Image("/Images/catalog.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         myBIs1 = new BackgroundImage(new Image("/Images/sign_up.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
     	myBIc1 = new BackgroundImage(new Image("/Images/Buy.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        myBIc2 = new BackgroundImage(new Image("/Images/catalog2.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         myBIe = new BackgroundImage(new Image("/Images/edit.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
 		this.mChat = aChat;

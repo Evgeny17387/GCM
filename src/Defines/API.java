@@ -23,6 +23,9 @@ public class API {
 	
 	public static final String GET_ROUTES = "GetRoutes";
 	
+	// Maps, Routes and Places
 	
+	public static final String SEARCH_BY_CITY = "SearchByCity";
+	public static final String SEARCH_BY_PLACE = "SearchByPlace";
 	
 }

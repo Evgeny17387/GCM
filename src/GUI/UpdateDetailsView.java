@@ -172,7 +172,6 @@ public class UpdateDetailsView extends BaseView {
 		mFirstName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
 		mLastName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
 		update.setMaxWidth(Dimensions.mUpdateDetailsViewUpdateButtonWidth);
-		goBack.setMaxWidth(Dimensions.mUpdateDetailsViewBackButtonWidth);
 
 		cityColumn.setMinWidth(Dimensions.mUpdateDetailsViewColumnWidth);
         dateColumn.setMinWidth(Dimensions.mUpdateDetailsViewColumnWidth);
@@ -189,7 +188,6 @@ public class UpdateDetailsView extends BaseView {
 		mLastName.setTranslateY(-50);
 		update.setTranslateY(0);
 		table.setTranslateY(100);
-		goBack.setTranslateY(300);
 
 		// Scene
 		

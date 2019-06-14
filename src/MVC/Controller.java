@@ -198,7 +198,7 @@ public class Controller {
 
 		// Maps search
 
-		case "MapSearch_city_key":
+		case API.SEARCH_BY_CITY:
 
 			{
 
@@ -206,7 +206,7 @@ public class Controller {
 
 				ResponseModel responseModel = model.MapsByCity(cityName);
 		
-		    	ResponseController responseController = new ResponseController("MapSearch_city_key", responseModel);
+		    	ResponseController responseController = new ResponseController(API.SEARCH_BY_CITY, responseModel);
 		
 		    	jsonString = gson.toJson(responseController);
 
@@ -214,7 +214,7 @@ public class Controller {
 
 			break;
 
-		case "MapSearch_place_key":
+		case API.SEARCH_BY_PLACE:
 
 			{
 				
@@ -222,7 +222,7 @@ public class Controller {
 		
 				List<CityMap> mapsListPlaceName = model.MapsByPlace(placeName);
 		
-		    	ResponseController responseController = new ResponseController("MapSearch_place_key", mapsListPlaceName);
+		    	ResponseController responseController = new ResponseController(API.SEARCH_BY_PLACE, mapsListPlaceName);
 		
 		    	jsonString = gson.toJson(responseController);
 				

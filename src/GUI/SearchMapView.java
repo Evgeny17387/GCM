@@ -3,6 +3,7 @@ package GUI;
 import com.google.gson.Gson;
 
 import Communication.ClientConsole;
+import Defines.API;
 import Defines.Dimensions;
 import Defines.ErrorCodes;
 import Defines.SceneName;
@@ -14,7 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -29,13 +32,12 @@ import javafx.stage.Stage;
 
 public class SearchMapView extends BaseView {
 
-    static TextField searchTF;
+    static TextField mSearchKey;
 
-    static CheckBox Search_by_city;
-    static CheckBox Search_by_inplace ;
-    static CheckBox Search_by_general_description;
+	static RadioButton mSearchByCity;
+	static RadioButton SearchByPlace;
 
-	String request_string;
+	static String mRequest;
 
 	public SearchMapView(ClientConsole aChat) {
 
@@ -43,102 +45,110 @@ public class SearchMapView extends BaseView {
 
 		// Init
 		
-        searchTF = new TextField("Type map to search");
+		mSearchKey = new TextField("Type map to search");
 
-        Search_by_city = new CheckBox("Search by city");
-        Search_by_inplace= new CheckBox("Search by interested place");
-        Search_by_general_description = new CheckBox("Search by general description");
+        mSearchByCity = new RadioButton("Search by city");
+        SearchByPlace = new RadioButton("Search by interesting place");
 
-        Search_by_city.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-        Search_by_inplace.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-        Search_by_general_description.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-        searchTF.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+		ToggleGroup group = new ToggleGroup();
+		mSearchByCity.setToggleGroup(group);
+		SearchByPlace.setToggleGroup(group);
 
-        Button search_btn = new Button("Search");
+		mSearchByCity.setSelected(true);
+
+		mSearchByCity.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+		SearchByPlace.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+		mSearchKey.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+
+        Button searchButton = new Button("Search");
 
 		// OnClick
 
-        search_btn.setOnAction(e->{
+        searchButton.setOnAction(e->{
 
-        	if((Search_by_city.isSelected()&&Search_by_inplace.isSelected())||(Search_by_city.isSelected()&&Search_by_general_description.isSelected())||Search_by_inplace.isSelected()&&Search_by_general_description.isSelected())
-        		return;
-    		//GUI.ShowMapView.setDeafulePlace();
-        	String searchKey = searchTF.getText();
-        	if(Search_by_city.isSelected())
-        		request_string = "MapSearch_city_key";
-        	else if(Search_by_inplace.isSelected())
-        		request_string = "MapSearch_place_key";
-        	else if(Search_by_general_description.isSelected())
-        		request_string = "MapSearch_desc_key";
+        	if (mSearchKey.getText().isEmpty()) {
 
-        	Request request = new Request(request_string, searchKey);
-        	String jsonString = mGson.toJson(request);
-        	mChat.SendToServer(jsonString);
+        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "Search key must not be empty", "Please fill up the key");
+        		alert.showAndWait();
 
-            ProgressForm progressForm = new ProgressForm();
-            Task<Void> waitTask = new Dialogs.WaitTask();
-            progressForm.activateProgressBar(waitTask);
+        	}else {
 
-            waitTask.setOnSucceeded(event -> {
+            	String searchKey = mSearchKey.getText();
+            	            	
+            	if(mSearchByCity.isSelected())
+            		mRequest = API.SEARCH_BY_CITY;
+            	else if(SearchByPlace.isSelected())
+            		mRequest = API.SEARCH_BY_PLACE;
 
-            	progressForm.getDialogStage().close();
-            	search_btn.setDisable(false);
-                goBack.setDisable(false);
+            	Request request = new Request(mRequest, searchKey);
+            	String jsonString = mGson.toJson(request);
+            	mChat.SendToServer(jsonString);
 
-            	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+                ProgressForm progressForm = new ProgressForm();
+                Task<Void> waitTask = new Dialogs.WaitTask();
+                progressForm.activateProgressBar(waitTask);
 
-                	Main.changeScene(SceneName.SHOW_MAP);
+                waitTask.setOnSucceeded(event -> {
 
-        		} else {
+                	progressForm.getDialogStage().close();
+                	searchButton.setDisable(false);
+                    goBack.setDisable(false);
 
-            		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred, please try again", "Please try again");
-            		alert.showAndWait();
+                	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-            	}
+                    	Main.changeScene(SceneName.SHOW_MAP);
 
-        		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+            		} else {
 
-            });
+                		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred, please try again", "Please try again");
+                		alert.showAndWait();
 
-            search_btn.setDisable(true);
-            goBack.setDisable(true);
+                	}
 
-            progressForm.getDialogStage().show();
+            		Main.mServerResponseErrorCode = ErrorCodes.RESET;
 
-            Thread thread = new Thread(waitTask);
-            thread.start();
+                });
+
+                searchButton.setDisable(true);
+                goBack.setDisable(true);
+
+                progressForm.getDialogStage().show();
+
+                Thread thread = new Thread(waitTask);
+                thread.start();
+
+        	}
     		
         });
 
 		// UI
 
-        searchTF.setMaxWidth(300);
+        mSearchKey.setMaxWidth(300);
 
-        searchTF.setTranslateY(-100);
-        Search_by_city.setTranslateY(-250);
-        Search_by_city.setTranslateX(-63);
-        Search_by_inplace.setTranslateY(-200);
-        Search_by_general_description.setTranslateY(-150);
+        mSearchKey.setTranslateY(-100);
+        mSearchByCity.setTranslateY(-250);
+        mSearchByCity.setTranslateX(-63);
+        SearchByPlace.setTranslateY(-200);
 
         // Scene
         
-        StackPane guestZone = new StackPane();
-        guestZone.setBackground(new Background(myBIc));
-        guestZone.getChildren().addAll(searchTF, search_btn, goBack, Search_by_city, Search_by_inplace, Search_by_general_description);
+        StackPane stackPane = new StackPane();
+        stackPane.setBackground(new Background(myBIc));
+        stackPane.getChildren().addAll(mSearchKey, searchButton, goBack, mSearchByCity, SearchByPlace);
 
-        mScene = new Scene(guestZone, Dimensions.mWith, Dimensions.mheight);
+        mScene = new Scene(stackPane, Dimensions.mWith, Dimensions.mheight);
 
 	}
 
 	public static void refreshScene() {
 
 //	     searchTF.setText("Type map to search");
-	     searchTF.setText("Haifa");
+		mSearchKey.setText("Haifa");
 
 //	     Search_by_city.setSelected(false);
-	     Search_by_city.setSelected(true);
-	     Search_by_inplace.setSelected(false);
-	     Search_by_general_description.setSelected(false);
+	     mSearchByCity.setSelected(true);
+
+	     SearchByPlace.setSelected(false);
 
 	}
 

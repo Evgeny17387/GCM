@@ -347,7 +347,7 @@ public class ShowMapView extends BaseView {
 
 		// Scene
 
-		_result.setBackground(new Background(myBIc2));
+		_result.setBackground(new Background(myBIc));
 		_result.getChildren().addAll(mSubscription, mOneTime, editPrice,addMapToCity,editPlace,editMap,showVersion,showDescription,showCity,showPlaces,nextM, pervM, goBack, imageViewPlace, prevPlace, imageViewMap, nextPlace, mapShow, mBuy);  	   
 		mScene = new Scene(_result, Dimensions.mWith, Dimensions.mheight);
   	   
