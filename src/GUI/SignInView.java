@@ -88,7 +88,7 @@ public class SignInView extends BaseView {
     	        		for (Purchase purcahse : Main.mAccountUser.mPurchases) {
     	        			if (purcahse.mType.equals(PurchaseType.SUBSCRIPTION)) {
     	        				int subscriptionLeftDays = Constants.mSubscriptionDays - TimeAndDateUtils.GetDaysLeft(purcahse.mDate);
-    	        				if (subscriptionLeftDays < Constants.mSubscriptionDaysLeftWarning) {
+    	        				if (subscriptionLeftDays < Constants.mSubscriptionDaysLeftWarning && subscriptionLeftDays >= 0) {
     	        	        		MessageDialog alertSubscription = new MessageDialog(AlertType.WARNING, "Subscription Expiration", "Days left for subscruption to " + purcahse.mCityName + " : " + subscriptionLeftDays, "Don't foget to subscribe again...");
     	        	        		alertSubscription.showAndWait();
     	        				}

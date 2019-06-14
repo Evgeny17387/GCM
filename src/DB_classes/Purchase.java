@@ -1,5 +1,9 @@
 package DB_classes;
 
+import Defines.Constants;
+import Defines.PurchaseType;
+import Utils.TimeAndDateUtils;
+
 public class Purchase {
 
 	public String mUserName;
@@ -7,11 +11,20 @@ public class Purchase {
 	public String mDate;
 	public String mType;
 
+	public boolean mIsValid;
+
 	public Purchase(String aUserName, String aCityName, String aDate, String aType) {
 		this.mUserName = aUserName;
 		this.mCityName = aCityName;
 		this.mDate = aDate;
 		this.mType = aType;
+		
+		if (this.mType.equals(PurchaseType.SUBSCRIPTION)) {
+			this.mIsValid  = Constants.mSubscriptionDays - TimeAndDateUtils.GetDaysLeft(this.mDate) > 0 ? true : false;
+		} else {
+			this.mIsValid = true;
+		}
+		
 	}
 
 	public String toString() {
