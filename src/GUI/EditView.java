@@ -31,8 +31,8 @@ public class EditView extends BaseView  {
 		TextField newMapPic=new TextField("Insert new map picture url");
 		TextField placeDescription=new TextField("Insert new place description");
 	
-		Button Next=new Button ("Next");
-		Button goBack=new Button("Go back");
+		Button Next = new Button ("Next");
+		Button goBack = new Button("Go back");
 
 		// OnClick
 

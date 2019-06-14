@@ -171,66 +171,71 @@ public class ShowMapView extends BaseView {
 			mIsFirstViewAfterPurchase = false;
 			Main.changeScene(SceneName.MAIN);
 		});
-		
-  	  showVersion.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(mCounterMap);
- 		mapShow.setText(map.mVersion);
- 		nextPlace.setVisible(false);
- 		prevPlace.setVisible(false);
- 		setDeafulePlace(imageViewPlace);
-  	   });
-  	 showDescription.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(mCounterMap);
- 		mapShow.setText(map.mDescription);
- 		nextPlace.setVisible(false);
- 		prevPlace.setVisible(false);
- 		setDeafulePlace(imageViewPlace);
-  	   });
-  	 
-  	   showCity.setOnAction(e->{
-  		 CityMap map = Main.myMapList.get(mCounterMap);
- 		mapShow.setText(map.mCity);
- 		nextPlace.setVisible(false);
- 		prevPlace.setVisible(false);
- 		setDeafulePlace(imageViewPlace);
-  	   });
-  	   
-  	   
-  	 showPlaces.setOnAction(e->{
-  		if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER)editPlace.setVisible(true);
-  		mCounterPlace =0;
-  		 CityMap map = Main.myMapList.get(mCounterMap);
- 		mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
- 		setPlace();
- 		nextPlace.setVisible(true);
- 		prevPlace.setVisible(true);
-  	   });
-  	 
-  	   nextM.setOnAction(e->{
-  		 mCounterPlace=0;
-        	if(mCounterMap!=Main.myMapList.size()-1)mCounterMap++;
-        	setMap();
-        	nextPlace.setVisible(false);
-     		prevPlace.setVisible(false);
-     		setDeafulePlace(imageViewPlace);
+
+		showVersion.setOnAction(e->{
+			CityMap map = Main.myMapList.get(mCounterMap);
+			mapShow.setText(map.mVersion);
+			nextPlace.setVisible(false);
+			prevPlace.setVisible(false);
+			setDeafulePlace();
+		});
+
+		showDescription.setOnAction(e->{
+			CityMap map = Main.myMapList.get(mCounterMap);
+			mapShow.setText(map.mDescription);
+			nextPlace.setVisible(false);
+			prevPlace.setVisible(false);
+			setDeafulePlace();
+		});
+
+		showCity.setOnAction(e->{
+			CityMap map = Main.myMapList.get(mCounterMap);
+			mapShow.setText(map.mCity);
+			nextPlace.setVisible(false);
+			prevPlace.setVisible(false);
+			setDeafulePlace();
+		});
+
+		showPlaces.setOnAction(e->{
+			if (Main.memberlevel != MemLvl.MEMBER && Main.memberlevel != MemLvl.FREE_USER) {
+				editPlace.setVisible(true);
+			}
+			mCounterPlace = 0;
+			CityMap map = Main.myMapList.get(mCounterMap);
+			mapShow.setText(map.mPlaces.get(mCounterPlace).mName + "- " + map.mPlaces.get(mCounterPlace).mDescription);
+			setPlace();
+			nextPlace.setVisible(true);
+			prevPlace.setVisible(true);
+		});
+
+		nextM.setOnAction(e->{
+			mCounterPlace = 0;
+  		   if(mCounterMap != Main.myMapList.size()-1) {
+  			   mCounterMap++;
+  		   }
+  		   setMap();
+  		   nextPlace.setVisible(false);
+  		   prevPlace.setVisible(false);
+  		   setDeafulePlace();
         });
 
-        pervM.setOnAction(e->{
-        	mCounterPlace=0;
-        	if(mCounterMap!=0)mCounterMap--;
+		pervM.setOnAction(e->{
+			mCounterPlace = 0;
+        	if (mCounterMap != 0) {
+        		mCounterMap--;
+        	}
         	setMap();
         	nextPlace.setVisible(false);
      		prevPlace.setVisible(false);
-     		setDeafulePlace(imageViewPlace);
+     		setDeafulePlace();
         });
 
        nextPlace.setOnAction(e->{
     	   if(mCounterPlace != Main.myMapList.get(mCounterMap).mPlaces.size()-1) {
     		   mCounterPlace++;
-    		 
     	   }
     	   CityMap map = Main.myMapList.get(mCounterMap);
-    	   mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
+    	   mapShow.setText(map.mPlaces.get(mCounterPlace).mName + " - " + map.mPlaces.get(mCounterPlace).mDescription);
     	   setPlace();
     	   nextPlace.setVisible(true);
     	   prevPlace.setVisible(true);
@@ -241,7 +246,7 @@ public class ShowMapView extends BaseView {
     		   mCounterPlace--;
     	   }
     	   CityMap map = Main.myMapList.get(mCounterMap);
-    	   mapShow.setText(map.mPlaces.get(mCounterPlace).mName+"- "+map.mPlaces.get(mCounterPlace).mDescription);
+    	   mapShow.setText(map.mPlaces.get(mCounterPlace).mName + " - " + map.mPlaces.get(mCounterPlace).mDescription);
     	   setPlace();
     	   nextPlace.setVisible(true);
 	 	   prevPlace.setVisible(true);
@@ -250,20 +255,20 @@ public class ShowMapView extends BaseView {
 		// Edit
 
   	   editPrice.setOnAction(e->{
-  			GUI.Main.editlevel=EditLevel.PRICE;
+  			GUI.Main.editlevel = EditLevel.PRICE;
   		});
 
   		addMapToCity.setOnAction(e->{
-  			GUI.Main.editlevel=EditLevel.ADD;
+  			GUI.Main.editlevel = EditLevel.ADD;
   		});
 
   		editPlace.setOnAction(e->{
-  			GUI.Main.editlevel=EditLevel.PLACE;
+  			GUI.Main.editlevel = EditLevel.PLACE;
 
   		});
 
   		editMap.setOnAction(e->{
-  			GUI.Main.editlevel=EditLevel.MAP;
+  			GUI.Main.editlevel = EditLevel.MAP;
 
   		});
 
@@ -329,7 +334,7 @@ public class ShowMapView extends BaseView {
 		imageViewPlace.setFitWidth(390);
 		imageViewPlace.setFitHeight(290);
 
-		// Edit Buttons
+		// Edit
 
 	 	editPlace.setTranslateY(220);
 	 	editPrice.setTranslateY(220);
@@ -350,9 +355,9 @@ public class ShowMapView extends BaseView {
 
 	// Edit
 	
-    public static void setDeafulePlace(ImageView aImageView) {
+    public static void setDeafulePlace() {
 		editPlace.setVisible(false);
-    	aImageView.setImage(mMapPlaceDefault);
+		imageViewPlace.setImage(mMapPlaceDefault);
     }
     
 	public static void refreshScene() {
