@@ -64,7 +64,7 @@ public class Controller {
 	
 				ResponseModel responseModel = model.GetUser(accountCheck.mUserName, accountCheck.mPassword);
 	
-		    	ResponseController responseController = new ResponseController(API.GET_USER, responseModel);
+		    	ResponseController responseController = new ResponseController(request.mType, responseModel);
 	
 		    	jsonString = gson.toJson(responseController);
 	
@@ -98,7 +98,7 @@ public class Controller {
 
 				ResponseModel responseModel = model.Buy(buyRequest.mUserName, buyRequest.mCityName, buyRequest.mType);
 
-		    	ResponseController responseController = new ResponseController(API.BUY, responseModel);
+		    	ResponseController responseController = new ResponseController(request.mType, responseModel);
 
 		    	jsonString = gson.toJson(responseController);
 
@@ -116,7 +116,7 @@ public class Controller {
 
 				ResponseModel responseModel = model.GetWorker(accountCheck.mUserName, accountCheck.mPassword);
 
-		    	ResponseController responseController = new ResponseController(API.GET_WORKER, responseModel);
+		    	ResponseController responseController = new ResponseController(request.mType, responseModel);
 
 		    	jsonString = gson.toJson(responseController);
 
@@ -148,7 +148,7 @@ public class Controller {
 
 				}
 
-				responseController = new ResponseController(API.GET_USERS_PURCHASES, responseModel);
+				responseController = new ResponseController(request.mType, responseModel);
 
 		    	jsonString = gson.toJson(responseController);
 
@@ -168,7 +168,7 @@ public class Controller {
 				
 				ResponseController responseController;
 
-				responseController = new ResponseController(API.PROPOSE_NEW_PRICE, responseModel);
+				responseController = new ResponseController(request.mType, responseModel);
 
 		    	jsonString = gson.toJson(responseController);
 
@@ -188,7 +188,7 @@ public class Controller {
 					
 					ResponseController responseController;
 
-					responseController = new ResponseController(API.APPROVE_PROPOSED_PRICE, responseModel);
+					responseController = new ResponseController(request.mType, responseModel);
 
 			    	jsonString = gson.toJson(responseController);
 
@@ -206,7 +206,7 @@ public class Controller {
 
 				ResponseModel responseModel = model.GetMapsByCity(cityName);
 		
-		    	ResponseController responseController = new ResponseController(API.SEARCH_BY_CITY, responseModel);
+		    	ResponseController responseController = new ResponseController(request.mType, responseModel);
 		
 		    	jsonString = gson.toJson(responseController);
 
@@ -222,7 +222,7 @@ public class Controller {
 		
 				ResponseModel responseModel = model.GetMapsByPlace(placeName);
 		
-		    	ResponseController responseController = new ResponseController(API.SEARCH_BY_PLACE, responseModel);
+		    	ResponseController responseController = new ResponseController(request.mType, responseModel);
 		
 		    	jsonString = gson.toJson(responseController);
 				
@@ -240,7 +240,7 @@ public class Controller {
 
 				List<Route> routes = model.GetRoutes(getRoutesRequest.mCityName);
 		
-		    	ResponseController responseController = new ResponseController(API.GET_ROUTES, routes);
+		    	ResponseController responseController = new ResponseController(request.mType, routes);
 		
 		    	jsonString = gson.toJson(responseController);
 
