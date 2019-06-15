@@ -24,6 +24,12 @@ public class CityMap {
     	this.mURL = aURL;
 	}
 
+	public CityMap(String aName,String aDescription,String aURL){
+    	this.mName = aName;
+    	this.mDescription = aDescription;
+    	this.mURL = aURL;
+	}
+
 	public String toString() {
 
 		return (

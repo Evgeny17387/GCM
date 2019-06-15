@@ -1,19 +1,29 @@
 package GUI;
 
 import Communication.ClientConsole;
+import DB_classes.CityMap;
+import DB_classes.CityMapUpdate;
+import Defines.API;
 import Defines.Dimensions;
 import Defines.SceneName;
+import Dialogs.MessageDialog;
+import Dialogs.ProgressForm;
+import Requests.Request;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import Defines.MemLvl;
 import Defines.EditLevel;
+import Defines.ErrorCodes;
 
 public class EditView extends BaseView  {
+	static String mRequest;
 	StackPane root = new StackPane();
 	static TextField mName=new TextField("");
 	static TextField mDescription=new TextField ("");
@@ -63,6 +73,9 @@ public class EditView extends BaseView  {
 		
 		
 		
+		Button Next = new Button ("Next");
+		Button goBack = new Button("Go back");
+
 		// OnClick
 
 		goBack.setOnAction(e->{Main.changeScene(SceneName.SHOW_MAP);});
@@ -79,6 +92,72 @@ public class EditView extends BaseView  {
        	root.getChildren().addAll(mURL,editPlaceDescription,editPlaceUrl,editPlaceName,placeURL,placeName,mName,mDescription,mPrice,newMapName,newMapDescription,newMapPic,placeDescription,Next,goBack);
      	mScene = new Scene(root, Dimensions.mWith, Dimensions.mheight);
 
+     	
+     	
+     	
+     	Next.setOnAction(e->{
+     		
+     		if(GUI.Main.editlevel==EditLevel.MAP) {
+     			CityMapUpdate map= new CityMapUpdate(mName.getText(),mDescription.getText(),mURL.getText(),Main.myMapList.get(ShowMapView.mCounterMap).mName);
+     			mRequest=API.UPDATE_MAP;
+     			Request request = new Request(mRequest, map);
+            	String jsonString = mGson.toJson(request);
+            	mChat.SendToServer(jsonString);
+            	
+            	   ProgressForm progressForm = new ProgressForm();
+                   Task<Void> waitTask = new Dialogs.WaitTask();
+                   progressForm.activateProgressBar(waitTask);
+
+                   waitTask.setOnSucceeded(event -> {
+
+                   	progressForm.getDialogStage().close();
+                   	Next.setDisable(false);
+                       goBack.setDisable(false);
+
+                   	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+       	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Congradulations", "Your details have been updated", "");
+       	        		alert.showAndWait();
+       	        		
+       	        		refreshScene();
+
+               		} else {
+
+       	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred", "Please try again");
+                   		alert.showAndWait();
+
+                   	}
+
+               		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
+                   });
+
+                   Next.setDisable(true);
+                   goBack.setDisable(true);
+
+                   progressForm.getDialogStage().show();
+
+                   Thread thread = new Thread(waitTask);
+                   thread.start();
+           		
+           	
+     			
+     			
+     		}
+     		
+     		
+     		
+     		
+     		
+     	});
+     	
+     	
+     	
+     	
+     	
+     	
+     	
+     	
+     	
 	 
 	}
 	

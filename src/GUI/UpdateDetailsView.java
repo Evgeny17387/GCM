@@ -135,7 +135,7 @@ public class UpdateDetailsView extends BaseView {
 
                 	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
 
-    	        		MessageDialog alert = new MessageDialog(AlertType.CONFIRMATION, "Congradulations", "Your details have been updated", "");
+    	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Congradulations", "Your details have been updated", "");
     	        		alert.showAndWait();
     	        		
     	        		refreshScene();
@@ -172,8 +172,6 @@ public class UpdateDetailsView extends BaseView {
 		mFirstName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
 		mLastName.setMaxWidth(Dimensions.mUpdateDetailsViewTextWidth);
 		update.setMaxWidth(Dimensions.mUpdateDetailsViewUpdateButtonWidth);
-		goBack.setMaxWidth(Dimensions.mUpdateDetailsViewBackButtonWidth);
-
 		cityColumn.setMinWidth(Dimensions.mUpdateDetailsViewColumnWidth);
         dateColumn.setMinWidth(Dimensions.mUpdateDetailsViewColumnWidth);
         typeColumn.setMinWidth(Dimensions.mUpdateDetailsViewColumnWidth);
@@ -189,7 +187,6 @@ public class UpdateDetailsView extends BaseView {
 		mLastName.setTranslateY(-50);
 		update.setTranslateY(0);
 		table.setTranslateY(100);
-		goBack.setTranslateY(300);
 
 		// Scene
 		

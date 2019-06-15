@@ -94,7 +94,7 @@ public class SignInView extends BaseView {
     	        				}
     	        			}
     	        		}
-    	        		
+    	        
     	        		Main.memberlevel = MemLvl.MEMBER;
 
     	        		Main.changeScene(SceneName.MAIN);

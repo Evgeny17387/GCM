@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import DB_classes.AccountUser;
 import DB_classes.AccountWorker;
 import DB_classes.CityMap;
+import DB_classes.CityMapUpdate;
 import DB_classes.Place;
 import DB_classes.Route;
 import Defines.API;
@@ -198,6 +199,15 @@ public class Controller {
 
 		// Maps search
 
+		case API.UPDATE_MAP:
+		{
+			CityMapUpdate myMap = gson.fromJson(gson.toJson(request.mObject), CityMapUpdate.class);			
+			ResponseModel responseModel = model.updateMap(myMap);
+	
+	    	ResponseController responseController = new ResponseController(request.mType, responseModel);
+	    	jsonString = gson.toJson(responseController);
+	    	break;
+		}
 		case API.SEARCH_BY_CITY:
 
 			{

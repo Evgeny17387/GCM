@@ -46,7 +46,13 @@ public class View {
 			    Main.mResposeFromserver = true;
 
     	    	break;
+    	    
+	    
+	    	case API.UPDATE_MAP:
+	    		responseModel.mErrorCode = ErrorCodes.SUCCESS;
+	    	    Main.mResposeFromserver = true;
 
+    	    break;
 	    	case API.GET_USER:
 	    	case API.UPDATE_USER:
 

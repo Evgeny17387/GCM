@@ -28,7 +28,6 @@ public class Dimensions {
 	
 	public static final int mUpdateDetailsViewTextWidth 		= 300;
 	public static final int mUpdateDetailsViewUpdateButtonWidth = 200;
-	public static final int mUpdateDetailsViewBackButtonWidth 	= 150;
 	public static final int mUpdateDetailsViewTableHeight 		= 100;
 	public static final int mUpdateDetailsViewTableWidth 		= 335;
 	public static final int mUpdateDetailsViewColumnWidth 		= 110;

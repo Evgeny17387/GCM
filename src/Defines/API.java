@@ -28,4 +28,9 @@ public class API {
 	public static final String SEARCH_BY_CITY = "SearchByCity";
 	public static final String SEARCH_BY_PLACE = "SearchByPlace";
 	
+	//Updates
+	public static final String UPDATE_MAP="UpdateMap";
+	
+	
+	
 }
