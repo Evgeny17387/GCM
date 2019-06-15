@@ -44,8 +44,6 @@ public class Main extends Application {
 	static String ip;
 
     public static void main(String[] args) {
-
-    	System.out.println(args[0]);
     	
         try
         {
