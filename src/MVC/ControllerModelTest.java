@@ -1,128 +1,61 @@
 package MVC;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import DB_classes.AccountUser;
 import DB_classes.CityMap;
-import DB_classes.Route;
+import DB_classes.Place;
 import Defines.API;
 import Defines.ErrorCodes;
 import Requests.Request;
 import Responses.ResponseController;
 import Responses.ResponseModel;
-import Requests.GeneralRequest;
-import Requests.GetRoutesRequest;
-import Requests.ProposeNewPriceRequest;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 class ControllerModelTest {
 
-	// Scenario: GetRoutes
+	// Scenario: SearchMapByCity
 
 	@Test
-	void testScenario3() {
-
-		String routeName;
-		
-		String jsonRequest;
-    	String jsonController;
-
-		ResponseController responseController;
-		ResponseModel responseModel;	
-
-		Request request;
-		GetRoutesRequest getRoutesRequest;
-
-		List<Route> routes;
-		
-		Controller controller = new Controller();
-//		Model model = new Model();
-		Gson gson = new Gson();
-
-		// ClearTable
-
-//		Assert.assertTrue(model.ClearTable("PriceChange") == ErrorCodes.SUCCESS);
-
-		// GetRoutes
-		
-		routeName = "1";
-
-		getRoutesRequest = new GetRoutesRequest(routeName);
-		request = new Request(API.GET_ROUTES, getRoutesRequest);
-		jsonRequest = gson.toJson(request);
-
-    	jsonController = controller.Run(jsonRequest);
-    	
-    	responseController = gson.fromJson(jsonController, ResponseController.class);
-//		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
-	    Type type = new TypeToken<List<Route>>(){}.getType();
-    	routes = gson.fromJson(gson.toJson(responseController.mObject), type);
-
-    	System.out.println(routes);
-    	
-//		Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
-
-	}
-
-	// Scenario: ChangePrice, ApprovePrice
-
-	@Test
-	void testScenario2() {
-
-		String mapName;
-		int proposedPrice;
-		
-		String jsonRequest;
-    	String jsonController;
-
-		ResponseController responseController;
-		ResponseModel responseModel;	
-
-		Request request;
-		ProposeNewPriceRequest proposedNewPriceRequest;
+	void testScenario1() {
 
 		Controller controller = new Controller();
-		Model model = new Model();
 		Gson gson = new Gson();
 
-		// ClearTable
+		String testName = "Test";
 
-		Assert.assertTrue(model.ClearTable("PriceChange") == ErrorCodes.SUCCESS);
-
-		// ProposeNewPrice
+		CityMap cityMap = new CityMap(testName, "0", testName, testName, new ArrayList<Place>(), 0, testName);
+		Place place = new Place(testName, testName, testName, testName);
+		cityMap.mPlaces.add(place);
 		
-		mapName = "1";
-		proposedPrice = 4;
+		Request request = new Request(API.SEARCH_BY_CITY, testName);
+		String jsonRequest = gson.toJson(request);
 
-		proposedNewPriceRequest = new ProposeNewPriceRequest(mapName, proposedPrice);
-		request = new Request(API.PROPOSE_NEW_PRICE, proposedNewPriceRequest);
-		jsonRequest = gson.toJson(request);
-
-    	jsonController = controller.Run(jsonRequest);
+		String jsonController = controller.Run(jsonRequest);
     	
-    	responseController = gson.fromJson(jsonController, ResponseController.class);
-		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+		ResponseController responseController = gson.fromJson(jsonController, ResponseController.class);
+		ResponseModel responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
 
 		Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
 
-		// ProposeNewPrice
+		Type type = new TypeToken<List<CityMap>>(){}.getType();
+		List<CityMap> cityMapResponseList = gson.fromJson(gson.toJson(responseModel.mObject), type);
+	    CityMap cityMapResponse = cityMapResponseList.get(0);
 
-		proposedNewPriceRequest = new ProposeNewPriceRequest(mapName, proposedPrice);
-		request = new Request(API.APPROVE_PROPOSED_PRICE, proposedNewPriceRequest);
-		jsonRequest = gson.toJson(request);
+    	System.out.println(cityMapResponse);
+    	System.out.println(cityMap);
 
-    	jsonController = controller.Run(jsonRequest);
-    	
-    	responseController = gson.fromJson(jsonController, ResponseController.class);
-		responseModel = gson.fromJson(gson.toJson(responseController.mObject), ResponseModel.class);
+	    type = new TypeToken<List<Place>>(){}.getType();
+	    List<Place> placeResponseList = gson.fromJson(gson.toJson(cityMapResponse.mPlaces), type);
+	    Place placeResponse = placeResponseList.get(0);
 
-		Assert.assertTrue(responseModel.mErrorCode == ErrorCodes.SUCCESS);
+		Assert.assertTrue(place.equals(placeResponse));
 
 	}
 

@@ -23,11 +23,23 @@ public class Place {
 	public String toString() {
 
 		return (
-				this.mName   +
+				this.mName + " ; " +
+				"Description:" + this.mDescription + " ; " +
 				"Classification:" + this.mClassification + " ; " +
 				"URL:" + this.mURL
 				);
 
+	}
+	
+	public boolean equals(Place aPlace) {
+		
+		return (
+				this.mName.equals(aPlace.mName) && 
+				this.mDescription.equals(aPlace.mName) && 
+				this.mClassification.equals(aPlace.mName) && 
+				this.mURL.equals(aPlace.mName)
+				);
+		
 	}
 
 }
