@@ -198,12 +198,24 @@ public class Controller {
 				break;
 
 		// Maps search
+		case API.UPDATE_PLACE:
+		{
+			
+			Place myPlace = gson.fromJson(gson.toJson(request.mObject), Place.class);			
+			ResponseModel responseModel = model.updatePlace(myPlace);
+	    	ResponseController responseController = new ResponseController(request.mType, responseModel);
+	    	jsonString = gson.toJson(responseController);
+	    	
+			
+			break;
+		}
+		
+		
 
 		case API.UPDATE_MAP:
 		{
 			CityMapUpdate myMap = gson.fromJson(gson.toJson(request.mObject), CityMapUpdate.class);			
 			ResponseModel responseModel = model.updateMap(myMap);
-	
 	    	ResponseController responseController = new ResponseController(request.mType, responseModel);
 	    	jsonString = gson.toJson(responseController);
 	    	break;

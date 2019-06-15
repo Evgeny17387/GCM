@@ -30,7 +30,7 @@ public class API {
 	
 	//Updates
 	public static final String UPDATE_MAP="UpdateMap";
-	
+	public static final String UPDATE_PLACE="UpdatePlace";
 	
 	
 }

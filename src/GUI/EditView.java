@@ -3,6 +3,7 @@ package GUI;
 import Communication.ClientConsole;
 import DB_classes.CityMap;
 import DB_classes.CityMapUpdate;
+import DB_classes.Place;
 import Defines.API;
 import Defines.Dimensions;
 import Defines.SceneName;
@@ -39,7 +40,7 @@ public class EditView extends BaseView  {
 	static TextField editPlaceUrl=new TextField("");
 	static TextField editPlaceDescription=new TextField("");
 
-	Button Next = new Button ("Next");
+	Button Next = new Button ("Update");
 	Button goBack = new Button("Go back");
 
 	public EditView(ClientConsole aChat) {
@@ -73,7 +74,7 @@ public class EditView extends BaseView  {
 		
 		
 		
-		Button Next = new Button ("Next");
+		Button Next = new Button ("Update");
 		Button goBack = new Button("Go back");
 
 		// OnClick
@@ -143,9 +144,55 @@ public class EditView extends BaseView  {
      			
      			
      		}
+     		else if(GUI.Main.editlevel==EditLevel.PLACE) {
+     			Place myPlace= new Place(editPlaceName.getText(),editPlaceDescription.getText(),editPlaceUrl.getText());
+     			mRequest=API.UPDATE_PLACE;
+     			Request request = new Request(mRequest, myPlace);
+            	String jsonString = mGson.toJson(request);
+            	mChat.SendToServer(jsonString);
+            	
+            	   ProgressForm progressForm = new ProgressForm();
+                   Task<Void> waitTask = new Dialogs.WaitTask();
+                   progressForm.activateProgressBar(waitTask);
+
+                   waitTask.setOnSucceeded(event -> {
+
+                   	progressForm.getDialogStage().close();
+                   	Next.setDisable(false);
+                       goBack.setDisable(false);
+
+                   	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+       	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Congradulations", "Your details have been updated", "");
+       	        		alert.showAndWait();
+       	        		
+       	        		refreshScene();
+
+               		} else {
+
+       	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred", "Please try again");
+                   		alert.showAndWait();
+
+                   	}
+
+               		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
+                   });
+
+                   Next.setDisable(true);
+                   goBack.setDisable(true);
+
+                   progressForm.getDialogStage().show();
+
+                   Thread thread = new Thread(waitTask);
+                   thread.start();
+           		
+           	
+     			
+     			
+     		}
      		
      		
-     		
+     		Main.changeScene(SceneName.SEARCH_MAP);
      		
      		
      	});

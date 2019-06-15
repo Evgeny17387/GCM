@@ -13,7 +13,13 @@ public class Place {
 		this.mClassification = aClassification;
 		this.mURL = aURL;
 	}
+	public Place(String aName,String aDescription, String aURL) {
+		this.mName = aName;
+		this.mDescription=aDescription;
+		this.mURL = aURL;
+	}
 
+	
 	public String toString() {
 
 		return (

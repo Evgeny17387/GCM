@@ -151,7 +151,7 @@ public class SearchMapView extends BaseView {
 	public static void refreshScene() {
 
 //	     searchTF.setText("Type map to search");
-		mSearchKey.setText("Haifa");
+		mSearchKey.setText("Type map to search");
 
 //	     Search_by_city.setSelected(false);
 	     mSearchByCity.setSelected(true);

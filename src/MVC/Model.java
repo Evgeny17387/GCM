@@ -33,6 +33,7 @@ public class Model {
 	static private final String PASS = "3O6ZV2SgU4";
 
 	// Users
+	
 	public static void updateName(String newName,String URL) {
 		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
 		Connection conn = null;
@@ -187,6 +188,7 @@ public class Model {
 
 	}
 
+	
 	public ResponseModel GetUser(String aUserName, String aPassword) {
 
 		if (
@@ -275,6 +277,79 @@ public class Model {
 		return responseModel;
 	
 	}
+	
+	
+	public ResponseModel updatePlace(Place myPlace) {
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+String sql;
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+
+			sql = "UPDATE `Places` SET `URL`=?,`Description`=? WHERE `Name`=?";
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.setString(1,myPlace.mURL);
+			prep_stmt.setString(2, myPlace.mDescription);
+			prep_stmt.setString(3, myPlace.mName);
+			prep_stmt.executeUpdate();
+			
+			
+			
+			responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
+			responseModel.mErrorCode=ErrorCodes.SUCCESS;
+
+		}catch (SQLException se) {
+
+			responseModel.mErrorCode = se.getErrorCode();
+			
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+
+		return responseModel;
+
+	}
+	
+	
+	
+	
 	
 	
 	public ResponseModel updateMap(CityMapUpdate Map) {
