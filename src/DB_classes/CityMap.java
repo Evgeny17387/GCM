@@ -50,5 +50,21 @@ public class CityMap {
 				);
 
 	}
-	
+
+	public boolean equals(CityMap aCityMap) {
+		
+		return (
+				
+				this.mName.equals(aCityMap.mName) && 
+				this.mVersion.equals(aCityMap.mVersion) &&
+				this.mCity.equals(aCityMap.mCity) &&
+				this.mDescription.equals(aCityMap.mDescription) &&
+//				this.mPlaces.equals(aCityMap.mPlaces) &&
+				this.mPrice == aCityMap.mPrice &&
+				this.mURL.equals(aCityMap.mURL)
+				
+				);
+		
+	}
+
 }

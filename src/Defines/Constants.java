@@ -5,7 +5,7 @@ public class Constants {
 	// Waiting for server response
 	
 	public static int mTimeMiliSecondsInSecond 		= 1000;
-	public static int mDelayTimeSeconds 			= 10;
+	public static int mDelayTimeSeconds 			= 60;
 
 	// Subscription
 
