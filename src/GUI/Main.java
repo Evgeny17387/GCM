@@ -41,9 +41,24 @@ public class Main extends Application {
 
     public static List<Purchases> mPurchases;
 
+	static String ip;
+
     public static void main(String[] args) {
-		launch(args);
-	}
+
+    	System.out.println(args[0]);
+    	
+        try
+        {
+        	ip = args[0];
+        }
+        catch(Throwable e)
+        {
+        	ip = "127.0.0.1";
+        }
+
+    	launch(args);
+
+    }
 
     @Override
 	public void start(Stage primaryStage) {
@@ -53,7 +68,8 @@ public class Main extends Application {
     	editlevel = EditLevel.ZERO;
     	
     	View view = new View();
-    	ClientConsole chat = new ClientConsole("Host", "127.0.0.1", ClientConsole.DEFAULT_PORT, view);
+
+    	ClientConsole chat = new ClientConsole("Host", ip, ClientConsole.DEFAULT_PORT, view);
         
     	scenes.put(SceneName.MAIN, new MainView(chat));
         scenes.put(SceneName.SIGN_UP, new SignUpView(chat));
