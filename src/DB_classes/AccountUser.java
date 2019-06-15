@@ -49,7 +49,7 @@ public class AccountUser extends AccountBase {
 	public boolean HasSubscription(String aCity) {
 
 		for (Purchase purchase : mPurchases) {
-			if (purchase.mCityName.equals(aCity) && purchase.mType.equals(PurchaseType.SUBSCRIPTION)) {
+			if (purchase.mCityName.equals(aCity) && purchase.mType.equals(PurchaseType.SUBSCRIPTION) && purchase.mIsValid) {
 				return true;
 			}
 		}

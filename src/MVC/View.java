@@ -33,7 +33,9 @@ public class View {
 
 			GUI.Main.mServerResponseErrorCode = responseModel.mErrorCode;
 
-    	    System.out.println(responseModel.mErrorCode);
+    	    System.out.println("View: " + responseController.mType);
+
+    	    System.out.println("View: " + responseModel.mErrorCode);
 
 	      	switch (responseController.mType) {
 
@@ -41,20 +43,12 @@ public class View {
 
 	    	case API.ADD_USER:
 
-	    	    System.out.println("View: " + API.ADD_USER);
-
-		    	{
-
-		    	}
-
 			    Main.mResposeFromserver = true;
 
     	    	break;
 
 	    	case API.GET_USER:
 	    	case API.UPDATE_USER:
-
-	    	    System.out.println("View: " + responseController.mType);
 
 		    	{
 
@@ -76,8 +70,6 @@ public class View {
 
 	    	case API.BUY:
 
-	    	    System.out.println("View: " + API.BUY);
-
 		    	{
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
@@ -98,8 +90,6 @@ public class View {
 
 	    	case API.GET_WORKER:
 
-	    	    System.out.println("View: " + API.GET_WORKER);
-
 		    	{
 
 		    		if (responseModel.mErrorCode == ErrorCodes.SUCCESS) {
@@ -119,8 +109,6 @@ public class View {
 	    	    break;
 
 	    	case API.GET_USERS_PURCHASES:
-
-	    	    System.out.println("View: " + API.GET_USERS_PURCHASES);
 
 		    	{
 
@@ -143,20 +131,14 @@ public class View {
 
 	    	// Map Search
 
-	    	case "MapSearch_city_key":
-	    		
-	    	    System.out.println("View: " + "MapSearch_city_key");
+	    	case API.SEARCH_BY_CITY:
 
 		    	{
 		    		
 		    	    Type typeMap = new TypeToken<List<CityMap>>(){}.getType();
 		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseModel.mObject), typeMap);
-		    	    for (int i = 0; i < mapList.size(); i++) {
-		    	    	CityMap map = mapList.get(i);
-						System.out.println(map.toString());
-		    	    }
-			    	   GUI.Main.myMapList=mapList;
 
+		    	    GUI.Main.myMapList = mapList;
 		    		
 		    	}
 
@@ -164,20 +146,15 @@ public class View {
 
 	    		break;
 
-	    	case "MapSearch_place_key":
-
-	    	    System.out.println("View: " + "MapSearch_place_key");
+	    	case API.SEARCH_BY_PLACE:
 	    	    
 	    	    {
 
 		    	    Type typeMap = new TypeToken<List<CityMap>>(){}.getType();
-		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseController.mObject), typeMap);
-		    	    for (int i = 0; i < mapList.size(); i++) {
-		    	    	CityMap map = mapList.get(i);
-						System.out.println(map.toString());
-		    	    }
-		    	    
-		    	
+		    	    List<CityMap> mapList = new Gson().fromJson(gson.toJson(responseModel.mObject), typeMap);
+
+		    	    GUI.Main.myMapList = mapList;
+
 	    	    }
 
 	    	    Main.mResposeFromserver = true;

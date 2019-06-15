@@ -753,6 +753,195 @@ public class Model {
 
 	// Maps Search
 
+	public ResponseModel GetMapsByCity(String aName) {
+		
+		if (aName.isEmpty()) {
+			return new ResponseModel(ErrorCodes.USER_DETAILS_MISSING, null);
+		}
+		
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+		List<CityMap> mapsList = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			stmt = conn.createStatement();
+
+			sql = "SELECT * FROM Maps WHERE City='" + aName + "'";
+
+			rs = stmt.executeQuery(sql);
+
+		    mapsList = new ArrayList<CityMap>();
+
+		    while (rs.next()) {
+
+		    	String name = rs.getString("Name");
+				String city = rs.getString("City");
+				String version = rs.getString("Version");
+				String description = rs.getString("Description");
+				int price = rs.getInt("Price");
+				String url = rs.getString("URL");
+				
+				List<Place> places = GetPlacesByMap(name);
+				
+				CityMap map = new CityMap(name, version, city, description, places, price, url);
+		    	
+				mapsList.add(map);
+
+			}
+		    
+		    if (mapsList.size() > 0) {
+
+			    responseModel.mObject = mapsList;
+			    
+			    responseModel.mErrorCode = ErrorCodes.SUCCESS;
+
+		    } else {
+			    
+			    responseModel.mErrorCode = ErrorCodes.NO_MAPS_FOUND;
+
+		    }
+
+		} catch (SQLException se) {
+
+		    responseModel.mErrorCode = se.getErrorCode();
+
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+		    responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
+			e.printStackTrace();
+
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+
+			}
+
+		}
+
+		return responseModel;
+
+	}
+
+	public ResponseModel GetMapsByPlace(String aName) {
+
+		if (aName.isEmpty()) {
+			return new ResponseModel(ErrorCodes.USER_DETAILS_MISSING, null);
+		}
+
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+		List<CityMap> mapsList = null;
+
+		String sql;
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			Class.forName(JDBC_DRIVER);
+	
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+	
+			stmt = conn.createStatement();
+	
+			sql = "SELECT * FROM PlacesMaps WHERE Place='" + aName + "'";
+	
+			rs = stmt.executeQuery(sql);
+
+			mapsList = new ArrayList<CityMap>();
+
+		    while (rs.next()) {
+
+		    	String MapName = rs.getString("Map");
+
+				System.out.format("%s\n", MapName);
+				
+				CityMap map = GetMap(MapName);
+
+				mapsList.add(map);
+
+			}
+
+		    if (mapsList.size() > 0) {
+
+			    responseModel.mObject = mapsList;
+			    
+			    responseModel.mErrorCode = ErrorCodes.SUCCESS;
+
+		    } else {
+			    
+			    responseModel.mErrorCode = ErrorCodes.NO_MAPS_FOUND;
+
+		    }
+	
+		} catch (SQLException se) {
+	
+		    responseModel.mErrorCode = se.getErrorCode();
+
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+		    responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (rs != null)
+					rs.close();
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+	
+			} catch (SQLException se) {
+	
+				se.printStackTrace();
+	
+			}
+	
+		}
+		
+		return responseModel;
+	
+	}
+
 	public List<Place> GetPlacesByMap(String aName) {
 
 		List<Place> placesList = null;
@@ -901,165 +1090,6 @@ public class Model {
 		}
 		
 		return map;
-	
-	}
-
-	public ResponseModel MapsByCity(String aName) {
-		
-		if (aName.isEmpty()) {
-			return new ResponseModel(ErrorCodes.USER_DETAILS_MISSING, null);
-		}
-		
-		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
-
-		List<CityMap> mapsList = null;
-
-		String sql;
-
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			Class.forName(JDBC_DRIVER);
-
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			stmt = conn.createStatement();
-
-			sql = "SELECT * FROM Maps WHERE City='" + aName + "'";
-
-			rs = stmt.executeQuery(sql);
-
-		    mapsList = new ArrayList<CityMap>();
-
-		    while (rs.next()) {
-
-		    	String MapName = rs.getString("Name");
-
-		    	CityMap map = GetMap(MapName);
-		    	
-				mapsList.add(map);
-
-			}
-
-		    responseModel.mObject = mapsList;
-		    
-		    responseModel.mErrorCode = ErrorCodes.SUCCESS;
-
-		} catch (SQLException se) {
-
-		    responseModel.mErrorCode = se.getErrorCode();
-
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-
-		    responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
-
-			e.printStackTrace();
-
-		} finally {
-	
-			try {
-	
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (conn != null)
-					conn.close();
-
-			} catch (SQLException se) {
-
-				se.printStackTrace();
-
-			}
-
-		}
-
-		return responseModel;
-
-	}
-
-	public List<CityMap> MapsByPlace(String aName) {
-
-		List<CityMap> mapsList = null;
-
-		String sql;
-
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-	
-		try {
-	
-			Class.forName(JDBC_DRIVER);
-	
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-	
-			stmt = conn.createStatement();
-	
-			sql = "SELECT * FROM PlacesMaps WHERE Place='" + aName + "'";
-	
-			rs = stmt.executeQuery(sql);
-
-			mapsList = new ArrayList<CityMap>();
-
-		    while (rs.next()) {
-
-		    	String MapName = rs.getString("Map");
-
-				System.out.format("%s\n", MapName);
-				
-				CityMap map = GetMap(MapName);
-
-				mapsList.add(map);
-
-			}
-
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-	
-		} catch (SQLException se) {
-	
-			se.printStackTrace();
-			System.out.println("SQLException: " + se.getMessage());
-	        System.out.println("SQLState: " + se.getSQLState());
-	        System.out.println("VendorError: " + se.getErrorCode());
-	
-		} catch (Exception e) {
-	
-			e.printStackTrace();
-	
-		} finally {
-	
-			try {
-	
-				if (rs != null)
-					rs.close();
-				if (stmt != null)
-					stmt.close();
-				if (conn != null)
-					conn.close();
-	
-			} catch (SQLException se) {
-	
-				se.printStackTrace();
-	
-			}
-	
-		}
-		
-		return mapsList;
 	
 	}
 

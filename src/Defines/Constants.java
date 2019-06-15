@@ -2,7 +2,14 @@ package Defines;
 
 public class Constants {
 
-	public static int mTimeMiliSecondsInSecond = 1000;
-	public static int mDelayTimeSeconds 		= 10;
+	// Waiting for server response
+	
+	public static int mTimeMiliSecondsInSecond 		= 1000;
+	public static int mDelayTimeSeconds 			= 10;
+
+	// Subscription
+
+	public static int mSubscriptionDays 			= 6*31;
+	public static int mSubscriptionDaysLeftWarning 	= 10;
 	
 }
