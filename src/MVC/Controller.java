@@ -198,6 +198,17 @@ public class Controller {
 				break;
 
 		// Maps search
+				
+				
+			case API.ADD_PLACE:{
+				Place myPlace = gson.fromJson(gson.toJson(request.mObject), Place.class);			
+				ResponseModel responseModel = model.addPlace(myPlace);
+		    	ResponseController responseController = new ResponseController(request.mType, responseModel);
+		    	jsonString = gson.toJson(responseController);
+		    	
+				break;
+			}
+			
 		case API.UPDATE_PLACE:
 		{
 			
@@ -210,6 +221,16 @@ public class Controller {
 			break;
 		}
 		
+		case API.ADD_MAP:
+		{
+			
+			CityMap myMap = gson.fromJson(gson.toJson(request.mObject), CityMap.class);			
+			ResponseModel responseModel = model.addMap(myMap);
+	    	ResponseController responseController = new ResponseController(request.mType, responseModel);
+	    	jsonString = gson.toJson(responseController);
+			
+			break;
+		}
 		
 
 		case API.UPDATE_MAP:

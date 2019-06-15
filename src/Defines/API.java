@@ -31,6 +31,7 @@ public class API {
 	//Updates
 	public static final String UPDATE_MAP="UpdateMap";
 	public static final String UPDATE_PLACE="UpdatePlace";
-	
-	
+	public static final String ADD_MAP="AddMap";
+	public static final String ADD_PLACE="AddPlace";
+
 }

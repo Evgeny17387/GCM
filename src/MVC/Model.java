@@ -279,6 +279,96 @@ public class Model {
 	}
 	
 	
+
+	public ResponseModel addMap(CityMap myMap) {
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+String sql;
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+
+			sql = "INSERT INTO `Maps`(`Name`, `City`, `Version`, `Description`, `Price`, `URL`) VALUES (?,?,?,?,?,?)";
+			prep_stmt = conn.prepareStatement(sql);
+
+			prep_stmt.setString(1,myMap.mName);
+			prep_stmt.setString(2, myMap.mCity);
+			prep_stmt.setString(3,"0");
+			prep_stmt.setString(4,myMap.mDescription);
+			prep_stmt.setString(5,"0");
+			prep_stmt.setString(6,myMap.mURL);
+
+
+			prep_stmt.executeUpdate();
+			
+			
+			
+			responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
+			responseModel.mErrorCode=ErrorCodes.SUCCESS;
+
+		}catch (SQLException se) {
+
+			responseModel.mErrorCode = se.getErrorCode();
+			
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+
+		return responseModel;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
 	public ResponseModel updatePlace(Place myPlace) {
 		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
 
@@ -346,6 +436,103 @@ String sql;
 		return responseModel;
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public ResponseModel addPlace(Place myPlace) {
+		ResponseModel responseModel = new ResponseModel(ErrorCodes.FAILURE, null);
+
+String sql;
+String sql2;
+String sql3;
+
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+
+		try {
+
+			Class.forName(JDBC_DRIVER);
+
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+			sql = "INSERT INTO `PlacesMaps`(`Place`, `Map`) VALUES (?,?)";
+			prep_stmt = conn.prepareStatement(sql);			
+			prep_stmt.setString(1,myPlace.mName);
+			prep_stmt.setString(2, GUI.Main.myMapList.get(GUI.ShowMapView.mCounterMap).mName);
+			prep_stmt.executeUpdate();
+		/*	prep_stmt.close();
+			
+			
+			sql2 = "INSERT INTO `Places`(`Name`, `Classification`, `URL`, `Description`) VALUES (?,?,?,?)";
+			prep_stmt = conn.prepareStatement(sql2);
+
+			prep_stmt.setString(1,myPlace.mName);
+			prep_stmt.setString(2, "-");
+			prep_stmt.setString(3, myPlace.mURL);
+			prep_stmt.setString(4, myPlace.mDescription);
+			prep_stmt.executeUpdate();*/
+			
+			
+			
+			
+			
+			responseModel = new ResponseModel(ErrorCodes.SUCCESS, null);
+			responseModel.mErrorCode=ErrorCodes.SUCCESS;
+
+		}catch (SQLException se) {
+
+			responseModel.mErrorCode = se.getErrorCode();
+			
+			se.printStackTrace();
+			System.out.println("SQLException: " + se.getMessage());
+	        System.out.println("SQLState: " + se.getSQLState());
+	        System.out.println("VendorError: " + se.getErrorCode());
+	
+		} catch (Exception e) {
+
+			responseModel.mErrorCode = ErrorCodes.FAILURE_EXCEPTION;
+
+			e.printStackTrace();
+	
+		} finally {
+	
+			try {
+	
+				if (conn != null)
+					conn.close();
+				if (prep_stmt != null)
+					prep_stmt.close();
+	
+			} catch (SQLException se) {
+
+				se.printStackTrace();
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+		
+			}
+	
+		}
+
+
+		return responseModel;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

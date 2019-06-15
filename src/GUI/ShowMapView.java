@@ -49,7 +49,7 @@ public class ShowMapView extends BaseView {
 
 	static boolean mIsFirstViewAfterPurchase = false;
 
-    static int mCounterMap;
+    public static int mCounterMap;
     public static int mCounterPlace;
 
     // TextView
@@ -217,7 +217,6 @@ public class ShowMapView extends BaseView {
   		   nextPlace.setVisible(false);
   		   prevPlace.setVisible(false);
   		   setDeafulePlace();
-  		 refreshScene();
         });
 
 		pervM.setOnAction(e->{
@@ -228,7 +227,6 @@ public class ShowMapView extends BaseView {
         	setMap();
         	nextPlace.setVisible(false);
      		prevPlace.setVisible(false);
-     		setDeafulePlace();
      		
 		});
 
@@ -419,13 +417,12 @@ public class ShowMapView extends BaseView {
 			
 		if(Main.memberlevel!=MemLvl.MEMBER && Main.memberlevel!= MemLvl.FREE_USER) {
 
-				CityMap map = Main.myMapList.get(mCounterMap);
 
 			 	editPrice.setVisible(true);
 			 	editMap.setVisible(true);
 			 	editMap.setText("edit  map");
 			 	addMapToCity.setVisible(true);
-			 	addMapToCity.setText("Add map of "+map.mCity);
+			 	addMapToCity.setText("Add map ");
 			 	addPlace.setVisible(true);
 			 	addPlace.setText("Add place");
 

@@ -26,6 +26,7 @@ import Defines.ErrorCodes;
 public class EditView extends BaseView  {
 	static String mRequest;
 	StackPane root = new StackPane();
+	static TextField newMapCity=new TextField("New map city");
 	static TextField mName=new TextField("");
 	static TextField mDescription=new TextField ("");
 	static TextField mURL=new TextField("");
@@ -57,6 +58,7 @@ public class EditView extends BaseView  {
 		mName.setVisible(false);
 		mDescription.setVisible(false);
 		mPrice.setVisible(false);
+		newMapCity.setVisible(false);
 		newMapName.setVisible(false);
 		newMapDescription.setVisible(false);
 		newMapPic.setVisible(false);
@@ -90,7 +92,7 @@ public class EditView extends BaseView  {
 
 		// Scene
 
-       	root.getChildren().addAll(mURL,editPlaceDescription,editPlaceUrl,editPlaceName,placeURL,placeName,mName,mDescription,mPrice,newMapName,newMapDescription,newMapPic,placeDescription,Next,goBack);
+       	root.getChildren().addAll(newMapCity,mURL,editPlaceDescription,editPlaceUrl,editPlaceName,placeURL,placeName,mName,mDescription,mPrice,newMapName,newMapDescription,newMapPic,placeDescription,Next,goBack);
      	mScene = new Scene(root, Dimensions.mWith, Dimensions.mheight);
 
      	
@@ -192,6 +194,120 @@ public class EditView extends BaseView  {
      		}
      		
      		
+     		
+     		
+     		
+     		
+     		
+     		else if(GUI.Main.editlevel==EditLevel.ADD) {
+     			CityMap myMap= new CityMap(newMapName.getText(),newMapCity.getText(),newMapDescription.getText(),newMapPic.getText());
+     			mRequest=API.ADD_MAP;
+     			Request request = new Request(mRequest, myMap);
+            	String jsonString = mGson.toJson(request);
+            	mChat.SendToServer(jsonString);
+            	
+            	   ProgressForm progressForm = new ProgressForm();
+                   Task<Void> waitTask = new Dialogs.WaitTask();
+                   progressForm.activateProgressBar(waitTask);
+
+                   waitTask.setOnSucceeded(event -> {
+
+                   	progressForm.getDialogStage().close();
+                   	Next.setDisable(false);
+                       goBack.setDisable(false);
+
+                   	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+       	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Congradulations", "Your details have been updated", "");
+       	        		alert.showAndWait();
+       	        		
+       	        		refreshScene();
+
+               		} else {
+
+       	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred", "Please try again");
+                   		alert.showAndWait();
+
+                   	}
+
+               		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
+                   });
+
+                   Next.setDisable(true);
+                   goBack.setDisable(true);
+
+                   progressForm.getDialogStage().show();
+
+                   Thread thread = new Thread(waitTask);
+                   thread.start();
+           		
+           		
+     			
+     			
+     			
+     			
+     			
+     		}
+     		
+     		else if(GUI.Main.editlevel==EditLevel.ADD_PLACE) {
+     			Place myPlace= new Place(placeName.getText(),placeDescription.getText(),placeURL.getText());
+     			mRequest=API.ADD_PLACE;
+     			Request request = new Request(mRequest, myPlace);
+            	String jsonString = mGson.toJson(request);
+            	mChat.SendToServer(jsonString);;
+            	
+            	   ProgressForm progressForm = new ProgressForm();
+                   Task<Void> waitTask = new Dialogs.WaitTask();
+                   progressForm.activateProgressBar(waitTask);
+
+                   waitTask.setOnSucceeded(event -> {
+
+                   	progressForm.getDialogStage().close();
+                   	Next.setDisable(false);
+                       goBack.setDisable(false);
+
+                   	if (Main.mServerResponseErrorCode == ErrorCodes.SUCCESS) {
+       	        		MessageDialog alert = new MessageDialog(AlertType.INFORMATION, "Congradulations", "Your details have been updated", "");
+       	        		alert.showAndWait();
+       	        		
+       	        		refreshScene();
+
+               		} else {
+
+       	        		MessageDialog alert = new MessageDialog(AlertType.ERROR, "Error", "An unknown error has occurred", "Please try again");
+                   		alert.showAndWait();
+
+                   	}
+
+               		Main.mServerResponseErrorCode = ErrorCodes.RESET;
+
+                   });
+
+                   Next.setDisable(true);
+                   goBack.setDisable(true);
+
+                   progressForm.getDialogStage().show();
+
+                   Thread thread = new Thread(waitTask);
+                   thread.start();
+           		
+           		
+     			
+     			
+     			
+     			
+     			
+     		}
+     		
+     		
+     		
+     		
+     		
+     		
+     		
+     		
+     		
+     		
      		Main.changeScene(SceneName.SEARCH_MAP);
      		
      		
@@ -221,6 +337,7 @@ public class EditView extends BaseView  {
    		 mDescription.setVisible(false);
    		 mURL.setVisible(false);
    		 mPrice.setVisible(false);
+   		 newMapCity.setVisible(false);
    		 newMapName.setVisible(false);
    		 newMapDescription.setVisible(false);
    		 newMapPic.setVisible(false);
@@ -265,6 +382,7 @@ public class EditView extends BaseView  {
    		 placeDescription.setVisible(false);
    		 placeName.setVisible(false);
    		 placeURL.setVisible(false);
+   		 newMapCity.setVisible(false);
    		 editPlaceName.setVisible(false);
    		 editPlaceUrl.setVisible(false);
    		 editPlaceDescription.setVisible(false);
@@ -294,6 +412,7 @@ public class EditView extends BaseView  {
    		 mURL.setVisible(false);
    		 mPrice.setVisible(false);
    		 newMapName.setVisible(true);
+   		 newMapCity.setVisible(true);
    		 newMapDescription.setVisible(true);
    		 newMapPic.setVisible(true);
    		 placeDescription.setVisible(false);
@@ -303,14 +422,19 @@ public class EditView extends BaseView  {
    		 editPlaceUrl.setVisible(false);
    		 editPlaceDescription.setVisible(false);
    		 newMapName.setMaxWidth(Dimensions.mSignInViewTextWidth);
+   		 newMapCity.setMaxWidth(Dimensions.mSignInViewTextWidth);
    		 newMapDescription.setMaxWidth(Dimensions.mSignInViewTextWidth);
    		 newMapPic.setMaxWidth(Dimensions.mSignInViewTextWidth);
-   		 newMapName.setPromptText("New map name");
-   	 	 newMapDescription.setPromptText("New map  description");
-   		 newMapPic.setPromptText("New map jpg url");   		 
+   		 newMapName.setText("New map name");
+   	 	 newMapDescription.setText("New map  description");
+   		 newMapPic.setText("New map jpg url");   
+   		 newMapCity.setText("New map city");
+   	
+   		 
    		 newMapName.setTranslateY(-250);
-   		 newMapDescription.setTranslateY(-200);
-   		 newMapPic.setTranslateY(-150);
+   		 newMapCity.setTranslateY(-200);
+   		 newMapDescription.setTranslateY(-150);
+   		 newMapPic.setTranslateY(-100);
    		 
    		 
    		 
@@ -358,9 +482,9 @@ public class EditView extends BaseView  {
    		 editPlaceName.setVisible(false);
    		 editPlaceUrl.setVisible(false);
    		 editPlaceDescription.setVisible(false);
-   		 newMapName.setMaxWidth(Dimensions.mSignInViewTextWidth);
-   		 newMapDescription.setMaxWidth(Dimensions.mSignInViewTextWidth);
-   		 newMapPic.setMaxWidth(Dimensions.mSignInViewTextWidth);
+   		 placeName.setMaxWidth(Dimensions.mSignInViewTextWidth);
+   		 placeURL.setMaxWidth(Dimensions.mSignInViewTextWidth);
+   		 placeDescription.setMaxWidth(Dimensions.mSignInViewTextWidth);
    		 placeName.setPromptText("New place name");
    		 placeDescription.setPromptText("New place description");
    		 placeURL.setPromptText("New place jpg url");   		 

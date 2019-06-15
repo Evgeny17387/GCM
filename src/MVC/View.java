@@ -53,6 +53,17 @@ public class View {
 	    	    Main.mResposeFromserver = true;
 
     	    break;
+	    	case API.ADD_PLACE:
+	    		responseModel.mErrorCode = ErrorCodes.SUCCESS;
+	    	    Main.mResposeFromserver = true;
+	    	    break;
+	    		
+	    	case API.ADD_MAP:
+	    		responseModel.mErrorCode = ErrorCodes.SUCCESS;
+	    	    Main.mResposeFromserver = true;
+	    	    break;
+	    	   
+	    		
 	    	case API.UPDATE_PLACE:
 	    		responseModel.mErrorCode = ErrorCodes.SUCCESS;
 	    	    Main.mResposeFromserver = true;
