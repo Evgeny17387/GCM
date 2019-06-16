@@ -13,6 +13,7 @@
 ### OCSF for communication
 ### SQl DataBsae
 ### JavaFX for Client
+### JSON for message parsing
 
 ## ScrenShots of the App
 ##### Main View<br/>
