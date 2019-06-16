@@ -9,10 +9,10 @@
 
 ## Tools&Technology
 ### Java
-### Client&Server (MVC Model)
-### TCP/IP Communication using sockets
+### MVC Based
+### OCSF for communication
 ### SQl DataBsae
-### Client uses JavaFX
+### JavaFX for Client
 
 ## ScrenShots of the App
 ##### Main View<br/>
