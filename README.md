@@ -11,7 +11,7 @@
 ### Java
 ### MVC Based
 ### OCSF for communication
-### SQl DataBsae
+### SQL DataBsae
 ### JavaFX for Client
 ### JSON for message parsing
 
