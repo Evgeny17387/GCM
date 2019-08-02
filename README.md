@@ -1,22 +1,22 @@
 # GCM
 
 ## Description
-### This repository contains the final project in the course "Software Engineering, 203.3140, Haifa University, Israel"
-### GCM stands for "Global City Map" system. A Client-Server app for interactive city maps managing
+1. This repository contains the final project in the course "Software Engineering, 203.3140, Haifa University, Israel"
+2. GCM stands for "Global City Map" system. A Client-Server app for interactive city maps managing
 
 ## Tools&Technology
-### Java language for both Client and Server
-### MVC Based for Client-Server-DataBase architecture
-### OCSF for communication
-### SQL DataBsae
-### JavaFX for Client GUI
-### JSON for messages parsing
+1. Java language for both Client and Server
+2. MVC Based for Client-Server-DataBase architecture
+3. OCSF for communication
+4. SQL DataBsae
+5. JavaFX for Client GUI
+6. JSON for messages parsing
 
 ## ScrenShots of the App
-##### Main View<br/>
+#### Main <br/>
 ![alt text](Other/MainView.PNG "Title")
-##### SingIn Map View<br/>
+#### SingIn <br/>
 ![alt text](Other/SingInView.PNG "Title")
-##### Show Map View<br/>
+#### Show Map <br/>
 ![alt text](Other/ShowMapView.PNG "Title")
-##### And there are many more...
+#### And there are many more...
