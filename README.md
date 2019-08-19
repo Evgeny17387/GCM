@@ -1,7 +1,7 @@
 # GCM
 
 ## Description
-1. This repository contains the final project in the course "Software Engineering, 203.3140, Haifa University, Israel"
+1. This repository contains the final project in the course "Software Engineering, 203.3140", Haifa University, Israel
 2. GCM stands for "Global City Map" system. A Client-Server app for interactive city maps managing
 
 ## Tools&Technology
